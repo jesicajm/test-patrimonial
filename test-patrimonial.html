@@ -280,7 +280,124 @@
   .btn-restart:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
 
   .footer { text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 48px; font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+
+  /* ═══════════════════════════════════════════
+     LEAD CAPTURE SCREEN
+  ═══════════════════════════════════════════ */
+  #capture-screen { display: none; }
+
+  .capture-wrap {
+    max-width: 520px; margin: 0 auto;
+    background: rgba(22,44,71,0.75);
+    border: 1px solid rgba(196,151,42,0.28);
+    border-radius: var(--radius); padding: 52px 44px 44px;
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .capture-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 55% at 50% 0%, rgba(196,151,42,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .capture-eyebrow {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .capture-eyebrow::before, .capture-eyebrow::after {
+    content:''; height:1px; width:28px; background:var(--gold); opacity:.45;
+  }
+  .capture-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px; font-weight: 300; color: var(--cream); line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .capture-title em { font-style: italic; color: var(--gold-light); }
+  .capture-sub {
+    font-size: 14px; color: var(--text-dim); line-height: 1.65;
+    margin-bottom: 32px; max-width: 360px; margin-left: auto; margin-right: auto;
+  }
+  .capture-form { display: flex; flex-direction: column; gap: 16px; text-align: left; }
+  .form-field { display: flex; flex-direction: column; gap: 7px; }
+  .form-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .form-optional {
+    font-size: 11px; color: var(--text-dim); text-transform: none;
+    letter-spacing: 0; font-weight: 400; font-style: italic;
+  }
+  .form-input {
+    background: rgba(13,31,53,0.65); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius); padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    color: var(--cream); outline: none; width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .form-input::placeholder { color: var(--text-dim); opacity: .7; }
+  .form-input:focus { border-color: rgba(196,151,42,0.55); box-shadow: 0 0 0 3px rgba(196,151,42,0.08); }
+  .form-input.error { border-color: #C0392B !important; }
+
+  .btn-capture {
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.09em; padding: 17px 32px; margin-top: 4px;
+    background: linear-gradient(135deg, var(--gold) 0%, #A87B1A 100%);
+    color: var(--navy); border: none; border-radius: var(--radius);
+    cursor: pointer; box-shadow: 0 6px 28px rgba(196,151,42,0.3);
+    transition: all 0.25s; text-transform: uppercase; width: 100%;
+  }
+  .btn-capture:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 36px rgba(196,151,42,0.4); }
+  .btn-capture:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .capture-status {
+    display: none; align-items: center; justify-content: center; gap: 8px;
+    font-size: 13px; color: var(--gold); margin-top: 12px; text-align: center;
+  }
+  .capture-status.visible { display: flex; }
+  .spinner {
+    width: 15px; height: 15px; border: 2px solid rgba(196,151,42,0.25);
+    border-top-color: var(--gold); border-radius: 50%;
+    animation: spin 0.75s linear infinite; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .capture-privacy { font-size: 11px; color: var(--text-dim); text-align: center; margin-top: 14px; opacity: 0.6; }
+
+  /* Result score — secondary, smaller */
+  .result-score-secondary {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 300; color: var(--text-dim);
+    margin-top: 12px; display: block;
+  }
+
 </style>
+
+<!-- Firebase SDK compat (carga síncrona, sin módulos) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+// ╔══════════════════════════════════════════════════════════╗
+// ║  REEMPLAZA ESTOS VALORES con los de tu proyecto Firebase ║
+// ║  Firebase Console → Project Settings → Tu app web       ║
+// ╚══════════════════════════════════════════════════════════╝
+var FIREBASE_CONFIG = {
+  apiKey: "AIzaSyD4YxIPAoaPbyoA62ERRLwkF-0WT09HfqA",
+  authDomain: "testap-6035f.firebaseapp.com",
+  projectId: "testap-6035f",
+  storageBucket: "testap-6035f.firebasestorage.app",
+  messagingSenderId: "407524776135",
+  appId: "1:407524776135:web:987f8679ef8f945bcb46e2",
+  measurementId: "G-LPFMK5NVXM"
+};
+
+var _db = null;
+try {
+  firebase.initializeApp(FIREBASE_CONFIG);
+  _db = firebase.firestore();
+  console.log("✅ Firebase listo");
+} catch(e) {
+  console.warn("⚠️ Firebase no inicializado:", e.message);
+}
+</script>
+
 </head>
 <body>
 <div class="container">
@@ -368,15 +485,46 @@
     </div>
   </div>
 
+  <!-- LEAD CAPTURE -->
+  <div id="capture-screen">
+    <div class="capture-wrap">
+      <div class="capture-eyebrow">Tu diagnóstico</div>
+      <div class="capture-title">Está listo.<br><em>¿A dónde lo enviamos?</em></div>
+      <p class="capture-sub">Te enviamos el resultado completo con las vulnerabilidades detectadas y el siguiente paso recomendado para tu caso.</p>
+      <div class="capture-form">
+        <div class="form-field">
+          <label class="form-label" for="cap-nombre">Nombre</label>
+          <input class="form-input" id="cap-nombre" type="text" placeholder="Tu nombre" autocomplete="given-name" />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="cap-email">Correo electrónico</label>
+          <input class="form-input" id="cap-email" type="email" placeholder="tu@correo.com" autocomplete="email" />
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="cap-whatsapp">
+            WhatsApp <span class="form-optional">(opcional — también te enviamos el resultado por aquí)</span>
+          </label>
+          <input class="form-input" id="cap-whatsapp" type="tel" placeholder="+57 300 000 0000" autocomplete="tel" />
+        </div>
+        <button class="btn-capture" id="btn-capture" onclick="submitCapture()">Ver mis resultados →</button>
+        <div class="capture-status" id="capture-status">
+          <div class="spinner"></div>
+          <span>Guardando tu diagnóstico…</span>
+        </div>
+        <p class="capture-privacy">🔒 Información privada. No compartimos datos con terceros.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- RESULT -->
   <div id="result-screen">
     <div class="result-hero">
       <div class="result-profile-tag" id="result-profile-tag"></div>
-      <div class="result-label">Tu diagnóstico patrimonial</div>
-      <div class="result-score"><span id="score-number">0</span><span class="result-max"> / 36</span></div>
-      <div class="result-gauge"><div class="result-gauge-fill" id="gauge-fill" style="width:0%"></div></div>
-      <div class="result-diagnosis" id="result-diagnosis"></div>
+      <div class="result-label">Lo que detectamos en tu patrimonio</div>
+      <div class="result-diagnosis" id="result-diagnosis" style="font-size:36px;margin:12px 0 8px;position:relative;"></div>
       <div class="result-desc" id="result-desc"></div>
+      <div class="result-gauge" style="margin-top:20px;"><div class="result-gauge-fill" id="gauge-fill" style="width:0%"></div></div>
+      <span class="result-score-secondary"><span id="score-number">0</span> / 36 puntos</span>
     </div>
 
     <div class="breakdown" id="breakdown"></div>
@@ -388,12 +536,12 @@
       <div class="cta-headline" id="cta-headline">Conoce exactamente dónde están<br>tus vulnerabilidades reales</div>
       <div class="cta-sub" id="cta-sub">Este test es el punto de partida. La Asesoría de Diagnóstico va más profundo: analiza tu situación particular, cuantifica los riesgos y te da un plan concreto.</div>
       <div class="cta-features" id="cta-features">
-        <span class="cta-feat">Sesión de 60 minutos</span>
-        <span class="cta-feat">Diagnóstico de tus 4 capas</span>
-        <span class="cta-feat">Plan de acción priorizado</span>
-        <span class="cta-feat">Sin compromiso de compra</span>
+        <span class="cta-feat">45 minutos, sin costo</span>
+        <span class="cta-feat">Revisamos tus vulnerabilidades específicas</span>
+        <span class="cta-feat">Sin propuesta de productos al final</span>
+        <span class="cta-feat">Plan de acción concreto</span>
       </div>
-      <a class="btn-cta" href="https://calendly.com/d/cx8w-x7j-m4x" target="_blank">Agendar mi diagnóstico gratuito</a>
+      <a class="btn-cta" href="https://calendly.com/d/cx8w-x7j-m4x" target="_blank">Quiero entender mis resultados con un especialista</a>
       <p class="cta-note">Sin costos. Sin ventas. Solo claridad sobre tu patrimonio.</p>
     </div>
     <button class="btn-restart" onclick="restartTest()">← Hacer el test nuevamente</button>
@@ -724,109 +872,200 @@ function goNext() {
   const qId = questionSequence[current].id;
   if (answers[qId] === undefined) return;
   if (current < questionSequence.length - 1) { current++; renderQuestion(); }
-  else showResults();
+  else showCapture();
 }
 
 function goBack() {
   if (current > 0) { current--; renderQuestion(); }
 }
 
-// ─── RESULTS ─────────────────────────────────────────────────────────────────
-function showResults() {
+// ─── LEAD CAPTURE ────────────────────────────────────────────────────────────
+function showCapture() {
   document.getElementById('question-screen').style.display = 'none';
+  document.getElementById('progress-wrap').classList.remove('visible');
+  document.getElementById('capture-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function submitCapture() {
+  var nombre   = document.getElementById('cap-nombre').value.trim();
+  var email    = document.getElementById('cap-email').value.trim();
+  var whatsapp = document.getElementById('cap-whatsapp').value.trim();
+
+  // Reset errores
+  ['cap-nombre','cap-email'].forEach(function(id) {
+    document.getElementById(id).classList.remove('error');
+  });
+
+  if (!nombre) {
+    document.getElementById('cap-nombre').classList.add('error');
+    document.getElementById('cap-nombre').focus();
+    return;
+  }
+  if (!email || email.indexOf('@') < 0) {
+    document.getElementById('cap-email').classList.add('error');
+    document.getElementById('cap-email').focus();
+    return;
+  }
+
+  var btn    = document.getElementById('btn-capture');
+  var status = document.getElementById('capture-status');
+  btn.disabled = true;
+  status.classList.add('visible');
+
+  // Calcular scores
+  var scoreTotal = 0;
+  questionSequence.forEach(function(q) {
+    var a = answers[q.id];
+    if (a !== undefined) scoreTotal += q.opts[a].pts;
+  });
+
+  var secScores = { "01": 0, "02": 0, "03": 0, "04": 0 };
+  questionSequence.forEach(function(q) {
+    var a = answers[q.id];
+    if (a !== undefined) secScores[q.section] += q.opts[a].pts;
+  });
+
+  var nivelObj = RESULTS.find(function(r) { return scoreTotal >= r.min && scoreTotal <= r.max; });
+
+  var vulnerabilidades = [];
+  questionSequence.forEach(function(q) {
+    var a = answers[q.id];
+    if (a !== undefined && q.opts[a].pts <= q.vuln.threshold) {
+      vulnerabilidades.push(q.vuln.title);
+    }
+  });
+
+  var respuestas = {};
+  questionSequence.forEach(function(q) {
+    if (answers[q.id] !== undefined) respuestas[q.id] = answers[q.id];
+  });
+
+  var params = new URLSearchParams(window.location.search);
+  var origen = params.get('origen') || 'directo';
+
+  var lead = {
+    nombre:   nombre,
+    email:    email.toLowerCase(),
+    whatsapp: whatsapp || null,
+    perfil:   selectedProfile,
+    score_total: scoreTotal,
+    nivel:    nivelObj ? nivelObj.label : '',
+    scores_por_capa: {
+      proteccion:  secScores["01"],
+      liquidez:    secScores["02"],
+      crecimiento: secScores["03"],
+      legado:      secScores["04"]
+    },
+    vulnerabilidades_detectadas: vulnerabilidades,
+    respuestas: respuestas,
+    origen:   origen,
+    agendo_calendly: false,
+    estado:   'nuevo',
+    timestamp: _db ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
+  };
+
+  try {
+    if (_db) {
+      var docRef = await _db.collection('leads_test').add(lead);
+      console.log('✅ Lead guardado. ID:', docRef.id);
+    } else {
+      // Fallback: localStorage si Firebase no está configurado
+      var stored = JSON.parse(localStorage.getItem('leads_fallback') || '[]');
+      lead.timestamp = new Date().toISOString();
+      stored.push(lead);
+      localStorage.setItem('leads_fallback', JSON.stringify(stored));
+      console.warn('⚠️ Firebase sin configurar — lead en localStorage');
+    }
+  } catch(err) {
+    console.error('Error Firestore:', err);
+    // El usuario SIEMPRE ve su resultado aunque falle el guardado
+  }
+
+  status.classList.remove('visible');
+  document.getElementById('capture-screen').style.display = 'none';
+  showResults(nombre);
+}
+
+// ─── RESULTS ─────────────────────────────────────────────────────────────────
+function showResults(nombreCapturado) {
+  document.getElementById('question-screen').style.display = 'none';
+  document.getElementById('capture-screen').style.display = 'none';
   document.getElementById('progress-wrap').classList.remove('visible');
   document.getElementById('result-screen').style.display = 'block';
 
-  let total = 0;
-  questionSequence.forEach(q => {
-    const a = answers[q.id];
+  var total = 0;
+  questionSequence.forEach(function(q) {
+    var a = answers[q.id];
     if (a !== undefined) total += q.opts[a].pts;
   });
 
-  const secScores = { "01": 0, "02": 0, "03": 0, "04": 0 };
-  const secMax    = { "01": 0, "02": 0, "03": 0, "04": 0 };
-  questionSequence.forEach(q => {
-    const a = answers[q.id];
+  var secScores = { "01": 0, "02": 0, "03": 0, "04": 0 };
+  var secMax    = { "01": 0, "02": 0, "03": 0, "04": 0 };
+  questionSequence.forEach(function(q) {
+    var a = answers[q.id];
     if (a !== undefined) secScores[q.section] += q.opts[a].pts;
     secMax[q.section] += 3;
   });
 
-  const profileLabel = selectedProfile === 'empresario' ? '🏢 Diagnóstico Empresario' : '💼 Diagnóstico Profesional';
-  document.getElementById('result-profile-tag').textContent = profileLabel;
+  var nameTag = nombreCapturado ? nombreCapturado + ' · ' : '';
+  var profileLabel = selectedProfile === 'empresario' ? '🏢 Diagnóstico Empresario' : '💼 Diagnóstico Profesional';
+  document.getElementById('result-profile-tag').textContent = nameTag + profileLabel;
 
-  let counter = 0;
-  const scoreEl = document.getElementById('score-number');
-  const interval = setInterval(() => {
+  var counter = 0;
+  var scoreEl = document.getElementById('score-number');
+  var interval = setInterval(function() {
     counter++;
     scoreEl.textContent = counter;
     if (counter >= total) clearInterval(interval);
   }, total > 0 ? Math.max(30, 900 / total) : 100);
 
-  const level = RESULTS.find(r => total >= r.min && total <= r.max);
-  setTimeout(() => { document.getElementById('gauge-fill').style.width = ((total/36)*100) + '%'; }, 200);
-  document.getElementById('gauge-fill').style.background = `linear-gradient(90deg, ${level.gauge}, ${level.gauge}BB)`;
+  var level = RESULTS.find(function(r) { return total >= r.min && total <= r.max; });
+  setTimeout(function() { document.getElementById('gauge-fill').style.width = ((total/36)*100) + '%'; }, 200);
+  document.getElementById('gauge-fill').style.background = 'linear-gradient(90deg, ' + level.gauge + ', ' + level.gauge + 'BB)';
   document.getElementById('result-diagnosis').textContent = level.label;
   document.getElementById('result-diagnosis').style.color = level.color;
   document.getElementById('result-desc').textContent = level.desc;
 
-  const secMeta = [
+  var secMeta = [
     { id: "01", name: "Protección y Blindaje", icon: "🛡️" },
     { id: "02", name: "Liquidez y Reservas",   icon: "💧" },
     { id: "03", name: "Crecimiento",            icon: "📈" },
     { id: "04", name: "Diversificación",        icon: "🌐" },
   ];
-  const bd = document.getElementById('breakdown');
+  var bd = document.getElementById('breakdown');
   bd.innerHTML = '';
-  secMeta.forEach(sec => {
-    const pts = secScores[sec.id] || 0;
-    const mx  = secMax[sec.id]   || 1;
-    const pct = (pts / mx) * 100;
-    const color = pct < 40 ? '#C0392B' : pct < 65 ? '#D4821A' : pct < 85 ? '#2471A3' : '#1E8449';
-    bd.innerHTML += `
-      <div class="breakdown-card">
-        <div class="breakdown-title">${sec.icon} ${sec.name}</div>
-        <div class="breakdown-score">
-          <span class="bd-pts">${pts}</span>
-          <span class="bd-max">/ ${mx} pts</span>
-        </div>
-        <div class="bd-bar">
-          <div class="bd-bar-fill" style="width:0%;background:${color}" data-width="${pct}"></div>
-        </div>
-      </div>
-    `;
+  secMeta.forEach(function(sec) {
+    var pts = secScores[sec.id] || 0;
+    var mx  = secMax[sec.id]   || 1;
+    var pct = (pts / mx) * 100;
+    var color = pct < 40 ? '#C0392B' : pct < 65 ? '#D4821A' : pct < 85 ? '#2471A3' : '#1E8449';
+    bd.innerHTML += '<div class="breakdown-card"><div class="breakdown-title">' + sec.icon + ' ' + sec.name + '</div><div class="breakdown-score"><span class="bd-pts">' + pts + '</span><span class="bd-max">/ ' + mx + ' pts</span></div><div class="bd-bar"><div class="bd-bar-fill" style="width:0%;background:' + color + '" data-width="' + pct + '"></div></div></div>';
   });
-  setTimeout(() => {
-    document.querySelectorAll('.bd-bar-fill').forEach(el => { el.style.width = el.dataset.width + '%'; });
+  setTimeout(function() {
+    document.querySelectorAll('.bd-bar-fill').forEach(function(el) { el.style.width = el.dataset.width + '%'; });
   }, 400);
 
-  const vulns = document.getElementById('vulns-list');
+  var vulns = document.getElementById('vulns-list');
   vulns.innerHTML = '';
-  let count = 0;
-  questionSequence.forEach(q => {
-    const a = answers[q.id];
+  var count = 0;
+  questionSequence.forEach(function(q) {
+    var a = answers[q.id];
     if (a !== undefined && q.opts[a].pts <= q.vuln.threshold && count < 5) {
-      vulns.innerHTML += `
-        <div class="vuln-item" style="border-color:${q.vuln.color}">
-          <div class="vuln-icon">${q.vuln.icon}</div>
-          <div class="vuln-text"><strong>${q.vuln.title}</strong>${q.vuln.text}</div>
-        </div>
-      `;
+      vulns.innerHTML += '<div class="vuln-item" style="border-color:' + q.vuln.color + '"><div class="vuln-icon">' + q.vuln.icon + '</div><div class="vuln-text"><strong>' + q.vuln.title + '</strong>' + q.vuln.text + '</div></div>';
       count++;
     }
   });
   if (count === 0) {
-    vulns.innerHTML = `<div class="vuln-item" style="border-color:#1E8449">
-      <div class="vuln-icon">✅</div>
-      <div class="vuln-text"><strong>Sin alertas críticas detectadas</strong>Tu perfil no presenta vulnerabilidades evidentes. El diagnóstico completo puede revelar oportunidades de optimización no visibles en este test.</div>
-    </div>`;
+    vulns.innerHTML = '<div class="vuln-item" style="border-color:#1E8449"><div class="vuln-icon">✅</div><div class="vuln-text"><strong>Sin alertas críticas detectadas</strong>Tu perfil no presenta vulnerabilidades evidentes. El diagnóstico completo puede revelar oportunidades de optimización no visibles en este test.</div></div>';
   }
 
   if (selectedProfile === 'empresario') {
-    document.getElementById('cta-headline').innerHTML = 'Descubre qué tan expuesto está<br>tu negocio y tu patrimonio personal';
-    document.getElementById('cta-sub').textContent = 'Para empresarios, el mayor riesgo es no tener separación entre el patrimonio empresarial y el personal. En la asesoría identificamos exactamente dónde está tu exposición y cómo estructurarlo.';
+    document.getElementById('cta-headline').innerHTML = 'Descubre exactamente dónde está<br>tu exposición patrimonial real';
+    document.getElementById('cta-sub').textContent = 'En 45 minutos revisamos las vulnerabilidades específicas que detectó tu test — las tuyas, no genéricas. Sin propuesta de productos al final si no hay algo urgente que resolver.';
   } else {
-    document.getElementById('cta-headline').innerHTML = 'Construye un patrimonio que no dependa<br>solo de tu capacidad de generar ingreso';
-    document.getElementById('cta-sub').textContent = 'Para profesionales de alto perfil, el activo más valioso eres tú — y eso crea una fragilidad invisible. En la asesoría diseñamos la estructura para que tu patrimonio te proteja, no al revés.';
+    document.getElementById('cta-headline').innerHTML = 'Entiende qué significa cada<br>vulnerabilidad para tu caso concreto';
+    document.getElementById('cta-sub').textContent = 'En 45 minutos revisamos juntos lo que detectó el test en tu situación particular — y defines con claridad cuál es el primer paso para blindar lo que has construido.';
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -838,6 +1077,14 @@ function restartTest() {
   current = 0;
   answers = {};
   document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('capture-screen').style.display = 'none';
+  document.getElementById('cap-nombre').value = '';
+  document.getElementById('cap-email').value = '';
+  document.getElementById('cap-whatsapp').value = '';
+  document.getElementById('cap-nombre').classList.remove('error');
+  document.getElementById('cap-email').classList.remove('error');
+  document.getElementById('btn-capture').disabled = false;
+  document.getElementById('capture-status').classList.remove('visible');
   document.getElementById('card-empresario').classList.remove('selected');
   document.getElementById('card-profesional').classList.remove('selected');
   document.getElementById('btn-profile-next').disabled = true;
