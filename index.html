@@ -258,6 +258,16 @@
   .vuln-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
   .vuln-text { font-size: 14px; line-height: 1.6; color: var(--text-dim); }
   .vuln-text strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 3px; }
+  .vuln-cost { display: inline-block; background: rgba(192,57,43,0.12); color: #E74C3C; font-size: 12px; font-weight: 500; padding: 2px 10px; border-radius: 12px; margin-top: 6px; }
+
+  .cost-insight {
+    background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.25);
+    border-radius: var(--radius); padding: 20px 24px; margin: 24px 0 32px;
+    text-align: center; position: relative;
+  }
+  .cost-insight-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(192,57,43,0.8); margin-bottom: 8px; }
+  .cost-insight-number { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; color: #E74C3C; line-height: 1.2; }
+  .cost-insight-sub { font-size: 13px; color: var(--text-dim); margin-top: 6px; line-height: 1.5; }
 
   .cta-box {
     background: linear-gradient(135deg, rgba(196,151,42,0.12) 0%, rgba(22,44,71,0.8) 100%);
@@ -405,11 +415,11 @@ try {
   <div class="header">
     <div class="brand">Arquitectura Patrimonial</div>
     <h1>¿Qué tan protegido está<br><em>lo que has construido?</em></h1>
-    <p class="header-sub">Un diagnóstico patrimonial adaptado a tu perfil. Resultado inmediato y personalizado.</p>
+    <p class="header-sub">Un diagnóstico patrimonial adaptado a tu perfil. Resultado inmediato con cuantificación de riesgo.</p>
     <div class="meta-pills">
       <span class="pill">5 minutos</span>
       <span class="pill">Preguntas adaptadas a tu perfil</span>
-      <span class="pill">Resultado personalizado</span>
+      <span class="pill">Riesgo cuantificado en pesos</span>
     </div>
   </div>
 
@@ -433,7 +443,7 @@ try {
     </div>
     <div class="start-cta">
       <button class="btn btn-primary" onclick="showProfile()" style="font-size:14px;padding:16px 44px;">Comenzar diagnóstico →</button>
-      <p class="start-note">Para empresarios y profesionales con patrimonio entre $400M y $3.000M COP</p>
+      <p class="start-note">Para empresarios y profesionales independientes con patrimonio entre $500M y $5.000M COP</p>
     </div>
   </div>
 
@@ -527,6 +537,12 @@ try {
       <span class="result-score-secondary"><span id="score-number">0</span> / 36 puntos</span>
     </div>
 
+    <div class="cost-insight" id="cost-insight">
+      <div class="cost-insight-label">Exposición estimada sin estructuración</div>
+      <div class="cost-insight-number" id="cost-insight-number"></div>
+      <div class="cost-insight-sub" id="cost-insight-sub"></div>
+    </div>
+
     <div class="breakdown" id="breakdown"></div>
     <div class="vulns-title">Señales de alerta detectadas</div>
     <div id="vulns-list"></div>
@@ -541,7 +557,7 @@ try {
         <span class="cta-feat">Sin propuesta de productos al final</span>
         <span class="cta-feat">Plan de acción concreto</span>
       </div>
-      <a class="btn-cta" href="https://calendly.com/abba-asesoria/agenda-tu-sesion-de-planificacion-financiera-clon?month=2026-03"_blank">Quiero entender mis resultados con un especialista</a>
+      <a class="btn-cta" href="https://calendly.com/abba-asesoria/agenda-tu-sesion-de-planificacion-financiera-clon?month=2026-03" target="_blank">Quiero entender mis resultados con un especialista</a>
       <p class="cta-note">Sin costos. Sin ventas. Solo claridad sobre tu patrimonio.</p>
     </div>
     <button class="btn-restart" onclick="restartTest()">← Hacer el test nuevamente</button>
@@ -558,9 +574,9 @@ try {
 
 const ALL_QUESTIONS = [
 
-  // ═══ PROTECCIÓN — COMPARTIDAS ═══
+  // ═══ PROTECCIÓN (incluye sucesión) ═══
   {
-    id: "p1", section: "01", sectionName: "PROTECCIÓN Y BLINDAJE", profile: "both",
+    id: "p1", section: "01", sectionName: "PROTECCIÓN", profile: "both",
     q: "¿Tienes un seguro de vida activo con una cobertura suficiente?",
     opts: [
       { pts: 3, text: "Sí, con suma asegurada equivalente a más de 5 años de mis ingresos" },
@@ -568,10 +584,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Solo tengo algo básico (póliza de grupo, plan corporativo o de gremio)" },
       { pts: 0, text: "No tengo seguro de vida" },
     ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin cobertura de vida adecuada", text: "Si algo te pasara hoy, ¿tu familia podría mantener su nivel de vida? Un seguro de vida de al menos 10 veces tu ingreso anual es el piso mínimo recomendado para tu perfil." }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin cobertura de vida adecuada", text: "Si algo te pasara hoy, ¿tu familia podría mantener su nivel de vida? Un seguro de vida de al menos 10x tu ingreso anual es el piso mínimo recomendado para tu perfil.", cost: "Déficit familiar estimado: $300M–$800M COP según nivel de ingreso" }
   },
   {
-    id: "p2_emp", section: "01", sectionName: "PROTECCIÓN Y BLINDAJE", profile: "empresario",
+    id: "p2_emp", section: "01", sectionName: "PROTECCIÓN", profile: "empresario",
     q: "¿Tus activos personales están separados jurídicamente de tu empresa?",
     opts: [
       { pts: 3, text: "Sí, tengo estructura holding o sociedad que los separa formalmente" },
@@ -579,10 +595,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "No formalmente, aunque lo he considerado" },
       { pts: 0, text: "Todo está a nombre personal o mezclado con la empresa" },
     ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Activos personales expuestos al riesgo empresarial", text: "Sin separación jurídica, una demanda o quiebra de tu empresa puede alcanzar tu patrimonio personal. La estructura holding es el primer muro de protección que todo empresario necesita." }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Activos personales expuestos al riesgo empresarial", text: "Sin separación jurídica, una demanda o quiebra de tu empresa puede alcanzar tu patrimonio personal. Un empresario en una situación similar perdió acceso a $180M en activos personales por un embargo preventivo derivado de una demanda laboral de $45M.", cost: "Exposición potencial: hasta el 100% de los activos personales" }
   },
   {
-    id: "p2_pro", section: "01", sectionName: "PROTECCIÓN Y BLINDAJE", profile: "profesional",
+    id: "p2_pro", section: "01", sectionName: "PROTECCIÓN", profile: "profesional",
     q: "¿Tienes seguro de responsabilidad civil profesional activo?",
     opts: [
       { pts: 3, text: "Sí, con cobertura adecuada para mi nivel de ingresos y actividad" },
@@ -590,10 +606,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "No tengo, pero sé que debería tenerlo" },
       { pts: 0, text: "No tengo seguro de responsabilidad civil profesional" },
     ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin protección ante contingencias profesionales", text: "Una demanda por responsabilidad profesional puede comprometer no solo tus ingresos futuros sino también el patrimonio que has acumulado. Este seguro es la primera línea de defensa de cualquier profesional de alto perfil." }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin protección ante demandas profesionales", text: "Una demanda de mala práctica puede comprometer no solo tus ingresos futuros sino tu patrimonio acumulado. Un profesional con patrimonio similar enfrentó una demanda que terminó afectando $120M en activos personales por falta de cobertura adecuada.", cost: "Exposición potencial: $80M–$200M según especialidad y patrimonio" }
   },
   {
-    id: "p3", section: "01", sectionName: "PROTECCIÓN Y BLINDAJE", profile: "both",
+    id: "p3", section: "01", sectionName: "PROTECCIÓN", profile: "both",
     q: "¿Tienes testamento o plan sucesorio vigente y actualizado?",
     opts: [
       { pts: 3, text: "Sí, testamento actualizado y estructura sucesoria formal (fideicomiso o similar)" },
@@ -601,34 +617,12 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Sé que debería tenerlo pero no lo he formalizado aún" },
       { pts: 0, text: "No tengo ningún plan sucesorio" },
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Sin plan sucesorio activo", text: "Sin testamento, el Estado decide cómo se distribuye tu patrimonio. Los procesos de sucesión sin planificación pueden tardar años y generar conflictos entre herederos que diluyen el valor que construiste." }
-  },
-  {
-    id: "p4_emp", section: "01", sectionName: "PROTECCIÓN Y BLINDAJE", profile: "empresario",
-    q: "En caso de que faltes o te incapacites, ¿tu empresa tiene un plan de continuidad?",
-    opts: [
-      { pts: 3, text: "Sí, tenemos protocolo documentado, equipo directivo y acuerdo de accionistas" },
-      { pts: 2, text: "Hay personas que podrían asumir, pero no está formalizado" },
-      { pts: 1, text: "La empresa dependería mucho de mí y sería complicado" },
-      { pts: 0, text: "Sin mí, la empresa no podría funcionar correctamente" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Empresa sin plan de continuidad", text: "Si tú eres el activo más crítico de tu empresa, tienes una vulnerabilidad doble: personal y empresarial. Un plan de continuidad protege el valor de tu negocio — que suele ser tu mayor activo." }
-  },
-  {
-    id: "p4_pro", section: "01", sectionName: "PROTECCIÓN Y BLINDAJE", profile: "profesional",
-    q: "¿Tienes seguro de invalidez o incapacidad laboral?",
-    opts: [
-      { pts: 3, text: "Sí, cubre al menos el 70% de mis ingresos mensuales si no puedo trabajar" },
-      { pts: 2, text: "Tengo algo pero no sé exactamente qué porcentaje cubre" },
-      { pts: 1, text: "Solo cuento con lo básico de la seguridad social o la póliza corporativa" },
-      { pts: 0, text: "No tengo cobertura de invalidez" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Ingreso sin respaldo ante incapacidad", text: "Para cualquier profesional de alto ingreso, su capacidad de trabajar es su mayor activo. La probabilidad de una incapacidad temporal antes de los 65 años supera el 30%. Sin este seguro, una enfermedad o accidente puede detener completamente tu flujo de caja." }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Sin plan sucesorio activo", text: "Sin testamento, el Estado decide cómo se distribuye tu patrimonio. Los procesos de sucesión sin planificación pueden tardar años, generar conflictos entre herederos y activar cargas fiscales que una estructura adecuada hubiera reducido significativamente.", cost: "Ganancia ocasional estimada en sucesión sin planificar: $50M–$80M" }
   },
 
-  // ═══ LIQUIDEZ — COMPARTIDAS ═══
+  // ═══ LIQUIDEZ (incluye exposición fiscal) ═══
   {
-    id: "l1", section: "02", sectionName: "LIQUIDEZ Y RESERVAS", profile: "both",
+    id: "l1", section: "02", sectionName: "LIQUIDEZ", profile: "both",
     q: "Si dejaras de recibir ingresos hoy, ¿cuántos meses podría sostenerse tu familia?",
     opts: [
       { pts: 3, text: "Más de 9 meses sin necesidad de tocar inversiones de largo plazo" },
@@ -636,10 +630,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Entre 1 y 3 meses con lo que tengo disponible" },
       { pts: 0, text: "Menos de 1 mes, o no tengo claridad sobre esto" },
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Liquidez insuficiente ante interrupciones de ingreso", text: "Menos de 3 meses de reserva te obliga a liquidar activos en el peor momento posible — normalmente con pérdida de valor. El mínimo recomendado para este perfil patrimonial es 9 meses de gastos familiares." }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Liquidez insuficiente ante interrupciones de ingreso", text: "Menos de 3 meses de reserva te obliga a liquidar activos en el peor momento posible — normalmente con pérdida de valor. El mínimo recomendado para profesionales e independientes es 9 meses de gastos fijos.", cost: "Pérdida por liquidación forzada: 15%–30% del valor del activo" }
   },
   {
-    id: "l2_emp", section: "02", sectionName: "LIQUIDEZ Y RESERVAS", profile: "empresario",
+    id: "l2_emp", section: "02", sectionName: "LIQUIDEZ", profile: "empresario",
     q: "¿Tienes separados tus flujos personales de los flujos de tu empresa?",
     opts: [
       { pts: 3, text: "Sí, tengo cuentas separadas y un esquema claro de retiro de utilidades" },
@@ -647,10 +641,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Con frecuencia mezclo los flujos personales y empresariales" },
       { pts: 0, text: "No existe separación — todo entra y sale de la misma cuenta" },
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Flujos personales y empresariales mezclados", text: "Mezclar el dinero personal con el de la empresa genera una visibilidad falsa del patrimonio real, dificulta la planificación fiscal y expone tu capital personal a los vaivenes del negocio." }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Flujos personales y empresariales mezclados", text: "Mezclar el dinero personal con el de la empresa genera una visibilidad falsa del patrimonio real, dificulta la planificación fiscal y expone tu capital personal a los vaivenes del negocio.", cost: "Sobrecarga fiscal típica por mezcla de flujos: $15M–$40M anuales" }
   },
   {
-    id: "l2_pro", section: "02", sectionName: "LIQUIDEZ Y RESERVAS", profile: "profesional",
+    id: "l2_pro", section: "02", sectionName: "LIQUIDEZ", profile: "profesional",
     q: "¿Tienes un fondo de oportunidad separado de tu fondo de emergencia?",
     opts: [
       { pts: 3, text: "Sí, tengo ambos claramente definidos y separados con propósitos distintos" },
@@ -658,12 +652,34 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Básicamente lo que sobra en la cuenta corriente cada mes" },
       { pts: 0, text: "No tengo reservas separadas ni estructura de liquidez" },
     ],
-    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Liquidez no estructurada", text: "Mezclar emergencia y oportunidad genera decisiones reactivas. Una estructura clara te permite actuar estratégicamente cuando aparece una buena inversión, sin comprometer tu seguridad básica." }
+    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Liquidez no estructurada", text: "Mezclar emergencia y oportunidad genera decisiones reactivas. Una estructura clara te permite actuar estratégicamente cuando aparece una buena inversión, sin comprometer tu seguridad básica.", cost: "Costo de oportunidad estimado: $20M–$60M en inversiones no tomadas" }
+  },
+  {
+    id: "l3_emp", section: "02", sectionName: "LIQUIDEZ", profile: "empresario",
+    q: "¿Sabes exactamente cuánto te cuesta en impuestos la forma en que sacas dinero de tu empresa?",
+    opts: [
+      { pts: 3, text: "Sí, tengo asesoría fiscal activa y optimizo cómo retiro utilidades, dividendos o salario" },
+      { pts: 2, text: "Tengo contador pero nunca hemos evaluado si la forma en que retiro dinero es la más eficiente" },
+      { pts: 1, text: "Retiro dinero según lo necesito sin una estrategia fiscal clara" },
+      { pts: 0, text: "No tengo idea de cuánto me cuesta fiscalmente la forma en que saco dinero de mi empresa" },
+    ],
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin estrategia fiscal para retiro de utilidades", text: "La forma en que sacas dinero de tu empresa puede costarte entre un 20% y un 40% más de lo necesario en impuestos. Para patrimonios de tu tamaño, eso puede representar decenas de millones al año que salen de tu bolsillo sin necesidad.", cost: "Sobrecarga fiscal estimada: $30M–$80M anuales según facturación" }
+  },
+  {
+    id: "l3_pro", section: "02", sectionName: "LIQUIDEZ", profile: "profesional",
+    q: "¿Tienes claridad sobre cuánto pagas en impuestos al año y si podrías estar pagando menos de forma legal?",
+    opts: [
+      { pts: 3, text: "Sí, tengo asesoría fiscal activa y revisamos cada año las oportunidades de optimización" },
+      { pts: 2, text: "Tengo contador pero nunca hemos evaluado si estoy pagando más impuestos de los necesarios" },
+      { pts: 1, text: "No tengo mucha claridad — solo sé lo que me toca pagar según la declaración de renta" },
+      { pts: 0, text: "No tengo idea de cuánto pago en total ni si podría pagar menos legalmente" },
+    ],
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin estrategia de optimización fiscal", text: "Sin una revisión fiscal estratégica, es común pagar entre un 20% y un 40% más de lo necesario. Para un patrimonio de tu tamaño, eso puede representar decenas de millones de pesos al año que salen de tu bolsillo sin que lo notes.", cost: "Sobrecarga fiscal estimada: $25M–$60M anuales" }
   },
 
-  // ═══ CRECIMIENTO — COMPARTIDAS ═══
+  // ═══ CRECIMIENTO ═══
   {
-    id: "c1", section: "03", sectionName: "CRECIMIENTO E INVERSIÓN", profile: "both",
+    id: "c1", section: "03", sectionName: "CRECIMIENTO", profile: "both",
     q: "¿Qué porcentaje estimado de tu patrimonio genera ingresos sin que tú trabajes activamente?",
     opts: [
       { pts: 3, text: "Más del 40% genera flujo de caja pasivo o semipasivo" },
@@ -671,10 +687,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Menos del 20%" },
       { pts: 0, text: "Prácticamente todo depende de que yo trabaje activamente" },
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Alta dependencia del ingreso activo", text: "Si el 80% o más de tu flujo depende de tu presencia, tienes un patrimonio frágil. El objetivo estratégico es que los activos trabajen para ti — no que tú trabajes para los activos." }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Alta dependencia del ingreso activo", text: "Si el 80%+ de tu flujo depende de tu presencia, tienes un patrimonio frágil. El objetivo estratégico es que los activos trabajen para ti — no que tú trabajes para los activos.", cost: "Ingreso pasivo no generado: $5M–$15M mensuales según patrimonio" }
   },
   {
-    id: "c2", section: "03", sectionName: "CRECIMIENTO E INVERSIÓN", profile: "both",
+    id: "c2", section: "03", sectionName: "CRECIMIENTO", profile: "both",
     q: "¿Tienes inversiones fuera de Colombia o en moneda extranjera (USD, EUR)?",
     opts: [
       { pts: 3, text: "Sí, más del 30% de mi portafolio está en moneda fuerte o en el exterior" },
@@ -682,10 +698,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Solo activos locales: inmuebles y CDTs en pesos colombianos" },
       { pts: 0, text: "Todo está en Colombia en pesos" },
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Exposición total a la devaluación del COP", text: "En los últimos 5 años el peso colombiano ha perdido más del 60% de su valor frente al dólar. Un patrimonio 100% en pesos es un patrimonio que se erosiona en términos de poder adquisitivo global." }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Exposición total a la devaluación del COP", text: "En los últimos 5 años el peso colombiano ha perdido más del 60% de su valor frente al dólar. Un patrimonio de $800M en pesos en 2019 hoy tiene un poder adquisitivo internacional equivalente a menos de $500M.", cost: "Erosión estimada en 5 años: más del 60% en poder adquisitivo global" }
   },
   {
-    id: "c3_emp", section: "03", sectionName: "CRECIMIENTO E INVERSIÓN", profile: "empresario",
+    id: "c3_emp", section: "03", sectionName: "CRECIMIENTO", profile: "empresario",
     q: "¿Tienes claridad sobre el valor real de mercado de tu empresa?",
     opts: [
       { pts: 3, text: "Sí, tenemos una valoración reciente (menos de 2 años) hecha por un experto" },
@@ -693,10 +709,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "No tengo claridad — calculo que vale X pero sin sustento técnico" },
       { pts: 0, text: "No sé cuánto vale mi empresa" },
     ],
-    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Mayor activo sin valoración", text: "Para la mayoría de empresarios, el negocio representa más del 60% del patrimonio neto. Sin una valoración formal, no puedes planificar correctamente tu retiro, tu sucesión ni tu diversificación." }
+    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Mayor activo sin valoración", text: "Para la mayoría de empresarios, el negocio representa más del 60% del patrimonio neto. Sin una valoración formal, no puedes planificar correctamente tu retiro, tu sucesión ni tu diversificación.", cost: "Decisiones sin dato: puede sobre o subvalorar en $200M–$500M" }
   },
   {
-    id: "c3_pro", section: "03", sectionName: "CRECIMIENTO E INVERSIÓN", profile: "profesional",
+    id: "c3_pro", section: "03", sectionName: "CRECIMIENTO", profile: "profesional",
     q: "¿Tienes una estrategia de inversión definida con horizonte y asignación de activos?",
     opts: [
       { pts: 3, text: "Sí, tengo una política escrita con metas, plazos y tolerancia al riesgo definidos" },
@@ -704,12 +720,12 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Invierto cuando hay oportunidades o cuando alguien me recomienda algo" },
       { pts: 0, text: "No tengo estrategia de inversión definida" },
     ],
-    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Inversión reactiva sin estrategia", text: "Invertir por recomendación sin un marco definido genera un portafolio desconectado. Con el tiempo, esta acumulación desordenada produce más riesgo del que parece y menos retorno del esperado." }
+    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Inversión reactiva sin estrategia", text: "Invertir por recomendación sin un marco definido genera un portafolio desconectado. Con el tiempo, esta acumulación desordenada produce más riesgo del que parece y menos retorno del esperado.", cost: "Retorno no capturado: 2%–5% anual sobre el portafolio total" }
   },
 
-  // ═══ DIVERSIFICACIÓN — COMPARTIDAS ═══
+  // ═══ DIVERSIFICACIÓN ═══
   {
-    id: "d1", section: "04", sectionName: "DIVERSIFICACIÓN Y LEGADO", profile: "both",
+    id: "d1", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "both",
     q: "¿Cómo describirías la concentración real de tu patrimonio hoy?",
     opts: [
       { pts: 3, text: "Diversificado: distintos tipos de activos, varias divisas y presencia internacional" },
@@ -717,10 +733,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Concentrado en 1 o 2 tipos de activos (ej: solo inmuebles)" },
       { pts: 0, text: "Prácticamente todo en un solo activo o fuente de valor" },
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Concentración de riesgo elevada", text: "Un solo activo que represente más del 50% del patrimonio es una vulnerabilidad crítica. La diversificación real no es tener varias propiedades — es tener distintos tipos de activos, divisas y geografías." }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Concentración de riesgo elevada", text: "Un solo activo que represente más del 50% del patrimonio es una vulnerabilidad crítica. La diversificación real no es tener varias propiedades — es tener distintos tipos de activos, divisas y geografías.", cost: "Riesgo de pérdida concentrada: hasta el 50% del patrimonio en un solo evento" }
   },
   {
-    id: "d2_emp", section: "04", sectionName: "DIVERSIFICACIÓN Y LEGADO", profile: "empresario",
+    id: "d2_emp", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "empresario",
     q: "¿Qué porcentaje de tu patrimonio neto total está representado en tu empresa?",
     opts: [
       { pts: 3, text: "Menos del 40% — tengo patrimonio significativo fuera del negocio" },
@@ -728,10 +744,10 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Entre el 65% y el 85%" },
       { pts: 0, text: "Más del 85% de mi patrimonio está en mi empresa" },
     ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Patrimonio concentrado en el negocio", text: "Cuando la empresa representa más del 65% del patrimonio, el riesgo empresarial y el riesgo patrimonial personal son casi el mismo. Una crisis del negocio puede convertirse en una crisis familiar total." }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Patrimonio concentrado en el negocio", text: "Cuando la empresa representa más del 65% del patrimonio, el riesgo empresarial y el riesgo patrimonial personal son casi el mismo. Una crisis del negocio se convierte en una crisis familiar total.", cost: "Patrimonio personal en riesgo directo: 65%–100% del total" }
   },
   {
-    id: "d2_pro", section: "04", sectionName: "DIVERSIFICACIÓN Y LEGADO", profile: "profesional",
+    id: "d2_pro", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "profesional",
     q: "¿Qué porcentaje de tus ingresos depende de una sola fuente (un empleador, un contrato o un cliente principal)?",
     opts: [
       { pts: 3, text: "Menos del 50% — tengo diversidad de fuentes de ingreso y activos que generan flujo pasivo" },
@@ -739,27 +755,51 @@ const ALL_QUESTIONS = [
       { pts: 1, text: "Más del 80% depende de una sola relación laboral o contractual" },
       { pts: 0, text: "El 100% de mis ingresos depende de un solo empleador o contrato" },
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Dependencia de fuente única de ingresos", text: "Un profesional con un solo empleador o cliente principal tiene una fragilidad significativa. Si esa relación se rompe o cambia, el impacto sobre el flujo de caja familiar puede ser inmediato y total." }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Dependencia de fuente única de ingresos", text: "Un profesional con un solo cliente o empleador principal tiene una fragilidad enorme. Si esa relación se rompe, el impacto es inmediato y total sobre el flujo de caja familiar.", cost: "Ingreso en riesgo si la relación se rompe: 80%–100% del flujo mensual" }
   },
   {
-    id: "d3", section: "04", sectionName: "DIVERSIFICACIÓN Y LEGADO", profile: "both",
-    q: "¿Tienes un plan documentado para transferir tu patrimonio a tus herederos?",
+    id: "d3", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "both",
+    q: "Si mañana enfrentaras una demanda, un embargo o un proceso de divorcio, ¿tus activos principales estarían protegidos?",
     opts: [
-      { pts: 3, text: "Sí, con estructura legal formal y protocolo familiar documentado" },
-      { pts: 2, text: "Lo hemos conversado en familia pero no está formalizado" },
-      { pts: 1, text: "Lo pienso, pero no hay nada concreto" },
-      { pts: 0, text: "No existe ningún plan de transferencia patrimonial" },
+      { pts: 3, text: "Sí, tengo estructura jurídica que blinda mis activos principales ante estos escenarios" },
+      { pts: 2, text: "Algunos activos tienen protección pero otros están completamente expuestos" },
+      { pts: 1, text: "No he tomado medidas específicas para proteger mis activos" },
+      { pts: 0, text: "Todos mis activos están a nombre personal sin ningún tipo de blindaje" },
     ],
-    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Herencia sin estructura", text: "Sin un plan documentado, la transferencia del patrimonio puede derivar en conflictos entre herederos, liquidación forzada de activos y pérdida de valor significativa en la siguiente generación." }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Activos sin blindaje legal", text: "Sin estructura de protección, una demanda o un divorcio puede alcanzar directamente todo lo que está a tu nombre. El blindaje patrimonial no es para esconder activos — es para que un evento legal no destruya lo que construiste en años.", cost: "Patrimonio expuesto: hasta el 100% de los activos a nombre personal" }
   },
 ];
 
-const RESULTS = [
-  { min: 0,  max: 9,  label: "Patrimonio en Riesgo",   color: "#C0392B", gauge: "#E74C3C", desc: "Tienes exposición crítica en múltiples frentes. Un solo evento — demanda, incapacidad, divorcio o crisis de negocio — puede erosionar significativamente lo que has construido. La acción no puede esperar." },
-  { min: 10, max: 18, label: "Fundamentos Débiles",     color: "#D4821A", gauge: "#E67E22", desc: "Tienes algunas piezas en su lugar, pero tu arquitectura tiene huecos importantes. Cada mes sin estructurarlo correctamente aumenta tu exposición y reduce tus opciones de protección." },
-  { min: 19, max: 27, label: "En Construcción",         color: "#2471A3", gauge: "#3498DB", desc: "Vas por buen camino. Tienes conciencia patrimonial y varias piezas funcionando. Pero hay vulnerabilidades ocultas y oportunidades que todavía no estás aprovechando al máximo." },
-  { min: 28, max: 36, label: "Arquitectura Sólida",     color: "#1E8449", gauge: "#27AE60", desc: "Tienes una base bien construida. El foco ahora es optimización, crecimiento eficiente y planificación del legado. Incluso los patrimonios más sólidos encuentran puntos de mejora en un diagnóstico profesional." },
-];
+const RESULTS = {
+  empresario: [
+    { min: 0,  max: 9,  label: "Patrimonio en Riesgo Crítico", color: "#C0392B", gauge: "#E74C3C",
+      desc: "Tu patrimonio personal y tu empresa están expuestos en múltiples frentes simultáneamente. Sin separación jurídica, sin blindaje legal y sin estrategia fiscal, cada año que pasa erosiona lo que has construido — por impuestos innecesarios, por exposición a demandas y por falta de estructura. Un solo evento puede comprometer años de trabajo.",
+      costRange: "$150M – $400M", costNote: "en riesgo patrimonial estimado por falta de estructuración jurídica, fiscal y sucesoria" },
+    { min: 10, max: 18, label: "Fundamentos Débiles", color: "#D4821A", gauge: "#E67E22",
+      desc: "Tienes algunas piezas en su lugar, pero tu arquitectura tiene huecos importantes. La exposición fiscal y legal — combinada con concentración en activos locales — crea un costo silencioso que se acumula año tras año sin que lo notes.",
+      costRange: "$80M – $200M", costNote: "en optimización fiscal, protección patrimonial y eficiencia de inversión no capturada" },
+    { min: 19, max: 27, label: "En Construcción", color: "#2471A3", gauge: "#3498DB",
+      desc: "Vas por buen camino. Tienes conciencia patrimonial y varias piezas funcionando. Pero hay oportunidades ocultas — especialmente en optimización fiscal y en la integración entre tu estructura empresarial y tu patrimonio personal.",
+      costRange: "$30M – $80M", costNote: "en oportunidades de optimización fiscal y diversificación no ejecutada" },
+    { min: 28, max: 36, label: "Arquitectura Sólida", color: "#1E8449", gauge: "#27AE60",
+      desc: "Tienes una base bien construida. El foco ahora es optimización, eficiencia fiscal y planificación del legado. Incluso los patrimonios más sólidos encuentran puntos de mejora significativos cuando se evalúan con herramientas de diagnóstico profesional.",
+      costRange: "$15M – $40M", costNote: "en optimización anual que un diagnóstico profesional típicamente identifica" },
+  ],
+  profesional: [
+    { min: 0,  max: 9,  label: "Patrimonio en Riesgo Crítico", color: "#C0392B", gauge: "#E74C3C",
+      desc: "Tu patrimonio depende casi completamente de tu capacidad de trabajar, sin estructura que lo sostenga si algo cambia. Sin protección profesional, sin plan fiscal y sin diversificación, estás pagando más impuestos de los necesarios y expuesto a riesgos que podrían comprometer años de trabajo.",
+      costRange: "$120M – $350M", costNote: "en riesgo patrimonial estimado por falta de protección profesional, blindaje y planificación fiscal" },
+    { min: 10, max: 18, label: "Fundamentos Débiles", color: "#D4821A", gauge: "#E67E22",
+      desc: "Tienes algunos elementos básicos, pero la estructura es frágil. La falta de estrategia fiscal — combinada con dependencia de ingreso activo y concentración en pesos — hace que cada año sin estructurar sea un año de erosión patrimonial silenciosa.",
+      costRange: "$60M – $150M", costNote: "en protección no implementada, sobrecarga fiscal y retorno de inversión no capturado" },
+    { min: 19, max: 27, label: "En Construcción", color: "#2471A3", gauge: "#3498DB",
+      desc: "Vas por buen camino. Tienes conciencia patrimonial y varias piezas funcionando. Pero hay oportunidades ocultas — especialmente en optimización fiscal y en convertir tu ingreso activo en activos que generen flujo sin tu presencia.",
+      costRange: "$25M – $70M", costNote: "en oportunidades de optimización fiscal y generación de ingreso pasivo no ejecutadas" },
+    { min: 28, max: 36, label: "Arquitectura Sólida", color: "#1E8449", gauge: "#27AE60",
+      desc: "Tienes una base bien construida. El foco ahora es optimización, eficiencia fiscal y planificación del legado. Incluso los patrimonios más sólidos encuentran puntos de mejora significativos cuando se evalúan profesionalmente.",
+      costRange: "$15M – $40M", costNote: "en optimización anual que un diagnóstico profesional típicamente identifica" },
+  ]
+};
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let selectedProfile = null;
@@ -770,8 +810,8 @@ let answers = {};
 function buildSequence(profile) {
   const seq = [];
   const order = profile === 'empresario'
-    ? ["p1","p2_emp","p3","p4_emp","l1","l2_emp","c1","c2","c3_emp","d1","d2_emp","d3"]
-    : ["p1","p2_pro","p3","p4_pro","l1","l2_pro","c1","c2","c3_pro","d1","d2_pro","d3"];
+    ? ["p1","p2_emp","p3","l1","l2_emp","l3_emp","c1","c2","c3_emp","d1","d2_emp","d3"]
+    : ["p1","p2_pro","p3","l1","l2_pro","l3_pro","c1","c2","c3_pro","d1","d2_pro","d3"];
   order.forEach(id => {
     const q = ALL_QUESTIONS.find(q => q.id === id);
     if (q) seq.push(q);
@@ -926,7 +966,8 @@ async function submitCapture() {
     if (a !== undefined) secScores[q.section] += q.opts[a].pts;
   });
 
-  var nivelObj = RESULTS.find(function(r) { return scoreTotal >= r.min && scoreTotal <= r.max; });
+  var profileResults = RESULTS[selectedProfile] || RESULTS.empresario;
+  var nivelObj = profileResults.find(function(r) { return scoreTotal >= r.min && scoreTotal <= r.max; });
 
   var vulnerabilidades = [];
   questionSequence.forEach(function(q) {
@@ -951,11 +992,12 @@ async function submitCapture() {
     perfil:   selectedProfile,
     score_total: scoreTotal,
     nivel:    nivelObj ? nivelObj.label : '',
+    exposicion_estimada: nivelObj ? nivelObj.costRange : '',
     scores_por_capa: {
-      proteccion:  secScores["01"],
-      liquidez:    secScores["02"],
-      crecimiento: secScores["03"],
-      legado:      secScores["04"]
+      proteccion:      secScores["01"],
+      liquidez:        secScores["02"],
+      crecimiento:     secScores["03"],
+      diversificacion: secScores["04"]
     },
     vulnerabilidades_detectadas: vulnerabilidades,
     respuestas: respuestas,
@@ -1020,18 +1062,23 @@ function showResults(nombreCapturado) {
     if (counter >= total) clearInterval(interval);
   }, total > 0 ? Math.max(30, 900 / total) : 100);
 
-  var level = RESULTS.find(function(r) { return total >= r.min && total <= r.max; });
+  var profileResults = RESULTS[selectedProfile] || RESULTS.empresario;
+  var level = profileResults.find(function(r) { return total >= r.min && total <= r.max; });
   setTimeout(function() { document.getElementById('gauge-fill').style.width = ((total/36)*100) + '%'; }, 200);
   document.getElementById('gauge-fill').style.background = 'linear-gradient(90deg, ' + level.gauge + ', ' + level.gauge + 'BB)';
   document.getElementById('result-diagnosis').textContent = level.label;
   document.getElementById('result-diagnosis').style.color = level.color;
   document.getElementById('result-desc').textContent = level.desc;
 
+  // Cost insight box
+  document.getElementById('cost-insight-number').textContent = level.costRange + ' COP';
+  document.getElementById('cost-insight-sub').textContent = level.costNote;
+
   var secMeta = [
-    { id: "01", name: "Protección y Blindaje", icon: "🛡️" },
-    { id: "02", name: "Liquidez y Reservas",   icon: "💧" },
-    { id: "03", name: "Crecimiento",            icon: "📈" },
-    { id: "04", name: "Diversificación",        icon: "🌐" },
+    { id: "01", name: "Protección", icon: "🛡️" },
+    { id: "02", name: "Liquidez",   icon: "💧" },
+    { id: "03", name: "Crecimiento",icon: "📈" },
+    { id: "04", name: "Diversificación", icon: "🌐" },
   ];
   var bd = document.getElementById('breakdown');
   bd.innerHTML = '';
@@ -1052,7 +1099,8 @@ function showResults(nombreCapturado) {
   questionSequence.forEach(function(q) {
     var a = answers[q.id];
     if (a !== undefined && q.opts[a].pts <= q.vuln.threshold && count < 5) {
-      vulns.innerHTML += '<div class="vuln-item" style="border-color:' + q.vuln.color + '"><div class="vuln-icon">' + q.vuln.icon + '</div><div class="vuln-text"><strong>' + q.vuln.title + '</strong>' + q.vuln.text + '</div></div>';
+      var costTag = q.vuln.cost ? '<span class="vuln-cost">' + q.vuln.cost + '</span>' : '';
+      vulns.innerHTML += '<div class="vuln-item" style="border-color:' + q.vuln.color + '"><div class="vuln-icon">' + q.vuln.icon + '</div><div class="vuln-text"><strong>' + q.vuln.title + '</strong>' + q.vuln.text + costTag + '</div></div>';
       count++;
     }
   });
