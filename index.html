@@ -3,383 +3,209 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Test de Salud Patrimonial · Arquitectura Patrimonial</title>
 <link rel="icon" type="image/png" href="icon-abba.png">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Test de Salud Patrimonial · Arquitectura Patrimonial</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #0D1F35;
-    --navy-mid: #162C47;
-    --navy-light: #1E3A56;
-    --gold: #C4972A;
-    --gold-light: #E8C06A;
-    --gold-pale: #F7EDD3;
-    --cream: #FAF7F2;
-    --text: #E8E2D9;
-    --text-dim: #8A9BAD;
-    --radius: 4px;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--navy);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 10% 20%, rgba(196,151,42,0.06) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 80% at 90% 70%, rgba(36,113,163,0.07) 0%, transparent 60%);
-    pointer-events: none; z-index: 0;
-  }
-
-  .container {
-    position: relative; z-index: 1;
-    max-width: 780px;
-    margin: 0 auto;
-    padding: 0 24px 80px;
-  }
-
-  /* ── HEADER ── */
-  .header {
-    text-align: center;
-    padding: 64px 0 48px;
-    border-bottom: 1px solid rgba(196,151,42,0.2);
-    margin-bottom: 56px;
-  }
-  .brand {
-    font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 24px;
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-  }
-  .brand::before, .brand::after {
-    content: ''; height: 1px; width: 40px; background: var(--gold); opacity: 0.5;
-  }
-  h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 6.5vw, 58px); font-weight: 300;
-    line-height: 1.1; color: var(--cream);
-    margin-bottom: 20px; letter-spacing: -0.02em;
-  }
-  h1 em { font-style: italic; color: var(--gold-light); }
-  .header-sub { font-size: 15px; color: var(--text-dim); line-height: 1.6; max-width: 500px; margin: 0 auto 28px; }
-  .meta-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-  .pill { background: rgba(196,151,42,0.1); border: 1px solid rgba(196,151,42,0.25); color: var(--gold-light); font-size: 12px; letter-spacing: 0.05em; padding: 6px 14px; border-radius: 20px; }
-
-  /* ── PROGRESS ── */
-  .progress-bar-wrap { margin-bottom: 40px; display: none; }
-  .progress-bar-wrap.visible { display: block; }
-  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .progress-label { font-size: 12px; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
-  .progress-count { font-size: 12px; color: var(--gold); font-weight: 500; }
-  .progress-track { height: 2px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 2px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
-
-  /* ── SECTION LABEL ── */
-  .section-label {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
-    opacity: 0; transform: translateY(8px); transition: opacity 0.4s, transform 0.4s;
-  }
-  .section-label.visible { opacity: 1; transform: translateY(0); }
-  .section-num {
-    width: 36px; height: 36px; border: 1px solid var(--gold);
+:root {
+  --navy: #0D1F35;
+  --navy-mid: #162C47;
+  --navy-light: #1E3A56;
+  --gold: #C4972A;
+  --gold-light: #E8C06A;
+  --gold-pale: #F7EDD3;
+  --cream: #FAF7F2;
+  --text: #E8E2D9;
+  --text-dim: #8A9BAD;
+  --red: #C0392B;
+  --red-light: #E74C3C;
+  --green: #1E8449;
+  --green-light: #27AE60;
+  --blue: #2471A3;
+  --orange: #D4821A;
+  --radius: 4px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 10% 20%,rgba(196,151,42,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 90% 70%,rgba(36,113,163,0.07) 0%,transparent 60%);pointer-events:none;z-index:0}
+.container{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:0 24px 80px}
+.header{text-align:center;padding:64px 0 48px;border-bottom:1px solid rgba(196,151,42,0.2);margin-bottom:56px}
+.brand{font-size:11px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}
+.brand::before,.brand::after{content:'';height:1px;width:40px;background:var(--gold);opacity:0.5}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6.5vw,58px);font-weight:300;line-height:1.1;color:var(--cream);margin-bottom:20px;letter-spacing:-0.02em}
+h1 em{font-style:italic;color:var(--gold-light)}
+.header-sub{font-size:15px;color:var(--text-dim);line-height:1.6;max-width:500px;margin:0 auto 28px}
+.meta-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{background:rgba(196,151,42,0.1);border:1px solid rgba(196,151,42,0.25);color:var(--gold-light);font-size:12px;letter-spacing:0.05em;padding:6px 14px;border-radius:20px}
+.progress-bar-wrap{margin-bottom:40px;display:none}
+.progress-bar-wrap.visible{display:block}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-label{font-size:12px;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase}
+.progress-count{font-size:12px;color:var(--gold);font-weight:500}
+.progress-track{height:2px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
+.section-label{display:flex;align-items:center;gap:14px;margin-bottom:24px;opacity:0;transform:translateY(8px);transition:opacity 0.4s,transform 0.4s}
+.section-label.visible{opacity:1;transform:translateY(0)}
+.section-num{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);flex-shrink:0}
+.section-name{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim)}
+#profile-screen{display:none}
+.profile-intro{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--cream);line-height:1.4;margin-bottom:10px;text-align:center}
+.profile-sub{font-size:14px;color:var(--text-dim);text-align:center;margin-bottom:36px}
+.profile-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+@media(max-width:540px){.profile-cards{grid-template-columns:1fr}}
+.profile-card{background:rgba(22,44,71,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:28px 24px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;text-align:center}
+.profile-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(196,151,42,0.1) 0%,transparent 60%);opacity:0;transition:opacity 0.25s}
+.profile-card:hover{border-color:rgba(196,151,42,0.4)}
+.profile-card:hover::before{opacity:1}
+.profile-card.selected{border-color:var(--gold);background:rgba(196,151,42,0.1)}
+.profile-card.selected::before{opacity:1}
+.profile-icon{margin-bottom:14px;display:block}
+.profile-icon svg{width:36px;height:36px}
+.profile-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:8px}
+.profile-desc{font-size:13px;color:var(--text-dim);line-height:1.55}
+.profile-check{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;font-size:11px;color:var(--navy)}
+.profile-card.selected .profile-check{display:flex}
+.profile-note{font-size:12px;color:var(--text-dim);text-align:center;margin-top:16px;opacity:0.7}
+.question-card{background:rgba(22,44,71,0.7);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius);padding:36px;margin-bottom:16px;backdrop-filter:blur(8px);opacity:0;transform:translateY(16px);transition:opacity 0.45s,transform 0.45s}
+.question-card.visible{opacity:1;transform:translateY(0)}
+.profile-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(196,151,42,0.12);border:1px solid rgba(196,151,42,0.25);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--gold-light);letter-spacing:0.06em;margin-bottom:16px}
+.q-number{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);letter-spacing:0.1em;margin-bottom:14px}
+.q-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.45;color:var(--cream);margin-bottom:28px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);cursor:pointer;transition:all 0.2s;background:rgba(13,31,53,0.5);position:relative;overflow:hidden}
+.option::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(196,151,42,0.08) 0%,transparent 60%);opacity:0;transition:opacity 0.2s}
+.option:hover{border-color:rgba(196,151,42,0.35)}
+.option:hover::before{opacity:1}
+.option.selected{border-color:var(--gold);background:rgba(196,151,42,0.12)}
+.option.selected::before{opacity:1}
+.option-radio{width:18px;height:18px;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.2);border-radius:50%;margin-top:1px;transition:all 0.2s;position:relative;display:flex;align-items:center;justify-content:center}
+.option.selected .option-radio{border-color:var(--gold);background:var(--gold)}
+.option.selected .option-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--navy)}
+.option-text{font-size:14px;line-height:1.5;color:var(--text);transition:color 0.2s}
+.option.selected .option-text{color:var(--cream)}
+.slider-wrap{margin-bottom:8px}
+.slider-display{text-align:center;margin-bottom:20px}
+.slider-value-big{font-family:'JetBrains Mono',monospace;font-size:clamp(32px,7vw,48px);font-weight:600;color:var(--gold-light);line-height:1}
+.slider-value-unit{font-size:14px;color:var(--text-dim);margin-top:4px}
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,0.1);outline:none;cursor:pointer}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:var(--gold);border:3px solid var(--navy);box-shadow:0 0 0 2px var(--gold);cursor:grab;transition:transform 0.15s}
+input[type="range"]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.15)}
+input[type="range"]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--gold);border:3px solid var(--navy);box-shadow:0 0 0 2px var(--gold);cursor:grab}
+.slider-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--text-dim)}
+.slider-context{margin-top:16px;padding:12px 16px;background:rgba(196,151,42,0.08);border-left:2px solid var(--gold);border-radius:0 4px 4px 0;font-size:13px;color:var(--text-dim);line-height:1.5}
+.slider-context strong{color:var(--gold-light);font-weight:500}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:32px}
+.btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.08em;padding:13px 28px;border:none;border-radius:var(--radius);cursor:pointer;transition:all 0.2s;text-transform:uppercase}
+.btn-ghost{background:transparent;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--cream)}
+.btn-primary{background:var(--gold);color:var(--navy);font-weight:500}
+.btn-primary:hover{background:var(--gold-light)}
+.btn-primary:disabled{opacity:0.3;cursor:not-allowed}
+.skip-hint{font-size:12px;color:var(--text-dim)}
+#start-screen .stats-row{display:flex;gap:12px;justify-content:center;margin:28px 0 36px}
+.stat{text-align:center;padding:16px 20px;background:rgba(22,44,71,0.5);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);flex:1;min-width:0}
+.stat-number{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--gold-light);display:block}
+.stat-label{font-size:11px;color:var(--text-dim);text-transform:none;letter-spacing:0.02em;margin-top:4px}
+.stat-icon {
+    width: 40px; height: 40px; margin: 0 auto 14px;
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--gold); flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(196,151,42,0.1);
+    border: 1px solid rgba(196,151,42,0.2);
   }
-  .section-name { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
-
-  /* ── PROFILE SELECTOR ── */
-  #profile-screen { display: none; }
-  .profile-intro {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 26px; font-weight: 300; color: var(--cream); line-height: 1.4;
-    margin-bottom: 10px; text-align: center;
-  }
-  .profile-sub { font-size: 14px; color: var(--text-dim); text-align: center; margin-bottom: 36px; }
-
-  .profile-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 8px; }
-  @media(max-width: 540px) { .profile-cards { grid-template-columns: 1fr; } }
-
-  .profile-card {
-    background: rgba(22,44,71,0.6);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius);
-    padding: 28px 24px;
-    cursor: pointer; transition: all 0.25s;
-    position: relative; overflow: hidden;
-    text-align: center;
-  }
-  .profile-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(196,151,42,0.1) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.25s;
-  }
-  .profile-card:hover { border-color: rgba(196,151,42,0.4); }
-  .profile-card:hover::before { opacity: 1; }
-  .profile-card.selected { border-color: var(--gold); background: rgba(196,151,42,0.1); }
-  .profile-card.selected::before { opacity: 1; }
-
-  .profile-icon { font-size: 32px; margin-bottom: 14px; display: block; }
-  .profile-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px; font-weight: 400; color: var(--cream);
-    margin-bottom: 8px;
-  }
-  .profile-desc { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
-  .profile-check {
-    position: absolute; top: 14px; right: 14px;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: var(--gold); display: none;
-    align-items: center; justify-content: center;
-    font-size: 11px; color: var(--navy);
-  }
-  .profile-card.selected .profile-check { display: flex; }
-
-  .profile-note { font-size: 12px; color: var(--text-dim); text-align: center; margin-top: 16px; opacity: 0.7; }
-
-  /* ── QUESTION CARD ── */
-  .question-card {
-    background: rgba(22,44,71,0.7);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: var(--radius); padding: 36px; margin-bottom: 16px;
-    backdrop-filter: blur(8px);
-    opacity: 0; transform: translateY(16px);
-    transition: opacity 0.45s, transform 0.45s;
-  }
-  .question-card.visible { opacity: 1; transform: translateY(0); }
-
-  .profile-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(196,151,42,0.12); border: 1px solid rgba(196,151,42,0.25);
-    border-radius: 20px; padding: 4px 12px;
-    font-size: 11px; color: var(--gold-light); letter-spacing: 0.06em;
-    margin-bottom: 16px;
-  }
-
-  .q-number { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 14px; }
-  .q-text { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; line-height: 1.45; color: var(--cream); margin-bottom: 28px; }
-
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 14px 18px; border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius); cursor: pointer; transition: all 0.2s;
-    background: rgba(13,31,53,0.5); position: relative; overflow: hidden;
-  }
-  .option::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(196,151,42,0.08) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.2s;
-  }
-  .option:hover { border-color: rgba(196,151,42,0.35); }
-  .option:hover::before { opacity: 1; }
-  .option.selected { border-color: var(--gold); background: rgba(196,151,42,0.12); }
-  .option.selected::before { opacity: 1; }
-
-  .option-radio {
-    width: 18px; height: 18px; flex-shrink: 0;
-    border: 1.5px solid rgba(255,255,255,0.2); border-radius: 50%; margin-top: 1px;
-    transition: all 0.2s; position: relative;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .option.selected .option-radio { border-color: var(--gold); background: var(--gold); }
-  .option.selected .option-radio::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--navy); }
-  .option-pts { font-size: 11px; font-weight: 500; color: var(--gold); letter-spacing: 0.05em; min-width: 24px; opacity: 0.7; flex-shrink: 0; padding-top: 1px; }
-  .option-text { font-size: 14px; line-height: 1.5; color: var(--text); transition: color 0.2s; }
-  .option.selected .option-text { color: var(--cream); }
-
-  /* ── NAV ── */
-  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
-  .btn { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.08em; padding: 13px 28px; border: none; border-radius: var(--radius); cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
-  .btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid rgba(255,255,255,0.1); }
-  .btn-ghost:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
-  .btn-primary { background: linear-gradient(135deg, var(--gold) 0%, #A87B1A 100%); color: var(--navy); box-shadow: 0 4px 20px rgba(196,151,42,0.25); }
-  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(196,151,42,0.35); }
-  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
-  .skip-hint { font-size: 12px; color: var(--text-dim); }
-
-  /* ── START ── */
-  #start-screen { text-align: center; }
-  .start-cta { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-  .start-note { font-size: 13px; color: var(--text-dim); }
-  .stats-row { display: flex; justify-content: center; gap: 40px; margin: 40px 0; flex-wrap: wrap; }
-  .stat { text-align: center; }
-  .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--gold-light); display: block; line-height: 1; }
-  .stat-label { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
-
-  /* ── RESULTS ── */
-  #result-screen { display: none; }
-  .result-hero {
-    text-align: center; padding: 48px 40px;
-    background: rgba(22,44,71,0.6); border: 1px solid rgba(255,255,255,0.07);
-    border-radius: var(--radius); margin-bottom: 32px;
-    position: relative; overflow: hidden;
-  }
-  .result-hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(196,151,42,0.08) 0%, transparent 70%);
-  }
-  .result-profile-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(196,151,42,0.12); border: 1px solid rgba(196,151,42,0.3);
-    border-radius: 20px; padding: 6px 16px;
-    font-size: 12px; color: var(--gold-light); letter-spacing: 0.08em;
-    margin-bottom: 20px; position: relative;
-  }
-  .result-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; position: relative; }
-  .result-score { font-family: 'Cormorant Garamond', serif; font-size: 80px; font-weight: 300; line-height: 1; position: relative; }
-  .result-score span { color: var(--gold-light); }
-  .result-max { color: var(--text-dim); font-size: 32px; }
-  .result-gauge { width: 100%; max-width: 400px; margin: 24px auto 28px; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
-  .result-gauge-fill { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(0.4,0,0.2,1) 0.3s; }
-  .result-diagnosis { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; margin-bottom: 12px; position: relative; }
-  .result-desc { font-size: 15px; line-height: 1.65; color: var(--text-dim); max-width: 520px; margin: 0 auto; position: relative; }
-
-  .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
-  @media(max-width:560px){ .breakdown { grid-template-columns: 1fr; } }
-  .breakdown-card { background: rgba(22,44,71,0.5); border: 1px solid rgba(255,255,255,0.07); border-radius: var(--radius); padding: 20px 22px; }
-  .breakdown-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-  .breakdown-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
-  .breakdown-score { display: flex; align-items: baseline; gap: 6px; }
-  .bd-pts { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: var(--cream); line-height: 1; }
-  .bd-max { font-size: 14px; color: var(--text-dim); }
-  .bd-bar { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; margin-top: 10px; overflow: hidden; }
-  .bd-bar-fill { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(0.4,0,0.2,1) 0.6s; }
-
-  .vulns-title { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: var(--cream); margin-bottom: 16px; display: flex; align-items: center; gap: 14px; }
-  .vulns-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
-  .vuln-item { display: flex; gap: 16px; align-items: flex-start; padding: 16px 20px; border-left: 2px solid; margin-bottom: 10px; background: rgba(13,31,53,0.5); border-radius: 0 var(--radius) var(--radius) 0; }
-  .vuln-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-  .vuln-text { font-size: 14px; line-height: 1.6; color: var(--text-dim); }
-  .vuln-text strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 3px; }
-  .vuln-cost { display: inline-block; background: rgba(192,57,43,0.12); color: #E74C3C; font-size: 12px; font-weight: 500; padding: 2px 10px; border-radius: 12px; margin-top: 6px; }
-
-  .cost-insight {
-    background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.25);
-    border-radius: var(--radius); padding: 20px 24px; margin: 24px 0 32px;
-    text-align: center; position: relative;
-  }
-  .cost-insight-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(192,57,43,0.8); margin-bottom: 8px; }
-  .cost-insight-number { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 400; color: #E74C3C; line-height: 1.2; }
-  .cost-insight-sub { font-size: 13px; color: var(--text-dim); margin-top: 6px; line-height: 1.5; }
-
-  .cta-box {
-    background: linear-gradient(135deg, rgba(196,151,42,0.12) 0%, rgba(22,44,71,0.8) 100%);
-    border: 1px solid rgba(196,151,42,0.3); border-radius: var(--radius);
-    padding: 40px 40px 36px; text-align: center; margin-top: 32px;
-    position: relative; overflow: hidden;
-  }
-  .cta-box::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, rgba(196,151,42,0.12) 0%, transparent 70%); }
-  .cta-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
-  .cta-headline { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; line-height: 1.3; color: var(--cream); margin-bottom: 12px; }
-  .cta-sub { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 28px; max-width: 420px; margin-left: auto; margin-right: auto; }
-  .cta-features { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
-  .cta-feat { font-size: 12px; color: var(--text-dim); padding: 6px 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; display: flex; align-items: center; gap: 6px; }
-  .cta-feat::before { content: '✓'; color: var(--gold); }
-  .btn-cta { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.1em; padding: 17px 44px; background: linear-gradient(135deg, var(--gold) 0%, #A87B1A 100%); color: var(--navy); border: none; border-radius: var(--radius); cursor: pointer; box-shadow: 0 8px 32px rgba(196,151,42,0.3); transition: all 0.25s; text-transform: uppercase; display: inline-block; text-decoration: none; }
-  .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(196,151,42,0.4); }
-  .cta-note { font-size: 12px; color: var(--text-dim); margin-top: 14px; opacity: 0.7; }
-
-  .btn-restart { background: transparent; color: var(--text-dim); border: 1px solid rgba(255,255,255,0.1); font-size: 12px; padding: 10px 20px; border-radius: var(--radius); cursor: pointer; margin-top: 16px; font-family: 'DM Sans', sans-serif; transition: all 0.2s; display: block; width: fit-content; margin-left: auto; margin-right: auto; }
-  .btn-restart:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
-
-  .footer { text-align: center; padding: 32px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 48px; font-size: 12px; color: var(--text-dim); line-height: 1.7; }
-
-  /* ═══════════════════════════════════════════
-     LEAD CAPTURE SCREEN
-  ═══════════════════════════════════════════ */
-  #capture-screen { display: none; }
-
-  .capture-wrap {
-    max-width: 520px; margin: 0 auto;
-    background: rgba(22,44,71,0.75);
-    border: 1px solid rgba(196,151,42,0.28);
-    border-radius: var(--radius); padding: 52px 44px 44px;
-    position: relative; overflow: hidden; text-align: center;
-  }
-  .capture-wrap::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 55% at 50% 0%, rgba(196,151,42,0.09) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .capture-eyebrow {
-    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 18px;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-  }
-  .capture-eyebrow::before, .capture-eyebrow::after {
-    content:''; height:1px; width:28px; background:var(--gold); opacity:.45;
-  }
-  .capture-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 34px; font-weight: 300; color: var(--cream); line-height: 1.2;
-    margin-bottom: 10px;
-  }
-  .capture-title em { font-style: italic; color: var(--gold-light); }
-  .capture-sub {
-    font-size: 14px; color: var(--text-dim); line-height: 1.65;
-    margin-bottom: 32px; max-width: 360px; margin-left: auto; margin-right: auto;
-  }
-  .capture-form { display: flex; flex-direction: column; gap: 16px; text-align: left; }
-  .form-field { display: flex; flex-direction: column; gap: 7px; }
-  .form-label {
-    font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--gold);
-  }
-  .form-optional {
-    font-size: 11px; color: var(--text-dim); text-transform: none;
-    letter-spacing: 0; font-weight: 400; font-style: italic;
-  }
-  .form-input {
-    background: rgba(13,31,53,0.65); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: var(--radius); padding: 14px 16px;
-    font-family: 'DM Sans', sans-serif; font-size: 15px;
-    color: var(--cream); outline: none; width: 100%;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .form-input::placeholder { color: var(--text-dim); opacity: .7; }
-  .form-input:focus { border-color: rgba(196,151,42,0.55); box-shadow: 0 0 0 3px rgba(196,151,42,0.08); }
-  .form-input.error { border-color: #C0392B !important; }
-
-  .btn-capture {
-    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-    letter-spacing: 0.09em; padding: 17px 32px; margin-top: 4px;
-    background: linear-gradient(135deg, var(--gold) 0%, #A87B1A 100%);
-    color: var(--navy); border: none; border-radius: var(--radius);
-    cursor: pointer; box-shadow: 0 6px 28px rgba(196,151,42,0.3);
-    transition: all 0.25s; text-transform: uppercase; width: 100%;
-  }
-  .btn-capture:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 36px rgba(196,151,42,0.4); }
-  .btn-capture:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .capture-status {
-    display: none; align-items: center; justify-content: center; gap: 8px;
-    font-size: 13px; color: var(--gold); margin-top: 12px; text-align: center;
-  }
-  .capture-status.visible { display: flex; }
-  .spinner {
-    width: 15px; height: 15px; border: 2px solid rgba(196,151,42,0.25);
-    border-top-color: var(--gold); border-radius: 50%;
-    animation: spin 0.75s linear infinite; flex-shrink: 0;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .capture-privacy { font-size: 11px; color: var(--text-dim); text-align: center; margin-top: 14px; opacity: 0.6; }
-
-  /* Result score — secondary, smaller */
-  .result-score-secondary {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px; font-weight: 300; color: var(--text-dim);
-    margin-top: 12px; display: block;
-  }
-
+  .stat-icon svg { width: 20px; height: 20px; }
+.start-cta{text-align:center}
+.start-note{font-size:12px;color:var(--text-dim);margin-top:12px}
+#capture-screen{display:none}
+.capture-wrap{text-align:center;max-width:420px;margin:40px auto 0}
+.capture-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.capture-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--cream);line-height:1.3;margin-bottom:12px}
+.capture-title em{color:var(--gold-light);font-style:italic}
+.capture-sub{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:28px}
+.capture-form{display:flex;flex-direction:column;gap:14px}
+.form-field{text-align:left}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--text-dim);letter-spacing:0.05em;margin-bottom:6px}
+.form-optional{font-weight:400;opacity:0.7}
+.form-input{width:100%;padding:14px 16px;background:rgba(22,44,71,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--gold)}
+.form-input.error{border-color:var(--red)}
+.btn-capture{width:100%;padding:16px;background:var(--gold);color:var(--navy);border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:0.05em;cursor:pointer;transition:background 0.2s;text-transform:uppercase}
+.btn-capture:hover{background:var(--gold-light)}
+.btn-capture:disabled{opacity:0.4;cursor:not-allowed}
+.capture-privacy{font-size:11px;color:var(--text-dim);margin-top:8px;opacity:0.7}
+.capture-status{display:none;align-items:center;justify-content:center;gap:8px;padding:12px;font-size:13px;color:var(--gold)}
+.capture-status.visible{display:flex}
+.spinner{width:16px;height:16px;border:2px solid rgba(196,151,42,0.3);border-top-color:var(--gold);border-radius:50%;animation:spin 0.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#result-screen{display:none}
+.result-hero{text-align:center;padding:40px 0 32px}
+.result-profile-tag{font-size:12px;color:var(--text-dim);margin-bottom:16px}
+.result-label{font-size:12px;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim)}
+.result-diagnosis{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;margin:12px 0 8px}
+.result-desc{font-size:14px;color:var(--text-dim);line-height:1.65;max-width:560px;margin:0 auto}
+.result-gauge{height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-top:20px}
+.result-gauge-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.result-score-secondary{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text-dim);margin-top:8px;display:inline-block}
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:32px 0}
+@media(max-width:540px){.cost-grid{grid-template-columns:1fr}}
+.cost-card{background:rgba(22,44,71,0.6);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:20px;position:relative;overflow:hidden}
+.cost-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.cost-card.red::before{background:var(--red)}
+.cost-card.orange::before{background:var(--orange)}
+.cost-card.blue::before{background:var(--blue)}
+.cost-card.green::before{background:var(--green)}
+.cost-card-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.cost-card-label.red{color:var(--red-light)}
+.cost-card-label.orange{color:var(--orange)}
+.cost-card-label.blue{color:var(--blue)}
+.cost-card-label.green{color:var(--green-light)}
+.cost-card-number{font-family:'JetBrains Mono',monospace;font-size:clamp(20px,4vw,28px);font-weight:600;color:var(--cream);line-height:1.2;margin-bottom:4px}
+.cost-card-sub{font-size:12px;color:var(--text-dim);line-height:1.4}
+.total-loss{background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.3);border-radius:8px;padding:24px;text-align:center;margin:24px 0}
+.total-loss-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--red-light);margin-bottom:6px}
+.total-loss-number{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,6vw,42px);font-weight:700;color:var(--red-light);line-height:1}
+.total-loss-sub{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.5}
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:28px 0}
+@media(max-width:540px){.breakdown{grid-template-columns:1fr}}
+.breakdown-card{background:rgba(22,44,71,0.5);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:16px}
+.breakdown-title{font-size:14px;color:var(--cream);margin-bottom:8px}
+.breakdown-score{display:flex;align-items:baseline;gap:6px}
+.bd-pts{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:var(--cream)}
+.bd-max{font-size:13px;color:var(--text-dim)}
+.bd-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-top:8px;overflow:hidden}
+.bd-bar-fill{height:100%;border-radius:2px;transition:width 0.8s ease}
+.vulns-title{font-size:14px;font-weight:500;color:var(--cream);margin:28px 0 14px;letter-spacing:0.03em}
+.vuln-item{display:flex;gap:14px;padding:16px;background:rgba(22,44,71,0.5);border-left:3px solid;border-radius:0 8px 8px 0;margin-bottom:10px}
+.vuln-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.vuln-text{font-size:13px;color:var(--text-dim);line-height:1.6}
+.vuln-text strong{color:var(--cream);font-weight:500;display:block;margin-bottom:4px;font-size:14px}
+.vuln-cost{display:inline-block;margin-top:8px;padding:4px 10px;background:rgba(192,57,43,0.15);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--red-light)}
+.alert-2026{background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.25);border-radius:8px;padding:20px;margin:24px 0}
+.alert-2026-title{font-size:13px;font-weight:600;color:var(--red-light);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+.alert-2026-text{font-size:13px;color:var(--text-dim);line-height:1.6}
+.alert-2026-text strong{color:var(--cream)}
+.alert-2026-number{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--red-light)}
+.cta-box{background:rgba(22,44,71,0.8);border:1px solid rgba(196,151,42,0.25);border-radius:8px;padding:32px 28px;text-align:center;margin-top:32px}
+.cta-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.cta-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,4vw,28px);font-weight:400;color:var(--cream);line-height:1.3;margin-bottom:12px}
+.cta-sub{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto}
+.cta-features{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px}
+.cta-feat{background:rgba(196,151,42,0.1);border:1px solid rgba(196,151,42,0.2);color:var(--gold-light);font-size:12px;padding:6px 14px;border-radius:20px}
+.btn-cta{display:inline-block;padding:16px 40px;background:var(--gold);color:var(--navy);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:0.05em;text-decoration:none;transition:all 0.2s;text-transform:uppercase}
+.btn-cta:hover{background:var(--gold-light);transform:translateY(-1px)}
+.cta-note{font-size:12px;color:var(--text-dim);margin-top:12px}
+.btn-restart{background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;margin-top:24px;font-family:'DM Sans',sans-serif}
+.btn-restart:hover{color:var(--cream)}
+.footer{text-align:center;margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.05);font-size:11px;color:var(--text-dim);line-height:1.6;opacity:0.6}
+.hidden{display:none!important}
+.cost-detail{font-size:11px;color:var(--text-dim);margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.05);line-height:1.4;opacity:0.8}
+.cost-detail code{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold-light);background:rgba(196,151,42,0.1);padding:1px 4px;border-radius:2px}
+@media(max-width:540px){
+  .question-card{padding:28px 20px}
+  .header{padding:40px 0 32px}
+  h1{font-size:clamp(32px,7vw,48px)}
+}
 </style>
-
 <!-- Firebase SDK compat (carga síncrona, sin módulos) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -411,64 +237,47 @@ try {
 </head>
 <body>
 <div class="container">
-
   <div class="header">
     <div class="brand">Arquitectura Patrimonial</div>
-    <h1>¿Qué tan protegido está<br><em>lo que has construido?</em></h1>
-    <p class="header-sub">Un diagnóstico patrimonial adaptado a tu perfil. Resultado inmediato con cuantificación de riesgo.</p>
+    <h1>¿Cuánto te está costando<br><em>no tener estructura?</em></h1>
+    <p class="header-sub">Responde 12 preguntas con tus números reales. Te calculamos exactamente cuánto estás dejando en la mesa cada año.</p>
     <div class="meta-pills">
-      <span class="pill">5 minutos</span>
-      <span class="pill">Preguntas adaptadas a tu perfil</span>
-      <span class="pill">Riesgo cuantificado en pesos</span>
+      <span class="pill">4 minutos</span>
+      <span class="pill">Cálculos personalizados</span>
+      <span class="pill">Resultados en pesos</span>
     </div>
   </div>
 
-  <!-- PROGRESS -->
-  <div class="progress-bar-wrap" id="progress-wrap">
-    <div class="progress-meta">
-      <span class="progress-label">Progreso</span>
-      <span class="progress-count" id="progress-count">1 / 12</span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progress-fill" style="width:4%"></div>
-    </div>
-  </div>
-
-  <!-- START -->
   <div id="start-screen">
     <div class="stats-row">
-      <div class="stat"><span class="stat-number">4</span><div class="stat-label">Capas evaluadas</div></div>
-      <div class="stat"><span class="stat-number">12</span><div class="stat-label">Preguntas clave</div></div>
-      <div class="stat"><span class="stat-number">36</span><div class="stat-label">Puntos posibles</div></div>
+      <div class="stat"><span class="stat-number">12</span><div class="stat-label">Preguntas clave<br>adaptadas a tu perfil</div></div>
+      <div class="stat"><span class="stat-number">$</span><div class="stat-label">Con tus cifras reales<br>patrimonio, ingresos y gastos</div></div>
+      <div class="stat"><span class="stat-number"><svg viewBox="0 0 24 24" fill="none" stroke="#E8C06A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;vertical-align:middle"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><div class="stat-label">Diagnóstico en pesos<br>cuánto te cuesta no tener estructura</div></div>
     </div>
     <div class="start-cta">
       <button class="btn btn-primary" onclick="showProfile()" style="font-size:14px;padding:16px 44px;">Comenzar diagnóstico →</button>
-      <p class="start-note">Para empresarios y profesionales independientes con patrimonio entre $500M y $5.000M COP</p>
+      <p class="start-note">Para empresarios y profesionales con patrimonio superior a $500M COP</p>
     </div>
   </div>
 
-  <!-- PROFILE SELECTOR -->
   <div id="profile-screen">
     <div class="profile-intro">Primero, cuéntanos cómo generas<br><em>tu ingreso principal</em></div>
     <p class="profile-sub">Las preguntas se adaptarán según tu perfil para darte un diagnóstico más preciso.</p>
-
     <div class="profile-cards">
       <div class="profile-card" id="card-empresario" onclick="selectProfile('empresario')">
         <div class="profile-check">✓</div>
-        <span class="profile-icon">🏢</span>
+        <span class="profile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#E8E2D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 21V7l9-4 9 4v14M9 21v-4h6v4M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg></span>
         <div class="profile-title">Empresario</div>
-        <div class="profile-desc">Tengo una o varias empresas propias. Mis ingresos principales vienen de mi negocio — ya sea como dividendos, retiro de utilidades o salario de mi propia compañía.</div>
+        <div class="profile-desc">Tengo una o varias empresas propias. Mis ingresos principales vienen de mi negocio.</div>
       </div>
       <div class="profile-card" id="card-profesional" onclick="selectProfile('profesional')">
         <div class="profile-check">✓</div>
-        <span class="profile-icon">💼</span>
+        <span class="profile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#E8E2D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 12v.01"/></svg></span>
         <div class="profile-title">Profesional</div>
-        <div class="profile-desc">Soy médico, abogado, alto ejecutivo, directivo corporativo, consultor u otro profesional. Mis ingresos provienen de honorarios, salario ejecutivo o ejercicio de mi carrera profesional.</div>
+        <div class="profile-desc">Soy médico, abogado, ejecutivo, consultor. Mis ingresos vienen de mi carrera profesional.</div>
       </div>
     </div>
-
-    <p class="profile-note">Puedes seleccionar el que más se aproxime a tu situación actual.</p>
-
+    <p class="profile-note">Selecciona el que más se aproxime a tu situación actual.</p>
     <div class="nav" style="margin-top:32px">
       <button class="btn btn-ghost" onclick="backToStart()">← Volver</button>
       <span></span>
@@ -476,17 +285,23 @@ try {
     </div>
   </div>
 
-  <!-- QUESTION SCREEN -->
   <div id="question-screen" style="display:none">
+    <div class="progress-bar-wrap visible" id="progress-wrap">
+      <div class="progress-meta">
+        <span class="progress-label">Diagnóstico</span>
+        <span class="progress-count" id="progress-count">1 / 12</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:8%"></div></div>
+    </div>
     <div class="section-label" id="section-label">
       <div class="section-num" id="section-num">01</div>
-      <div class="section-name" id="section-name">PROTECCIÓN</div>
+      <div class="section-name" id="section-name">TUS NÚMEROS</div>
     </div>
     <div class="question-card" id="question-card">
       <div id="profile-badge-wrap"></div>
       <div class="q-number" id="q-number">Pregunta 01 de 12</div>
       <div class="q-text" id="q-text"></div>
-      <div class="options" id="options"></div>
+      <div id="answer-area"></div>
     </div>
     <div class="nav">
       <button class="btn btn-ghost" id="btn-back" onclick="goBack()">← Anterior</button>
@@ -495,12 +310,11 @@ try {
     </div>
   </div>
 
-  <!-- LEAD CAPTURE -->
   <div id="capture-screen">
     <div class="capture-wrap">
-      <div class="capture-eyebrow">Tu diagnóstico</div>
-      <div class="capture-title">Está listo.<br><em>¿A dónde lo enviamos?</em></div>
-      <p class="capture-sub">Te enviamos el resultado completo con las vulnerabilidades detectadas y el siguiente paso recomendado para tu caso.</p>
+      <div class="capture-eyebrow">Tu diagnóstico está listo</div>
+      <div class="capture-title">Calculamos cuánto<br><em>te está costando</em></div>
+      <p class="capture-sub">Ingresa tus datos para ver el resultado completo con los montos exactos en pesos que estás dejando en la mesa.</p>
       <div class="capture-form">
         <div class="form-field">
           <label class="form-label" for="cap-nombre">Nombre</label>
@@ -512,53 +326,47 @@ try {
         </div>
         <div class="form-field">
           <label class="form-label" for="cap-whatsapp">
-            WhatsApp <span class="form-optional">(opcional — también te enviamos el resultado por aquí)</span>
+            WhatsApp <span class="form-optional">(opcional — te enviamos el resultado por aquí)</span>
           </label>
           <input class="form-input" id="cap-whatsapp" type="tel" placeholder="+57 300 000 0000" autocomplete="tel" />
         </div>
-        <button class="btn-capture" id="btn-capture" onclick="submitCapture()">Ver mis resultados →</button>
-        <div class="capture-status" id="capture-status">
-          <div class="spinner"></div>
-          <span>Guardando tu diagnóstico…</span>
-        </div>
+        <button class="btn-capture" id="btn-capture" onclick="submitCapture()">Ver cuánto me está costando →</button>
+        <div class="capture-status" id="capture-status"><div class="spinner"></div><span>Calculando tu diagnóstico…</span></div>
         <p class="capture-privacy">🔒 Información privada. No compartimos datos con terceros.</p>
       </div>
     </div>
   </div>
 
-  <!-- RESULT -->
   <div id="result-screen">
     <div class="result-hero">
       <div class="result-profile-tag" id="result-profile-tag"></div>
       <div class="result-label">Lo que detectamos en tu patrimonio</div>
-      <div class="result-diagnosis" id="result-diagnosis" style="font-size:36px;margin:12px 0 8px;position:relative;"></div>
+      <div class="result-diagnosis" id="result-diagnosis"></div>
       <div class="result-desc" id="result-desc"></div>
-      <div class="result-gauge" style="margin-top:20px;"><div class="result-gauge-fill" id="gauge-fill" style="width:0%"></div></div>
-      <span class="result-score-secondary"><span id="score-number">0</span> / 36 puntos</span>
+      <div class="result-gauge" style="margin-top:20px"><div class="result-gauge-fill" id="gauge-fill" style="width:0%"></div></div>
+      <span class="result-score-secondary"><span id="score-number">0</span> / <span id="score-max">15</span> puntos</span>
     </div>
-
-    <div class="cost-insight" id="cost-insight">
-      <div class="cost-insight-label">Exposición estimada sin estructuración</div>
-      <div class="cost-insight-number" id="cost-insight-number"></div>
-      <div class="cost-insight-sub" id="cost-insight-sub"></div>
+    <div class="total-loss">
+      <div class="total-loss-label">Lo que te está costando no tener estructura</div>
+      <div class="total-loss-number" id="total-loss-number"></div>
+      <div class="total-loss-sub" id="total-loss-sub"></div>
     </div>
-
+    <div class="cost-grid" id="cost-grid"></div>
+    <div class="alert-2026" id="alert-2026"></div>
     <div class="breakdown" id="breakdown"></div>
     <div class="vulns-title">Señales de alerta detectadas</div>
     <div id="vulns-list"></div>
-
     <div class="cta-box">
       <div class="cta-eyebrow">Siguiente paso</div>
-      <div class="cta-headline" id="cta-headline">Conoce exactamente dónde están<br>tus vulnerabilidades reales</div>
-      <div class="cta-sub" id="cta-sub">Este test es el punto de partida. La Asesoría de Diagnóstico va más profundo: analiza tu situación particular, cuantifica los riesgos y te da un plan concreto.</div>
-      <div class="cta-features" id="cta-features">
-        <span class="cta-feat">45 minutos, sin costo</span>
-        <span class="cta-feat">Revisamos tus vulnerabilidades específicas</span>
-        <span class="cta-feat">Sin propuesta de productos al final</span>
-        <span class="cta-feat">Plan de acción concreto</span>
+      <div class="cta-headline" id="cta-headline">Descubre exactamente cómo<br>recuperar esos <span id="cta-amount" style="color:var(--gold-light)"></span></div>
+      <div class="cta-sub" id="cta-sub"></div>
+      <div class="cta-features">
+        <span class="cta-feat">Tu patrimonio integrado por primera vez</span>
+        <span class="cta-feat">Cada costo cuantificado en pesos</span>
+        <span class="cta-feat">Plan de 12 acciones con timeline</span>
       </div>
-      <a class="btn-cta" href="https://calendly.com/abba-asesoria/agenda-tu-sesion-de-planificacion-financiera-clon?month=2026-03" target="_blank">Quiero entender mis resultados con un especialista</a>
-      <p class="cta-note">Sin costos. Sin ventas. Solo claridad sobre tu patrimonio.</p>
+      <a class="btn-cta" href="https://calendly.com/abba-asesoria/agenda-tu-sesion-de-planificacion-financiera-clon" target="_blank" id="cta-link">Agendar mi sesión de diagnóstico gratuita →</a>
+      <p class="cta-note">45 minutos · Sin costo · Sin compromiso</p>
     </div>
     <button class="btn-restart" onclick="restartTest()">← Hacer el test nuevamente</button>
   </div>
@@ -570,416 +378,441 @@ try {
 </div>
 
 <script>
-// ─── QUESTION BANK ────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════
+// CONSTANTES FISCALES COLOMBIA 2026 (estimadas)
+// ═══════════════════════════════════════════════════════════
+const UVT_2026 = 52388;                          // Proyectado ~$52,388
+const UMBRAL_PATRIMONIO_UVT = 72000;             // 72,000 UVT para personas naturales
+const UMBRAL_PATRIMONIO = UMBRAL_PATRIMONIO_UVT * UVT_2026; // ~$3,772M
+const EXCLUSION_VIVIENDA_UVT = 12000;            // 12,000 UVT exclusión vivienda
+const EXCLUSION_VIVIENDA = EXCLUSION_VIVIENDA_UVT * UVT_2026; // ~$629M
+const INFLACION_2025 = 0.0535;                    // IPC cierre 2025
+const TASA_CUENTAS_AHORRO = 0.015;               // Rentabilidad promedio cuenta ahorro
+const TASA_CDT_CORTO = 0.08;                     // CDT corto plazo promedio
+const TASA_FONDO_ESTRUCTURADO = 0.10;            // Fondo diversificado estimado
+const DEVALUACION_PROMEDIO_5Y = 0.065;           // Promedio anual 5 años (2020-2025: ~65% total ≈ 10.5%/año compuesto, pero con reversión, usamos 6.5% conservador)
 
-const ALL_QUESTIONS = [
+// Tarifas marginales impuesto al patrimonio Ley 2277/2022
+// 0.5% de 0 a 72,000 UVT de base gravable
+// 1.0% de 72,000 a 122,000 UVT
+// 1.5% > 122,000 UVT
+function calcImpuestoPatrimonio(patrimonioNeto) {
+  if (patrimonioNeto < UMBRAL_PATRIMONIO) return 0;
 
-  // ═══ PROTECCIÓN (incluye sucesión) ═══
+  // Base gravable = patrimonio - exclusión vivienda (si aplica)
+  var baseGravable = Math.max(0, patrimonioNeto - EXCLUSION_VIVIENDA);
+  if (baseGravable < UMBRAL_PATRIMONIO) return 0;
+
+  var exceso = baseGravable - UMBRAL_PATRIMONIO;
+  var tramo1Limite = (122000 - 72000) * UVT_2026; // 50,000 UVT
+  var impuesto = 0;
+
+  if (exceso <= tramo1Limite) {
+    impuesto = exceso * 0.01;
+  } else {
+    impuesto = tramo1Limite * 0.01 + (exceso - tramo1Limite) * 0.015;
+  }
+  return Math.round(impuesto);
+}
+
+// Tarifas marginales renta personas naturales 2026
+// (Rangos en UVT sobre renta líquida gravable)
+function calcTarifaEfectivaRenta(rentaGravableAnual) {
+  var uvts = rentaGravableAnual / UVT_2026;
+  var impuesto = 0;
+  // Tabla Art. 241 ET (simplificada para estimación)
+  var tramos = [
+    { desde: 0, hasta: 1090, tarifa: 0 },
+    { desde: 1090, hasta: 1700, tarifa: 0.19 },
+    { desde: 1700, hasta: 4100, tarifa: 0.28 },
+    { desde: 4100, hasta: 8670, tarifa: 0.33 },
+    { desde: 8670, hasta: 18970, tarifa: 0.35 },
+    { desde: 18970, hasta: 31000, tarifa: 0.37 },
+    { desde: 31000, hasta: Infinity, tarifa: 0.39 }
+  ];
+  for (var i = 0; i < tramos.length; i++) {
+    var t = tramos[i];
+    if (uvts > t.desde) {
+      var gravable = Math.min(uvts, t.hasta) - t.desde;
+      impuesto += gravable * t.tarifa * UVT_2026;
+    }
+  }
+  return impuesto;
+}
+
+
+// ═══════════════════════════════════════════════════════════
+// BANCO DE PREGUNTAS
+// ═══════════════════════════════════════════════════════════
+var ALL_QUESTIONS = [
+
+  // ═══ SECTION 01: TUS NÚMEROS (sliders) ═══
   {
-    id: "p1", section: "01", sectionName: "PROTECCIÓN", profile: "both",
-    q: "¿Tienes un seguro de vida activo con una cobertura suficiente?",
-    opts: [
-      { pts: 3, text: "Sí, con suma asegurada equivalente a más de 5 años de mis ingresos" },
-      { pts: 2, text: "Sí, pero no sé exactamente cuánto cubre o es bajo" },
-      { pts: 1, text: "Solo tengo algo básico (póliza de grupo, plan corporativo o de gremio)" },
-      { pts: 0, text: "No tengo seguro de vida" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin cobertura de vida adecuada", text: "Si algo te pasara hoy, ¿tu familia podría mantener su nivel de vida? Un seguro de vida de al menos 10x tu ingreso anual es el piso mínimo recomendado para tu perfil.", cost: "Déficit familiar estimado: $300M–$800M COP según nivel de ingreso" }
+    id: "n1", section: "01", sectionName: "TUS NÚMEROS", profile: "both", type: "slider",
+    q: "¿Cuál es tu patrimonio total estimado? Incluye inmuebles, empresa, inversiones, vehículos — todo.",
+    slider: { min: 500, max: 5000, step: 100, value: 1500, unit: "M", prefix: "$", suffix: " millones COP" },
+    context: function(v) {
+      var umbralM = Math.round(UMBRAL_PATRIMONIO / 1000000);
+      if (v * 1000000 >= UMBRAL_PATRIMONIO) return '⚠️ <strong>Tu patrimonio supera $' + umbralM.toLocaleString('es-CO') + 'M.</strong> En 2026 estás obligado a pagar impuesto al patrimonio (72.000 UVT = $' + umbralM.toLocaleString('es-CO') + 'M con UVT de $' + UVT_2026.toLocaleString('es-CO') + ').';
+      return 'Tu patrimonio está por debajo del umbral del impuesto al patrimonio ($' + umbralM.toLocaleString('es-CO') + 'M).';
+    }
   },
   {
-    id: "p2_emp", section: "01", sectionName: "PROTECCIÓN", profile: "empresario",
-    q: "¿Tus activos personales están separados jurídicamente de tu empresa?",
-    opts: [
-      { pts: 3, text: "Sí, tengo estructura holding o sociedad que los separa formalmente" },
-      { pts: 2, text: "Parcialmente — algunos activos sí, otros no" },
-      { pts: 1, text: "No formalmente, aunque lo he considerado" },
-      { pts: 0, text: "Todo está a nombre personal o mezclado con la empresa" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Activos personales expuestos al riesgo empresarial", text: "Sin separación jurídica, una demanda o quiebra de tu empresa puede alcanzar tu patrimonio personal. Un empresario en una situación similar perdió acceso a $180M en activos personales por un embargo preventivo derivado de una demanda laboral de $45M.", cost: "Exposición potencial: hasta el 100% de los activos personales" }
+    id: "n2", section: "01", sectionName: "TUS NÚMEROS", profile: "both", type: "slider",
+    q: "¿Cuánto gasta tu familia al mes? Incluye vivienda, colegios, seguros, alimentación, transporte, todo.",
+    slider: { min: 5, max: 50, step: 1, value: 15, unit: "M", prefix: "$", suffix: " millones COP / mes" },
+    context: function(v) {
+      return 'Eso son <strong>$' + (v*12).toLocaleString('es-CO') + 'M al año</strong> en gastos fijos que tu patrimonio debe poder sostener sin depender de tu trabajo.';
+    }
   },
   {
-    id: "p2_pro", section: "01", sectionName: "PROTECCIÓN", profile: "profesional",
-    q: "¿Tienes seguro de responsabilidad civil profesional activo?",
-    opts: [
-      { pts: 3, text: "Sí, con cobertura adecuada para mi nivel de ingresos y actividad" },
-      { pts: 2, text: "Tengo algo pero no sé exactamente qué tan adecuada es la cobertura" },
-      { pts: 1, text: "No tengo, pero sé que debería tenerlo" },
-      { pts: 0, text: "No tengo seguro de responsabilidad civil profesional" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin protección ante demandas profesionales", text: "Una demanda de mala práctica puede comprometer no solo tus ingresos futuros sino tu patrimonio acumulado. Un profesional con patrimonio similar enfrentó una demanda que terminó afectando $120M en activos personales por falta de cobertura adecuada.", cost: "Exposición potencial: $80M–$200M según especialidad y patrimonio" }
+    id: "n3_emp", section: "01", sectionName: "TUS NÚMEROS", profile: "empresario", type: "slider",
+    q: "¿Cuánto recibes al mes entre salario, honorarios, dividendos y retiros de tu empresa?",
+    slider: { min: 5, max: 80, step: 1, value: 25, unit: "M", prefix: "$", suffix: " millones COP / mes" },
+    context: function(v, sv) {
+      var gastos = sv && sv.n2 ? sv.n2 : 15;
+      if (v <= gastos) return '⚠️ <strong>Tus ingresos no superan tus gastos.</strong> Tasa de ahorro: 0%. Tu patrimonio no crece — se erosiona.';
+      var ahorro = Math.round(((v - gastos) / v) * 100);
+      if (ahorro <= 10) return '⚠️ <strong>Tasa de ahorro: ' + ahorro + '%.</strong> Con menos del 10% de ahorro, tu patrimonio no crece — solo se mantiene.';
+      if (ahorro <= 30) return 'Tasa de ahorro estimada: <strong>' + ahorro + '%</strong>. Aceptable, pero hay espacio para optimizar.';
+      return 'Tasa de ahorro: <strong>' + ahorro + '%</strong>. Buena capacidad de acumulación. La pregunta es si esa plata está trabajando.';
+    }
   },
   {
-    id: "p3", section: "01", sectionName: "PROTECCIÓN", profile: "both",
-    q: "¿Tienes testamento o plan sucesorio vigente y actualizado?",
-    opts: [
-      { pts: 3, text: "Sí, testamento actualizado y estructura sucesoria formal (fideicomiso o similar)" },
-      { pts: 2, text: "Tengo testamento pero no lo he revisado en más de 3 años" },
-      { pts: 1, text: "Sé que debería tenerlo pero no lo he formalizado aún" },
-      { pts: 0, text: "No tengo ningún plan sucesorio" },
-    ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Sin plan sucesorio activo", text: "Sin testamento, el Estado decide cómo se distribuye tu patrimonio. Los procesos de sucesión sin planificación pueden tardar años, generar conflictos entre herederos y activar cargas fiscales que una estructura adecuada hubiera reducido significativamente.", cost: "Ganancia ocasional estimada en sucesión sin planificar: $50M–$80M" }
+    id: "n3_pro", section: "01", sectionName: "TUS NÚMEROS", profile: "profesional", type: "slider",
+    q: "¿Cuánto recibes al mes entre salario, honorarios, bonificaciones y otros ingresos profesionales?",
+    slider: { min: 5, max: 80, step: 1, value: 25, unit: "M", prefix: "$", suffix: " millones COP / mes" },
+    context: function(v, sv) {
+      var gastos = sv && sv.n2 ? sv.n2 : 15;
+      if (v <= gastos) return '⚠️ <strong>Tus ingresos no superan tus gastos.</strong> Tasa de ahorro: 0%. Tu patrimonio no crece — se erosiona.';
+      var ahorro = Math.round(((v - gastos) / v) * 100);
+      if (ahorro <= 10) return '⚠️ <strong>Tasa de ahorro: ' + ahorro + '%.</strong> Con menos del 10% de ahorro, tu patrimonio no crece — solo se mantiene.';
+      if (ahorro <= 30) return 'Tasa de ahorro estimada: <strong>' + ahorro + '%</strong>. Aceptable, pero hay espacio para optimizar.';
+      return 'Tasa de ahorro: <strong>' + ahorro + '%</strong>. Buena capacidad de acumulación. La pregunta es si esa plata está trabajando.';
+    }
+  },
+  {
+    id: "n4", section: "01", sectionName: "TUS NÚMEROS", profile: "both", type: "slider",
+    q: "¿Qué porcentaje de tu patrimonio está en cuentas de ahorro, CDTs o instrumentos que rindan menos del 5% anual?",
+    slider: { min: 0, max: 60, step: 5, value: 20, unit: "%", prefix: "", suffix: "% en instrumentos de bajo rendimiento" },
+    context: function(v, sv) {
+      var pat = sv && sv.n1 ? sv.n1 : 1500;
+      var monto = Math.round(pat * v / 100);
+      var erosionAnual = Math.round(monto * (INFLACION_2025 - TASA_CUENTAS_AHORRO));
+      if (v >= 30) return '⚠️ <strong>$' + monto.toLocaleString('es-CO') + 'M</strong> rindiendo por debajo de inflación (' + (INFLACION_2025*100).toFixed(1) + '%). Pierdes ~<strong>$' + erosionAnual.toLocaleString('es-CO') + 'M/año</strong> en poder adquisitivo real.';
+      if (v >= 15) return '<strong>$' + monto.toLocaleString('es-CO') + 'M</strong> rinde menos del 5%. Erosión real estimada: $' + erosionAnual.toLocaleString('es-CO') + 'M/año.';
+      return '<strong>$' + monto.toLocaleString('es-CO') + 'M</strong> en bajo rendimiento. Aceptable si es tu reserva de liquidez.';
+    }
+  },
+  {
+    id: "n5", section: "01", sectionName: "TUS NÚMEROS", profile: "both", type: "slider",
+    q: "¿Qué porcentaje de tu patrimonio está en pesos colombianos? Incluye inmuebles en Colombia, CDTs, cuentas locales.",
+    slider: { min: 50, max: 100, step: 5, value: 90, unit: "%", prefix: "", suffix: "% en pesos colombianos" },
+    context: function(v) {
+      if (v >= 80) return '⚠️ <strong>Más del 80% en COP.</strong> Devaluación promedio del peso: ~' + (DEVALUACION_PROMEDIO_5Y*100).toFixed(1) + '% anual (últimos 5 años). Tu patrimonio pierde poder internacional cada año sin diversificar.';
+      if (v >= 60) return 'Concentración moderada en COP. Algo de diversificación, pero aún expuesto a devaluación.';
+      return 'Buena diversificación cambiaria. Protección frente a devaluación del peso.';
+    }
   },
 
-  // ═══ LIQUIDEZ (incluye exposición fiscal) ═══
+  // ═══ SECTION 02: ESTRUCTURA FISCAL ═══
   {
-    id: "l1", section: "02", sectionName: "LIQUIDEZ", profile: "both",
-    q: "Si dejaras de recibir ingresos hoy, ¿cuántos meses podría sostenerse tu familia?",
+    id: "f1_emp", section: "02", sectionName: "ESTRUCTURA FISCAL", profile: "empresario", type: "choice",
+    q: "¿Cómo sacas el dinero de tu empresa para tu uso personal?",
     opts: [
-      { pts: 3, text: "Más de 9 meses sin necesidad de tocar inversiones de largo plazo" },
-      { pts: 2, text: "Entre 3 y 9 meses con las reservas actuales" },
-      { pts: 1, text: "Entre 1 y 3 meses con lo que tengo disponible" },
-      { pts: 0, text: "Menos de 1 mes, o no tengo claridad sobre esto" },
+      { pts: 3, text: "Tengo un esquema optimizado: mezcla de salario + dividendos planificados con asesoría fiscal" },
+      { pts: 2, text: "Principalmente como salario o honorarios de gerente" },
+      { pts: 1, text: "Retiro según necesito, sin una estrategia definida" },
+      { pts: 0, text: "No sé exactamente — a veces salario, a veces retiro, a veces préstamo a socios" }
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Liquidez insuficiente ante interrupciones de ingreso", text: "Menos de 3 meses de reserva te obliga a liquidar activos en el peor momento posible — normalmente con pérdida de valor. El mínimo recomendado para profesionales e independientes es 9 meses de gastos fijos.", cost: "Pérdida por liquidación forzada: 15%–30% del valor del activo" }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin estrategia de retiro de utilidades" }
   },
   {
-    id: "l2_emp", section: "02", sectionName: "LIQUIDEZ", profile: "empresario",
-    q: "¿Tienes separados tus flujos personales de los flujos de tu empresa?",
+    id: "f1_pro", section: "02", sectionName: "ESTRUCTURA FISCAL", profile: "profesional", type: "choice",
+    q: "¿Alguien ha revisado si estás pagando más impuestos de lo necesario?",
     opts: [
-      { pts: 3, text: "Sí, tengo cuentas separadas y un esquema claro de retiro de utilidades" },
-      { pts: 2, text: "Parcialmente, aunque a veces el dinero va y viene entre ambos" },
-      { pts: 1, text: "Con frecuencia mezclo los flujos personales y empresariales" },
-      { pts: 0, text: "No existe separación — todo entra y sale de la misma cuenta" },
+      { pts: 3, text: "Sí, tengo asesoría fiscal activa y revisamos optimización cada año" },
+      { pts: 2, text: "Tengo contador pero nunca hemos evaluado si puedo pagar menos legalmente" },
+      { pts: 1, text: "No tengo mucha claridad sobre cuánto pago ni si podría pagar menos" },
+      { pts: 0, text: "No tengo idea — pago lo que me dice el contador y ya" }
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Flujos personales y empresariales mezclados", text: "Mezclar el dinero personal con el de la empresa genera una visibilidad falsa del patrimonio real, dificulta la planificación fiscal y expone tu capital personal a los vaivenes del negocio.", cost: "Sobrecarga fiscal típica por mezcla de flujos: $15M–$40M anuales" }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin optimización fiscal activa" }
   },
   {
-    id: "l2_pro", section: "02", sectionName: "LIQUIDEZ", profile: "profesional",
-    q: "¿Tienes un fondo de oportunidad separado de tu fondo de emergencia?",
+    id: "f2_emp", section: "02", sectionName: "ESTRUCTURA FISCAL", profile: "empresario", type: "choice",
+    q: "¿Tienes utilidades acumuladas sin repartir en tu empresa?",
     opts: [
-      { pts: 3, text: "Sí, tengo ambos claramente definidos y separados con propósitos distintos" },
-      { pts: 2, text: "Tengo liquidez disponible pero todo va al mismo lugar" },
-      { pts: 1, text: "Básicamente lo que sobra en la cuenta corriente cada mes" },
-      { pts: 0, text: "No tengo reservas separadas ni estructura de liquidez" },
+      { pts: 3, text: "No — repartimos estratégicamente cada año según plan fiscal" },
+      { pts: 2, text: "Algo acumulado, pero repartimos la mayoría" },
+      { pts: 1, text: "Sí, hay utilidades de varios años acumuladas" },
+      { pts: 0, text: "Sí, nunca hemos repartido utilidades formalmente" }
     ],
-    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Liquidez no estructurada", text: "Mezclar emergencia y oportunidad genera decisiones reactivas. Una estructura clara te permite actuar estratégicamente cuando aparece una buena inversión, sin comprometer tu seguridad básica.", cost: "Costo de oportunidad estimado: $20M–$60M en inversiones no tomadas" }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Utilidades acumuladas sin estrategia de reparto" }
   },
   {
-    id: "l3_emp", section: "02", sectionName: "LIQUIDEZ", profile: "empresario",
-    q: "¿Sabes exactamente cuánto te cuesta en impuestos la forma en que sacas dinero de tu empresa?",
+    id: "inv", section: "02", sectionName: "ESTRUCTURA FISCAL", profile: "both", type: "choice",
+    q: "¿Dónde tienes la mayor parte de tus inversiones financieras hoy?",
     opts: [
-      { pts: 3, text: "Sí, tengo asesoría fiscal activa y optimizo cómo retiro utilidades, dividendos o salario" },
-      { pts: 2, text: "Tengo contador pero nunca hemos evaluado si la forma en que retiro dinero es la más eficiente" },
-      { pts: 1, text: "Retiro dinero según lo necesito sin una estrategia fiscal clara" },
-      { pts: 0, text: "No tengo idea de cuánto me cuesta fiscalmente la forma en que saco dinero de mi empresa" },
+      { pts: 3, text: "Portafolio diversificado: fondos internacionales, ETFs, renta fija + variable" },
+      { pts: 2, text: "Fondos de inversión locales o pensión voluntaria" },
+      { pts: 1, text: "Principalmente CDTs o cuentas remuneradas" },
+      { pts: 0, text: "No tengo inversiones — solo inmuebles o dinero en cuentas bancarias" }
     ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin estrategia fiscal para retiro de utilidades", text: "La forma en que sacas dinero de tu empresa puede costarte entre un 20% y un 40% más de lo necesario en impuestos. Para patrimonios de tu tamaño, eso puede representar decenas de millones al año que salen de tu bolsillo sin necesidad.", cost: "Sobrecarga fiscal estimada: $30M–$80M anuales según facturación" }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Sin portafolio de inversión diversificado" }
   },
   {
-    id: "l3_pro", section: "02", sectionName: "LIQUIDEZ", profile: "profesional",
-    q: "¿Tienes claridad sobre cuánto pagas en impuestos al año y si podrías estar pagando menos de forma legal?",
-    opts: [
-      { pts: 3, text: "Sí, tengo asesoría fiscal activa y revisamos cada año las oportunidades de optimización" },
-      { pts: 2, text: "Tengo contador pero nunca hemos evaluado si estoy pagando más impuestos de los necesarios" },
-      { pts: 1, text: "No tengo mucha claridad — solo sé lo que me toca pagar según la declaración de renta" },
-      { pts: 0, text: "No tengo idea de cuánto pago en total ni si podría pagar menos legalmente" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Sin estrategia de optimización fiscal", text: "Sin una revisión fiscal estratégica, es común pagar entre un 20% y un 40% más de lo necesario. Para un patrimonio de tu tamaño, eso puede representar decenas de millones de pesos al año que salen de tu bolsillo sin que lo notes.", cost: "Sobrecarga fiscal estimada: $25M–$60M anuales" }
+    id: "f3_emp", section: "02", sectionName: "ESTRUCTURA FISCAL", profile: "empresario", type: "slider",
+    q: "¿Qué porcentaje de tu patrimonio total representa tu empresa?",
+    slider: { min: 20, max: 100, step: 5, value: 65, unit: "%", prefix: "", suffix: "% es tu empresa" },
+    context: function(v, sv) {
+      var pat = sv && sv.n1 ? sv.n1 : 1500;
+      var monto = Math.round(pat * v / 100);
+      if (v >= 70) return '⚠️ <strong>$' + monto.toLocaleString('es-CO') + 'M atados a tu negocio.</strong> Si la empresa tiene un mal año, tu patrimonio personal cae con ella. Concentración > 70% es alto riesgo.';
+      if (v >= 50) return '<strong>$' + monto.toLocaleString('es-CO') + 'M</strong> es tu empresa. Concentración moderada pero significativa.';
+      return '<strong>$' + monto.toLocaleString('es-CO') + 'M</strong> en tu empresa. Buena diversificación entre negocio y otros activos.';
+    }
+  },
+  {
+    id: "f3_pro", section: "02", sectionName: "ESTRUCTURA FISCAL", profile: "profesional", type: "slider",
+    q: "¿Qué porcentaje de tus ingresos depende de una sola fuente (un empleador, un contrato principal)?",
+    slider: { min: 20, max: 100, step: 5, value: 80, unit: "%", prefix: "", suffix: "% de una sola fuente" },
+    context: function(v) {
+      if (v >= 80) return '⚠️ <strong>Más del 80% de una sola fuente.</strong> Si esa relación se rompe, el impacto es inmediato.';
+      if (v >= 50) return 'Dependencia moderada. Aún tienes riesgo concentrado.';
+      return 'Buena diversificación de fuentes de ingreso.';
+    }
   },
 
-  // ═══ CRECIMIENTO ═══
+  // ═══ SECTION 03: CRECIMIENTO Y PROTECCIÓN ═══
   {
-    id: "c1", section: "03", sectionName: "CRECIMIENTO", profile: "both",
-    q: "¿Qué porcentaje estimado de tu patrimonio genera ingresos sin que tú trabajes activamente?",
+    id: "c1", section: "03", sectionName: "CRECIMIENTO", profile: "both", type: "choice",
+    q: "¿Qué porcentaje de tu patrimonio genera ingresos sin que tú trabajes activamente?",
     opts: [
-      { pts: 3, text: "Más del 40% genera flujo de caja pasivo o semipasivo" },
+      { pts: 3, text: "Más del 40% genera flujo pasivo o semipasivo" },
       { pts: 2, text: "Entre el 20% y el 40%" },
       { pts: 1, text: "Menos del 20%" },
-      { pts: 0, text: "Prácticamente todo depende de que yo trabaje activamente" },
+      { pts: 0, text: "Prácticamente todo depende de que yo trabaje" }
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Alta dependencia del ingreso activo", text: "Si el 80%+ de tu flujo depende de tu presencia, tienes un patrimonio frágil. El objetivo estratégico es que los activos trabajen para ti — no que tú trabajes para los activos.", cost: "Ingreso pasivo no generado: $5M–$15M mensuales según patrimonio" }
+    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Alta dependencia del ingreso activo" }
   },
   {
-    id: "c2", section: "03", sectionName: "CRECIMIENTO", profile: "both",
-    q: "¿Tienes inversiones fuera de Colombia o en moneda extranjera (USD, EUR)?",
+    id: "c2_emp", section: "03", sectionName: "CRECIMIENTO", profile: "empresario", type: "choice",
+    q: "¿Tus flujos personales están separados de los flujos de tu empresa?",
     opts: [
-      { pts: 3, text: "Sí, más del 30% de mi portafolio está en moneda fuerte o en el exterior" },
-      { pts: 2, text: "Tengo algo en divisas, menos del 30% del portafolio total" },
-      { pts: 1, text: "Solo activos locales: inmuebles y CDTs en pesos colombianos" },
-      { pts: 0, text: "Todo está en Colombia en pesos" },
+      { pts: 3, text: "Sí, cuentas separadas y esquema claro de retiro de utilidades/dividendos" },
+      { pts: 2, text: "Parcialmente — aunque a veces el dinero va y viene entre ambos" },
+      { pts: 1, text: "Con frecuencia mezclo los flujos personales y empresariales" },
+      { pts: 0, text: "No existe separación — todo entra y sale de la misma cuenta" }
     ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Exposición total a la devaluación del COP", text: "En los últimos 5 años el peso colombiano ha perdido más del 60% de su valor frente al dólar. Un patrimonio de $800M en pesos en 2019 hoy tiene un poder adquisitivo internacional equivalente a menos de $500M.", cost: "Erosión estimada en 5 años: más del 60% en poder adquisitivo global" }
+    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Flujos personales y empresariales mezclados" }
   },
   {
-    id: "c3_emp", section: "03", sectionName: "CRECIMIENTO", profile: "empresario",
-    q: "¿Tienes claridad sobre el valor real de mercado de tu empresa?",
-    opts: [
-      { pts: 3, text: "Sí, tenemos una valoración reciente (menos de 2 años) hecha por un experto" },
-      { pts: 2, text: "Tengo una idea aproximada, pero no una valoración formal" },
-      { pts: 1, text: "No tengo claridad — calculo que vale X pero sin sustento técnico" },
-      { pts: 0, text: "No sé cuánto vale mi empresa" },
-    ],
-    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Mayor activo sin valoración", text: "Para la mayoría de empresarios, el negocio representa más del 60% del patrimonio neto. Sin una valoración formal, no puedes planificar correctamente tu retiro, tu sucesión ni tu diversificación.", cost: "Decisiones sin dato: puede sobre o subvalorar en $200M–$500M" }
-  },
-  {
-    id: "c3_pro", section: "03", sectionName: "CRECIMIENTO", profile: "profesional",
+    id: "strat", section: "03", sectionName: "CRECIMIENTO", profile: "both", type: "choice",
     q: "¿Tienes una estrategia de inversión definida con horizonte y asignación de activos?",
     opts: [
-      { pts: 3, text: "Sí, tengo una política escrita con metas, plazos y tolerancia al riesgo definidos" },
+      { pts: 3, text: "Sí, política escrita con metas, plazos y tolerancia al riesgo definidos" },
       { pts: 2, text: "Invierto con criterio pero sin nada formalizado" },
-      { pts: 1, text: "Invierto cuando hay oportunidades o cuando alguien me recomienda algo" },
-      { pts: 0, text: "No tengo estrategia de inversión definida" },
+      { pts: 1, text: "Invierto cuando aparecen oportunidades o cuando alguien me recomienda" },
+      { pts: 0, text: "No tengo estrategia de inversión — mi dinero está quieto" }
     ],
-    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Inversión reactiva sin estrategia", text: "Invertir por recomendación sin un marco definido genera un portafolio desconectado. Con el tiempo, esta acumulación desordenada produce más riesgo del que parece y menos retorno del esperado.", cost: "Retorno no capturado: 2%–5% anual sobre el portafolio total" }
-  },
-
-  // ═══ DIVERSIFICACIÓN ═══
-  {
-    id: "d1", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "both",
-    q: "¿Cómo describirías la concentración real de tu patrimonio hoy?",
-    opts: [
-      { pts: 3, text: "Diversificado: distintos tipos de activos, varias divisas y presencia internacional" },
-      { pts: 2, text: "Varios activos, pero todos en Colombia y en pesos" },
-      { pts: 1, text: "Concentrado en 1 o 2 tipos de activos (ej: solo inmuebles)" },
-      { pts: 0, text: "Prácticamente todo en un solo activo o fuente de valor" },
-    ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Concentración de riesgo elevada", text: "Un solo activo que represente más del 50% del patrimonio es una vulnerabilidad crítica. La diversificación real no es tener varias propiedades — es tener distintos tipos de activos, divisas y geografías.", cost: "Riesgo de pérdida concentrada: hasta el 50% del patrimonio en un solo evento" }
-  },
-  {
-    id: "d2_emp", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "empresario",
-    q: "¿Qué porcentaje de tu patrimonio neto total está representado en tu empresa?",
-    opts: [
-      { pts: 3, text: "Menos del 40% — tengo patrimonio significativo fuera del negocio" },
-      { pts: 2, text: "Entre el 40% y el 65%" },
-      { pts: 1, text: "Entre el 65% y el 85%" },
-      { pts: 0, text: "Más del 85% de mi patrimonio está en mi empresa" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Patrimonio concentrado en el negocio", text: "Cuando la empresa representa más del 65% del patrimonio, el riesgo empresarial y el riesgo patrimonial personal son casi el mismo. Una crisis del negocio se convierte en una crisis familiar total.", cost: "Patrimonio personal en riesgo directo: 65%–100% del total" }
-  },
-  {
-    id: "d2_pro", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "profesional",
-    q: "¿Qué porcentaje de tus ingresos depende de una sola fuente (un empleador, un contrato o un cliente principal)?",
-    opts: [
-      { pts: 3, text: "Menos del 50% — tengo diversidad de fuentes de ingreso y activos que generan flujo pasivo" },
-      { pts: 2, text: "Entre el 50% y el 80% de una sola fuente" },
-      { pts: 1, text: "Más del 80% depende de una sola relación laboral o contractual" },
-      { pts: 0, text: "El 100% de mis ingresos depende de un solo empleador o contrato" },
-    ],
-    vuln: { threshold: 1, icon: "🔺", color: "#D4821A", title: "Dependencia de fuente única de ingresos", text: "Un profesional con un solo cliente o empleador principal tiene una fragilidad enorme. Si esa relación se rompe, el impacto es inmediato y total sobre el flujo de caja familiar.", cost: "Ingreso en riesgo si la relación se rompe: 80%–100% del flujo mensual" }
-  },
-  {
-    id: "d3", section: "04", sectionName: "DIVERSIFICACIÓN", profile: "both",
-    q: "Si mañana enfrentaras una demanda, un embargo o un proceso de divorcio, ¿tus activos principales estarían protegidos?",
-    opts: [
-      { pts: 3, text: "Sí, tengo estructura jurídica que blinda mis activos principales ante estos escenarios" },
-      { pts: 2, text: "Algunos activos tienen protección pero otros están completamente expuestos" },
-      { pts: 1, text: "No he tomado medidas específicas para proteger mis activos" },
-      { pts: 0, text: "Todos mis activos están a nombre personal sin ningún tipo de blindaje" },
-    ],
-    vuln: { threshold: 1, icon: "⚠️", color: "#C0392B", title: "Activos sin blindaje legal", text: "Sin estructura de protección, una demanda o un divorcio puede alcanzar directamente todo lo que está a tu nombre. El blindaje patrimonial no es para esconder activos — es para que un evento legal no destruya lo que construiste en años.", cost: "Patrimonio expuesto: hasta el 100% de los activos a nombre personal" }
-  },
+    vuln: { threshold: 1, icon: "🔵", color: "#2471A3", title: "Sin estrategia de inversión — dinero sin trabajar" }
+  }
 ];
 
-const RESULTS = {
+// ═══ RESULT LEVELS ═══
+var RESULTS = {
   empresario: [
-    { min: 0,  max: 9,  label: "Patrimonio en Riesgo Crítico", color: "#C0392B", gauge: "#E74C3C",
-      desc: "Tu patrimonio personal y tu empresa están expuestos en múltiples frentes simultáneamente. Sin separación jurídica, sin blindaje legal y sin estrategia fiscal, cada año que pasa erosiona lo que has construido — por impuestos innecesarios, por exposición a demandas y por falta de estructura. Un solo evento puede comprometer años de trabajo.",
-      costRange: "$150M – $400M", costNote: "en riesgo patrimonial estimado por falta de estructuración jurídica, fiscal y sucesoria" },
-    { min: 10, max: 18, label: "Fundamentos Débiles", color: "#D4821A", gauge: "#E67E22",
-      desc: "Tienes algunas piezas en su lugar, pero tu arquitectura tiene huecos importantes. La exposición fiscal y legal — combinada con concentración en activos locales — crea un costo silencioso que se acumula año tras año sin que lo notes.",
-      costRange: "$80M – $200M", costNote: "en optimización fiscal, protección patrimonial y eficiencia de inversión no capturada" },
-    { min: 19, max: 27, label: "En Construcción", color: "#2471A3", gauge: "#3498DB",
-      desc: "Vas por buen camino. Tienes conciencia patrimonial y varias piezas funcionando. Pero hay oportunidades ocultas — especialmente en optimización fiscal y en la integración entre tu estructura empresarial y tu patrimonio personal.",
-      costRange: "$30M – $80M", costNote: "en oportunidades de optimización fiscal y diversificación no ejecutada" },
-    { min: 28, max: 36, label: "Arquitectura Sólida", color: "#1E8449", gauge: "#27AE60",
-      desc: "Tienes una base bien construida. El foco ahora es optimización, eficiencia fiscal y planificación del legado. Incluso los patrimonios más sólidos encuentran puntos de mejora significativos cuando se evalúan con herramientas de diagnóstico profesional.",
-      costRange: "$15M – $40M", costNote: "en optimización anual que un diagnóstico profesional típicamente identifica" },
+    { min:0, max:4, label:"Patrimonio en Riesgo Crítico", color:"#C0392B", gauge:"#E74C3C", desc:"Tu patrimonio personal y tu empresa están expuestos en múltiples frentes. Sin separación de flujos, sin estrategia fiscal y sin diversificación, cada año que pasa erosiona lo que construiste." },
+    { min:5, max:9, label:"Estructura Deficiente", color:"#D4821A", gauge:"#E67E22", desc:"Tienes algunas piezas pero tu arquitectura tiene huecos costosos. La mezcla de flujos, la concentración en tu negocio y la falta de optimización fiscal se acumulan año tras año." },
+    { min:10, max:14, label:"En Construcción", color:"#2471A3", gauge:"#3498DB", desc:"Vas por buen camino pero hay oportunidades ocultas — especialmente en cómo sacas dinero de tu empresa y en la integración entre estructura empresarial y patrimonio personal." },
+    { min:15, max:18, label:"Arquitectura Sólida", color:"#1E8449", gauge:"#27AE60", desc:"Tienes una base bien construida. Aun así, la optimización fina típicamente revela entre $15M y $40M anuales en mejoras." }
   ],
   profesional: [
-    { min: 0,  max: 9,  label: "Patrimonio en Riesgo Crítico", color: "#C0392B", gauge: "#E74C3C",
-      desc: "Tu patrimonio depende casi completamente de tu capacidad de trabajar, sin estructura que lo sostenga si algo cambia. Sin protección profesional, sin plan fiscal y sin diversificación, estás pagando más impuestos de los necesarios y expuesto a riesgos que podrían comprometer años de trabajo.",
-      costRange: "$120M – $350M", costNote: "en riesgo patrimonial estimado por falta de protección profesional, blindaje y planificación fiscal" },
-    { min: 10, max: 18, label: "Fundamentos Débiles", color: "#D4821A", gauge: "#E67E22",
-      desc: "Tienes algunos elementos básicos, pero la estructura es frágil. La falta de estrategia fiscal — combinada con dependencia de ingreso activo y concentración en pesos — hace que cada año sin estructurar sea un año de erosión patrimonial silenciosa.",
-      costRange: "$60M – $150M", costNote: "en protección no implementada, sobrecarga fiscal y retorno de inversión no capturado" },
-    { min: 19, max: 27, label: "En Construcción", color: "#2471A3", gauge: "#3498DB",
-      desc: "Vas por buen camino. Tienes conciencia patrimonial y varias piezas funcionando. Pero hay oportunidades ocultas — especialmente en optimización fiscal y en convertir tu ingreso activo en activos que generen flujo sin tu presencia.",
-      costRange: "$25M – $70M", costNote: "en oportunidades de optimización fiscal y generación de ingreso pasivo no ejecutadas" },
-    { min: 28, max: 36, label: "Arquitectura Sólida", color: "#1E8449", gauge: "#27AE60",
-      desc: "Tienes una base bien construida. El foco ahora es optimización, eficiencia fiscal y planificación del legado. Incluso los patrimonios más sólidos encuentran puntos de mejora significativos cuando se evalúan profesionalmente.",
-      costRange: "$15M – $40M", costNote: "en optimización anual que un diagnóstico profesional típicamente identifica" },
+    { min:0, max:3, label:"Patrimonio en Riesgo Crítico", color:"#C0392B", gauge:"#E74C3C", desc:"Tu patrimonio depende casi completamente de tu capacidad de trabajar. Sin optimización fiscal, sin diversificación y con dinero quieto, estás pagando más de lo necesario." },
+    { min:4, max:6, label:"Estructura Deficiente", color:"#D4821A", gauge:"#E67E22", desc:"Tienes algunos elementos básicos pero la estructura es frágil. La falta de estrategia fiscal, inversiones en CDTs y concentración en pesos hacen erosión silenciosa." },
+    { min:7, max:9, label:"En Construcción", color:"#2471A3", gauge:"#3498DB", desc:"Vas por buen camino pero hay oportunidades — especialmente en optimización fiscal y en convertir tu ingreso activo en activos que generen flujo pasivo." },
+    { min:10, max:12, label:"Arquitectura Sólida", color:"#1E8449", gauge:"#27AE60", desc:"Tienes una base bien construida. El foco ahora es optimización fina y planificación de legado." }
   ]
 };
 
-// ─── STATE ────────────────────────────────────────────────────────────────────
-let selectedProfile = null;
-let questionSequence = [];
-let current = 0;
-let answers = {};
+// ═══ STATE ═══
+var selectedProfile = null;
+var questionSequence = [];
+var current = 0;
+var answers = {};
+var sliderValues = {};
 
 function buildSequence(profile) {
-  const seq = [];
-  const order = profile === 'empresario'
-    ? ["p1","p2_emp","p3","l1","l2_emp","l3_emp","c1","c2","c3_emp","d1","d2_emp","d3"]
-    : ["p1","p2_pro","p3","l1","l2_pro","l3_pro","c1","c2","c3_pro","d1","d2_pro","d3"];
-  order.forEach(id => {
-    const q = ALL_QUESTIONS.find(q => q.id === id);
-    if (q) seq.push(q);
-  });
-  return seq;
+  var order = profile === 'empresario'
+    ? ["n1","n2","n3_emp","n4","n5","f1_emp","f2_emp","inv","strat","f3_emp","c1","c2_emp"]
+    : ["n1","n2","n3_pro","n4","n5","f1_pro","inv","strat","f3_pro","c1"];
+  return order.map(function(id) { return ALL_QUESTIONS.find(function(q) { return q.id === id; }); }).filter(Boolean);
 }
 
-// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+// ═══ NAVIGATION ═══
 function showProfile() {
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('profile-screen').style.display = 'block';
 }
-
 function backToStart() {
   document.getElementById('profile-screen').style.display = 'none';
   document.getElementById('start-screen').style.display = 'block';
 }
-
 function selectProfile(p) {
   selectedProfile = p;
   document.getElementById('card-empresario').classList.toggle('selected', p === 'empresario');
   document.getElementById('card-profesional').classList.toggle('selected', p === 'profesional');
   document.getElementById('btn-profile-next').disabled = false;
 }
-
 function startWithProfile() {
   if (!selectedProfile) return;
   questionSequence = buildSequence(selectedProfile);
-  current = 0;
-  answers = {};
+  current = 0; answers = {}; sliderValues = {};
   document.getElementById('profile-screen').style.display = 'none';
   document.getElementById('question-screen').style.display = 'block';
-  document.getElementById('progress-wrap').classList.add('visible');
   renderQuestion();
 }
 
 function renderQuestion() {
-  const q = questionSequence[current];
-  const total = questionSequence.length;
-  const card = document.getElementById('question-card');
-  const sectionLabel = document.getElementById('section-label');
-
+  var q = questionSequence[current];
+  var total = questionSequence.length;
+  var card = document.getElementById('question-card');
+  var sectionLabel = document.getElementById('section-label');
   card.classList.remove('visible');
   sectionLabel.classList.remove('visible');
 
   document.getElementById('section-num').textContent = q.section;
   document.getElementById('section-name').textContent = q.sectionName;
-  document.getElementById('q-number').textContent = `Pregunta ${String(current+1).padStart(2,'0')} de ${total}`;
+  document.getElementById('q-number').textContent = 'Pregunta ' + String(current+1).padStart(2,'0') + ' de ' + total;
   document.getElementById('q-text').textContent = q.q;
 
-  const badgeWrap = document.getElementById('profile-badge-wrap');
-  if (q.profile !== 'both') {
-    const label = selectedProfile === 'empresario' ? '🏢 Para empresarios' : '💼 Para profesionales';
-    badgeWrap.innerHTML = `<div class="profile-badge">${label}</div>`;
+  var badgeWrap = document.getElementById('profile-badge-wrap');
+  badgeWrap.innerHTML = q.profile !== 'both' ? '<div class="profile-badge">' + (selectedProfile === 'empresario' ? 'Para empresarios' : 'Para profesionales') + '</div>' : '';
+
+  document.getElementById('progress-fill').style.width = ((current+1)/total*100) + '%';
+  document.getElementById('progress-count').textContent = (current+1) + ' / ' + total;
+
+  var area = document.getElementById('answer-area');
+
+  if (q.type === 'slider') {
+    var s = q.slider;
+    var savedVal = sliderValues[q.id] !== undefined ? sliderValues[q.id] : s.value;
+    var contextHTML = q.context ? q.context(savedVal, sliderValues) : '';
+
+    area.innerHTML = '<div class="slider-wrap">' +
+      '<div class="slider-display">' +
+        '<div class="slider-value-big" id="sv-display">' + s.prefix + savedVal.toLocaleString('es-CO') + s.unit + '</div>' +
+        '<div class="slider-value-unit">' + s.suffix + '</div>' +
+      '</div>' +
+      '<input type="range" id="sv-input" min="' + s.min + '" max="' + s.max + '" step="' + s.step + '" value="' + savedVal + '">' +
+      '<div class="slider-labels"><span>' + s.prefix + s.min.toLocaleString('es-CO') + s.unit + '</span><span>' + s.prefix + s.max.toLocaleString('es-CO') + s.unit + '</span></div>' +
+      '<div class="slider-context" id="sv-context">' + contextHTML + '</div>' +
+    '</div>';
+
+    var input = document.getElementById('sv-input');
+    input.addEventListener('input', function() {
+      var v = parseInt(this.value);
+      sliderValues[q.id] = v;
+      document.getElementById('sv-display').textContent = s.prefix + v.toLocaleString('es-CO') + s.unit;
+      if (q.context) document.getElementById('sv-context').innerHTML = q.context(v, sliderValues);
+      updateSliderFill(this);
+    });
+    sliderValues[q.id] = savedVal;
+    updateSliderFill(input);
+    document.getElementById('btn-next').disabled = false;
+    document.getElementById('skip-hint').textContent = '';
   } else {
-    badgeWrap.innerHTML = '';
+    var html = '<div class="options">';
+    q.opts.forEach(function(opt, i) {
+      html += '<div class="option' + (answers[q.id] === i ? ' selected' : '') + '" onclick="selectOption(' + i + ')"><div class="option-radio"></div><span class="option-text">' + opt.text + '</span></div>';
+    });
+    html += '</div>';
+    area.innerHTML = html;
+    document.getElementById('btn-next').disabled = answers[q.id] === undefined;
+    document.getElementById('skip-hint').textContent = answers[q.id] !== undefined ? '' : 'Selecciona una opción';
   }
 
-  const pct = ((current + 1) / total) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-count').textContent = `${current+1} / ${total}`;
-
-  const container = document.getElementById('options');
-  container.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'option' + (answers[q.id] === i ? ' selected' : '');
-    div.innerHTML = `
-      <div class="option-radio"></div>
-      <span class="option-pts">${opt.pts}p</span>
-      <span class="option-text">${opt.text}</span>
-    `;
-    div.onclick = () => selectOption(i);
-    container.appendChild(div);
-  });
-
   document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
-  const btnNext = document.getElementById('btn-next');
-  btnNext.disabled = answers[q.id] === undefined;
-  btnNext.textContent = current === total - 1 ? 'Ver mi diagnóstico →' : 'Siguiente →';
-  document.getElementById('skip-hint').textContent = answers[q.id] !== undefined ? '' : 'Selecciona una opción';
-
-  requestAnimationFrame(() => requestAnimationFrame(() => {
+  document.getElementById('btn-next').textContent = current === total - 1 ? 'Ver mi diagnóstico →' : 'Siguiente →';
+  requestAnimationFrame(function() { requestAnimationFrame(function() {
     sectionLabel.classList.add('visible');
     card.classList.add('visible');
-  }));
+  }); });
 }
 
+function updateSliderFill(slider) {
+  var pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+  slider.style.background = 'linear-gradient(to right, var(--gold) 0%, var(--gold) ' + pct + '%, rgba(255,255,255,0.1) ' + pct + '%, rgba(255,255,255,0.1) 100%)';
+}
 function selectOption(i) {
-  const qId = questionSequence[current].id;
-  answers[qId] = i;
-  document.querySelectorAll('.option').forEach((el, idx) => el.classList.toggle('selected', idx === i));
+  answers[questionSequence[current].id] = i;
+  document.querySelectorAll('.option').forEach(function(el, idx) { el.classList.toggle('selected', idx === i); });
   document.getElementById('btn-next').disabled = false;
   document.getElementById('skip-hint').textContent = '';
 }
-
 function goNext() {
-  const qId = questionSequence[current].id;
-  if (answers[qId] === undefined) return;
+  var q = questionSequence[current];
+  if (q.type === 'choice' && answers[q.id] === undefined) return;
   if (current < questionSequence.length - 1) { current++; renderQuestion(); }
   else showCapture();
 }
+function goBack() { if (current > 0) { current--; renderQuestion(); } }
 
-function goBack() {
-  if (current > 0) { current--; renderQuestion(); }
-}
-
-// ─── LEAD CAPTURE ────────────────────────────────────────────────────────────
+// ═══ CAPTURE ═══
 function showCapture() {
   document.getElementById('question-screen').style.display = 'none';
-  document.getElementById('progress-wrap').classList.remove('visible');
   document.getElementById('capture-screen').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 async function submitCapture() {
-  var nombre   = document.getElementById('cap-nombre').value.trim();
-  var email    = document.getElementById('cap-email').value.trim();
-  var whatsapp = document.getElementById('cap-whatsapp').value.trim();
+  var nombre = document.getElementById('cap-nombre').value.trim();
+  var email = document.getElementById('cap-email').value.trim();
+  ['cap-nombre','cap-email'].forEach(function(id) { document.getElementById(id).classList.remove('error'); });
+  if (!nombre) { document.getElementById('cap-nombre').classList.add('error'); return; }
+  if (!email || email.indexOf('@') < 0) { document.getElementById('cap-email').classList.add('error'); return; }
 
-  // Reset errores
-  ['cap-nombre','cap-email'].forEach(function(id) {
-    document.getElementById(id).classList.remove('error');
-  });
-
-  if (!nombre) {
-    document.getElementById('cap-nombre').classList.add('error');
-    document.getElementById('cap-nombre').focus();
-    return;
-  }
-  if (!email || email.indexOf('@') < 0) {
-    document.getElementById('cap-email').classList.add('error');
-    document.getElementById('cap-email').focus();
-    return;
-  }
-
-  var btn    = document.getElementById('btn-capture');
+  var btn = document.getElementById('btn-capture');
   var status = document.getElementById('capture-status');
   btn.disabled = true;
   status.classList.add('visible');
 
-  // Calcular scores
+  // ── Calcular scores (solo choice questions) ──
   var scoreTotal = 0;
+  var secScores = { "02": 0, "03": 0 };
+  var secMax = { "02": 0, "03": 0 };
   questionSequence.forEach(function(q) {
+    if (q.type === 'slider') return;
     var a = answers[q.id];
-    if (a !== undefined) scoreTotal += q.opts[a].pts;
+    if (a !== undefined) {
+      scoreTotal += q.opts[a].pts;
+      if (secScores[q.section] !== undefined) secScores[q.section] += q.opts[a].pts;
+    }
+    if (secMax[q.section] !== undefined) secMax[q.section] += 3;
   });
 
-  var secScores = { "01": 0, "02": 0, "03": 0, "04": 0 };
-  questionSequence.forEach(function(q) {
-    var a = answers[q.id];
-    if (a !== undefined) secScores[q.section] += q.opts[a].pts;
-  });
+  var maxScore = questionSequence.filter(function(q) { return q.type === 'choice'; }).length * 3;
 
+  // ── Determinar nivel ──
   var profileResults = RESULTS[selectedProfile] || RESULTS.empresario;
   var nivelObj = profileResults.find(function(r) { return scoreTotal >= r.min && scoreTotal <= r.max; });
 
+  // ── Detectar vulnerabilidades ──
   var vulnerabilidades = [];
   questionSequence.forEach(function(q) {
+    if (q.type === 'slider' || !q.vuln) return;
     var a = answers[q.id];
     if (a !== undefined && q.opts[a].pts <= q.vuln.threshold) {
       vulnerabilidades.push(q.vuln.title);
     }
   });
 
+  // ── Calcular costos personalizados ──
+  var costsData = calcCosts();
+
+  // ── Respuestas de choice questions ──
   var respuestas = {};
   questionSequence.forEach(function(q) {
-    if (answers[q.id] !== undefined) respuestas[q.id] = answers[q.id];
+    if (q.type !== 'slider' && answers[q.id] !== undefined) respuestas[q.id] = answers[q.id];
   });
 
   var params = new URLSearchParams(window.location.search);
@@ -988,16 +821,32 @@ async function submitCapture() {
   var lead = {
     nombre:   nombre,
     email:    email.toLowerCase(),
-    whatsapp: whatsapp || null,
+    whatsapp: document.getElementById('cap-whatsapp').value.trim() || null,
     perfil:   selectedProfile,
-    score_total: scoreTotal,
-    nivel:    nivelObj ? nivelObj.label : '',
-    exposicion_estimada: nivelObj ? nivelObj.costRange : '',
+    score_total:  scoreTotal,
+    score_max:    maxScore,
+    nivel:        nivelObj ? nivelObj.label : '',
     scores_por_capa: {
-      proteccion:      secScores["01"],
-      liquidez:        secScores["02"],
-      crecimiento:     secScores["03"],
-      diversificacion: secScores["04"]
+      estructura_fiscal: secScores["02"],
+      crecimiento:       secScores["03"]
+    },
+    numeros_reales: {
+      patrimonio_m:    sliderValues.n1 || null,
+      gastos_mes_m:    sliderValues.n2 || null,
+      ingreso_mes_m:   sliderValues.n3_emp || sliderValues.n3_pro || null,
+      pct_improductivo: sliderValues.n4 || null,
+      pct_cop:         sliderValues.n5 || null,
+      pct_empresa:     sliderValues.f3_emp || null,
+      pct_fuente_unica: sliderValues.f3_pro || null
+    },
+    costos_calculados: {
+      total_anual:           costsData.totalAnual || 0,
+      erosion_real:          costsData.erosionReal || 0,
+      costo_oportunidad:     costsData.costoOportunidad || 0,
+      sobrecarga_fiscal:     costsData.sobrecargaFiscal || 0,
+      impuesto_patrimonio:   costsData.impuestoPatrimonio || 0,
+      meses_autonomia:       costsData.mesesAutonomia || 0,
+      exposicion_devaluacion: costsData.exposicionDevaluacion || 0
     },
     vulnerabilidades_detectadas: vulnerabilidades,
     respuestas: respuestas,
@@ -1007,21 +856,28 @@ async function submitCapture() {
     timestamp: _db ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString()
   };
 
+  // ── Guardar en Firestore ──
   try {
     if (_db) {
       var docRef = await _db.collection('leads_test').add(lead);
-      console.log('✅ Lead guardado. ID:', docRef.id);
+      console.log('✅ Lead guardado en Firestore. ID:', docRef.id);
     } else {
       // Fallback: localStorage si Firebase no está configurado
-      var stored = JSON.parse(localStorage.getItem('leads_fallback') || '[]');
+      var stored = JSON.parse(localStorage.getItem('leads_test_v4') || '[]');
       lead.timestamp = new Date().toISOString();
       stored.push(lead);
-      localStorage.setItem('leads_fallback', JSON.stringify(stored));
+      localStorage.setItem('leads_test_v4', JSON.stringify(stored));
       console.warn('⚠️ Firebase sin configurar — lead en localStorage');
     }
   } catch(err) {
-    console.error('Error Firestore:', err);
-    // El usuario SIEMPRE ve su resultado aunque falle el guardado
+    console.error('❌ Error guardando lead:', err);
+    // Fallback a localStorage
+    try {
+      var stored2 = JSON.parse(localStorage.getItem('leads_test_v4') || '[]');
+      lead.timestamp = new Date().toISOString();
+      stored2.push(lead);
+      localStorage.setItem('leads_test_v4', JSON.stringify(stored2));
+    } catch(e2) {}
   }
 
   status.classList.remove('visible');
@@ -1029,110 +885,356 @@ async function submitCapture() {
   showResults(nombre);
 }
 
-// ─── RESULTS ─────────────────────────────────────────────────────────────────
-function showResults(nombreCapturado) {
-  document.getElementById('question-screen').style.display = 'none';
-  document.getElementById('capture-screen').style.display = 'none';
-  document.getElementById('progress-wrap').classList.remove('visible');
-  document.getElementById('result-screen').style.display = 'block';
-
+// ═══════════════════════════════════════════════════════════
+// CÁLCULOS DE COSTOS CORREGIDOS V4
+// ═══════════════════════════════════════════════════════════
+function calcScore() {
   var total = 0;
   questionSequence.forEach(function(q) {
-    var a = answers[q.id];
-    if (a !== undefined) total += q.opts[a].pts;
+    if (q.type === 'choice' && answers[q.id] !== undefined) total += q.opts[answers[q.id]].pts;
   });
+  return total;
+}
 
-  var secScores = { "01": 0, "02": 0, "03": 0, "04": 0 };
-  var secMax    = { "01": 0, "02": 0, "03": 0, "04": 0 };
-  questionSequence.forEach(function(q) {
-    var a = answers[q.id];
-    if (a !== undefined) secScores[q.section] += q.opts[a].pts;
-    secMax[q.section] += 3;
-  });
+function getAnswerPts(qId) {
+  var q = questionSequence.find(function(qq) { return qq.id === qId; });
+  if (q && q.type === 'choice' && answers[qId] !== undefined) return q.opts[answers[qId]].pts;
+  return -1; // no respondida
+}
 
-  var nameTag = nombreCapturado ? nombreCapturado + ' · ' : '';
-  var profileLabel = selectedProfile === 'empresario' ? '🏢 Diagnóstico Empresario' : '💼 Diagnóstico Profesional';
-  document.getElementById('result-profile-tag').textContent = nameTag + profileLabel;
+function calcCosts() {
+  // ═══ INPUTS ═══
+  var patrimonioM = sliderValues.n1 || 1500;
+  var patrimonio = patrimonioM * 1000000;
+  var gastosM_val = sliderValues.n2 || 15;
+  var gastosMensual = gastosM_val * 1000000;
+  var gastosAnual = gastosMensual * 12;
+  var ingresoM_val = sliderValues.n3_emp || sliderValues.n3_pro || 25;
+  var ingresoMensual = ingresoM_val * 1000000;
+  var ingresoAnual = ingresoMensual * 12;
+  var pctImproductivo = (sliderValues.n4 || 20) / 100;
+  var pctCOP = (sliderValues.n5 || 90) / 100;
+  var pctEmpresa = selectedProfile === 'empresario' ? (sliderValues.f3_emp || 65) / 100 : 0;
+  var pctFuente = selectedProfile === 'profesional' ? (sliderValues.f3_pro || 80) / 100 : 0;
+
+  var costs = {};
+
+  // ═══ Guardar inputs para uso en showResults ═══
+  costs._patrimonio = patrimonio;
+  costs._gastosMensual = gastosMensual;
+  costs._gastosAnual = gastosAnual;
+  costs._ingresoAnual = ingresoAnual;
+  costs._ingresoMensual = ingresoMensual;
+  costs._pctCOP = pctCOP;
+  costs._pctEmpresa = pctEmpresa;
+  costs._pctImproductivo = pctImproductivo;
+
+  // ═══ 1. EROSIÓN PATRIMONIO IMPRODUCTIVO ═══
+  // Solo sobre la porción en instrumentos < 5% anual
+  // Diferencial: inflación (5.35%) - rendimiento cuentas (~1.5%) = 3.85%
+  var improductivo = patrimonio * pctImproductivo;
+  var diferencialErosion = INFLACION_2025 - TASA_CUENTAS_AHORRO; // 3.85%
+  costs.erosionReal = Math.round(improductivo * diferencialErosion);
+  costs.erosionMensual = Math.round(costs.erosionReal / 12);
+  costs.improductivoMonto = Math.round(improductivo);
+  costs.diferencialErosion = diferencialErosion;
+
+  // ═══ 2. COSTO DE OPORTUNIDAD ═══
+  // Diferencia entre rendimiento potencial (fondo estructurado ~10%) y actual (~1.5%)
+  // Ajustado según qué tipo de inversión tienen (pregunta inv)
+  var invPts = getAnswerPts('inv');
+  var rendimientoActual;
+  if (invPts >= 3) rendimientoActual = 0.09;      // ya diversificado
+  else if (invPts >= 2) rendimientoActual = 0.065; // fondos locales
+  else if (invPts >= 1) rendimientoActual = TASA_CDT_CORTO; // CDTs
+  else rendimientoActual = TASA_CUENTAS_AHORRO;    // cuentas bancarias
+
+  var diferencialOportunidad = Math.max(0, TASA_FONDO_ESTRUCTURADO - rendimientoActual);
+  costs.costoOportunidad = Math.round(improductivo * diferencialOportunidad);
+  costs.rendimientoActual = rendimientoActual;
+  costs.diferencialOportunidad = diferencialOportunidad;
+
+  // ═══ 3. EXPOSICIÓN A DEVALUACIÓN COP ═══
+  // Riesgo (no pérdida garantizada) basado en promedio histórico
+  var patrimonioCOP = patrimonio * pctCOP;
+  costs.exposicionDevaluacion = Math.round(patrimonioCOP * DEVALUACION_PROMEDIO_5Y);
+  costs.patrimonioCOP = Math.round(patrimonioCOP);
+
+  // ═══ 4. SOBRECARGA FISCAL ═══
+  // Cálculo basado en diferencia entre tarifa SIN optimización vs CON optimización
+  var fiscalPts = selectedProfile === 'empresario' ? getAnswerPts('f1_emp') : getAnswerPts('f1_pro');
+  if (fiscalPts < 0) fiscalPts = 3; // no respondida = asumir optimizado
+
+  if (selectedProfile === 'empresario') {
+    // Empresario: todo como salario → tarifa marginal alta (35-39%)
+    // Optimizado: mix salario + dividendos → tarifa efectiva ~25-28%
+    // Diferencial: ~6-10% del ingreso según nivel de optimización
+    var impuestoSinOptimizar = calcTarifaEfectivaRenta(ingresoAnual);
+    // Con estructura: ~60% como dividendos (10% tarifa) + 40% salario
+    var salarioOptimizado = ingresoAnual * 0.40;
+    var dividendosOptimizados = ingresoAnual * 0.60;
+    var impuestoOptimizado = calcTarifaEfectivaRenta(salarioOptimizado) + dividendosOptimizados * 0.10;
+
+    var ahorroFiscalPotencial = Math.max(0, impuestoSinOptimizar - impuestoOptimizado);
+
+    if (fiscalPts <= 0) costs.sobrecargaFiscal = Math.round(ahorroFiscalPotencial * 0.85); // 85% del ahorro potencial
+    else if (fiscalPts === 1) costs.sobrecargaFiscal = Math.round(ahorroFiscalPotencial * 0.65);
+    else if (fiscalPts === 2) costs.sobrecargaFiscal = Math.round(ahorroFiscalPotencial * 0.35);
+    else costs.sobrecargaFiscal = 0;
+  } else {
+    // Profesional: sin deducciones vs con deducciones completas
+    // Deducciones: pensión voluntaria (hasta 25% o 2500 UVT), intereses vivienda, dependientes, medicina prepagada
+    var rentaGravableSin = ingresoAnual;
+    // Con optimización: ~20-25% de deducciones legales
+    var deducciones = Math.min(ingresoAnual * 0.25, 2500 * UVT_2026);
+    var rentaGravableCon = ingresoAnual - deducciones;
+
+    var impSin = calcTarifaEfectivaRenta(rentaGravableSin);
+    var impCon = calcTarifaEfectivaRenta(rentaGravableCon);
+    var ahorroFiscalPotencial = Math.max(0, impSin - impCon);
+
+    if (fiscalPts <= 0) costs.sobrecargaFiscal = Math.round(ahorroFiscalPotencial * 0.80);
+    else if (fiscalPts === 1) costs.sobrecargaFiscal = Math.round(ahorroFiscalPotencial * 0.55);
+    else if (fiscalPts === 2) costs.sobrecargaFiscal = Math.round(ahorroFiscalPotencial * 0.25);
+    else costs.sobrecargaFiscal = 0;
+  }
+
+  // ═══ 5. IMPUESTO AL PATRIMONIO ═══
+  costs.impuestoPatrimonio = calcImpuestoPatrimonio(patrimonio);
+
+  // ═══ 6. MESES DE AUTONOMÍA ═══
+  // Liquidez = activos líquidos estimados
+  var liquidez = improductivo; // lo de bajo rendimiento es líquido por definición
+
+  if (invPts >= 3) liquidez += (patrimonio - improductivo) * 0.12;     // portafolio: ~12% accesible rápido
+  else if (invPts >= 2) liquidez += (patrimonio - improductivo) * 0.08; // fondos locales
+  else if (invPts >= 1) liquidez += (patrimonio - improductivo) * 0.04; // CDTs (penalización por romper)
+
+  // Para empresarios, limitar liquidez a lo que NO es empresa
+  if (selectedProfile === 'empresario') {
+    var patrimonioNoEmpresa = patrimonio * (1 - pctEmpresa);
+    liquidez = Math.min(liquidez, patrimonioNoEmpresa);
+  }
+
+  costs.liquidez = Math.round(Math.max(0, liquidez));
+  costs.mesesAutonomia = gastosMensual > 0 ? Math.round(costs.liquidez / gastosMensual) : 0;
+
+  // ═══ 7. CONCENTRACIÓN EN NEGOCIO ═══
+  if (selectedProfile === 'empresario') {
+    costs.patrimonioEnRiesgo = Math.round(patrimonio * pctEmpresa);
+  }
+
+  // ═══ 8. TOTAL ANUAL ═══
+  // Solo componentes cuantificables y defensibles:
+  // - Erosión real (pérdida de poder adquisitivo)
+  // - Costo de oportunidad (lo que dejarían de ganar)
+  // - Sobrecarga fiscal (lo que pagan de más)
+  // - Impuesto patrimonio (si aplica)
+  // NO incluye exposición a devaluación (es riesgo, no pérdida segura)
+  costs.totalAnual = costs.erosionReal + costs.costoOportunidad + costs.sobrecargaFiscal + costs.impuestoPatrimonio;
+
+  return costs;
+}
+
+function fmt(n) {
+  if (n < 0) n = 0;
+  if (n >= 1000000000) return '$' + (n/1000000000).toFixed(1).replace('.0','') + ' mil M';
+  if (n >= 1000000) return '$' + Math.round(n/1000000).toLocaleString('es-CO') + 'M';
+  if (n >= 1000) return '$' + Math.round(n/1000).toLocaleString('es-CO') + 'K';
+  return '$' + n.toLocaleString('es-CO');
+}
+
+function pctFmt(n) { return (n * 100).toFixed(1) + '%'; }
+
+// ═══════════════════════════════════════════════════════════
+// RESULTADOS
+// ═══════════════════════════════════════════════════════════
+function showResults(nombre) {
+  document.getElementById('result-screen').style.display = 'block';
+  var total = calcScore();
+  var costs = calcCosts();
+  var maxScore = questionSequence.filter(function(q) { return q.type === 'choice'; }).length * 3;
+
+  document.getElementById('score-max').textContent = maxScore;
+  var profileLabel = selectedProfile === 'empresario' ? 'Empresario' : 'Profesional';
+  document.getElementById('result-profile-tag').textContent = (nombre ? nombre + ' · ' : '') + profileLabel;
 
   var counter = 0;
   var scoreEl = document.getElementById('score-number');
-  var interval = setInterval(function() {
-    counter++;
-    scoreEl.textContent = counter;
-    if (counter >= total) clearInterval(interval);
-  }, total > 0 ? Math.max(30, 900 / total) : 100);
+  var iv = setInterval(function() { counter++; scoreEl.textContent = counter; if (counter >= total) clearInterval(iv); }, total > 0 ? Math.max(30, 900/total) : 100);
 
-  var profileResults = RESULTS[selectedProfile] || RESULTS.empresario;
-  var level = profileResults.find(function(r) { return total >= r.min && total <= r.max; });
-  setTimeout(function() { document.getElementById('gauge-fill').style.width = ((total/36)*100) + '%'; }, 200);
+  var levels = RESULTS[selectedProfile] || RESULTS.empresario;
+  var level = levels.find(function(r) { return total >= r.min && total <= r.max; });
+  if (!level) level = levels[0];
+  setTimeout(function() { document.getElementById('gauge-fill').style.width = ((total/maxScore)*100) + '%'; }, 200);
   document.getElementById('gauge-fill').style.background = 'linear-gradient(90deg, ' + level.gauge + ', ' + level.gauge + 'BB)';
   document.getElementById('result-diagnosis').textContent = level.label;
   document.getElementById('result-diagnosis').style.color = level.color;
   document.getElementById('result-desc').textContent = level.desc;
 
-  // Cost insight box
-  document.getElementById('cost-insight-number').textContent = level.costRange + ' COP';
-  document.getElementById('cost-insight-sub').textContent = level.costNote;
+  // ═══ TOTAL LOSS BANNER ═══
+  var componentesTexto = [];
+  if (costs.erosionReal > 0) componentesTexto.push('erosión (' + fmt(costs.erosionReal) + ')');
+  if (costs.costoOportunidad > 0) componentesTexto.push('costo de oportunidad (' + fmt(costs.costoOportunidad) + ')');
+  if (costs.sobrecargaFiscal > 0) componentesTexto.push('sobrecarga fiscal (' + fmt(costs.sobrecargaFiscal) + ')');
+  if (costs.impuestoPatrimonio > 0) componentesTexto.push('impuesto patrimonio (' + fmt(costs.impuestoPatrimonio) + ')');
 
-  var secMeta = [
-    { id: "01", name: "Protección", icon: "🛡️" },
-    { id: "02", name: "Liquidez",   icon: "💧" },
-    { id: "03", name: "Crecimiento",icon: "📈" },
-    { id: "04", name: "Diversificación", icon: "🌐" },
+  document.getElementById('total-loss-number').textContent = fmt(costs.totalAnual) + ' / año';
+  document.getElementById('total-loss-sub').textContent = 'Compuesto por: ' + componentesTexto.join(' + ') + '. Eso equivale a ' + fmt(Math.round(costs.totalAnual/12)) + ' cada mes.';
+
+  // ═══ COST CARDS ═══
+  var grid = document.getElementById('cost-grid');
+  var html = '';
+
+  // Card 1: Erosión patrimonio improductivo
+  if (costs.erosionReal > 0) {
+    html += '<div class="cost-card red"><div class="cost-card-label red">Erosión por patrimonio improductivo</div>'
+      + '<div class="cost-card-number">' + fmt(costs.erosionReal) + ' / año</div>'
+      + '<div class="cost-card-sub">' + fmt(costs.improductivoMonto) + ' en instrumentos que rinden ~' + pctFmt(TASA_CUENTAS_AHORRO)
+      + '. Con inflación al ' + pctFmt(INFLACION_2025) + ', pierdes ' + fmt(costs.erosionMensual) + ' de poder adquisitivo cada mes.</div>'
+      + '<div class="cost-detail">Cálculo: ' + fmt(costs.improductivoMonto) + ' × (' + pctFmt(INFLACION_2025) + ' − ' + pctFmt(TASA_CUENTAS_AHORRO) + ') = ' + fmt(costs.erosionReal) + '</div>'
+      + '</div>';
+  }
+
+  // Card 2: Costo de oportunidad
+  if (costs.costoOportunidad > 0) {
+    html += '<div class="cost-card orange"><div class="cost-card-label orange">Costo de oportunidad</div>'
+      + '<div class="cost-card-number">' + fmt(costs.costoOportunidad) + ' / año</div>'
+      + '<div class="cost-card-sub">Si esos ' + fmt(costs.improductivoMonto) + ' estuvieran en un portafolio al '
+      + pctFmt(TASA_FONDO_ESTRUCTURADO) + ', generarían ' + fmt(costs.costoOportunidad) + ' más que su rendimiento actual (~' + pctFmt(costs.rendimientoActual) + ').</div>'
+      + '<div class="cost-detail">Cálculo: ' + fmt(costs.improductivoMonto) + ' × (' + pctFmt(TASA_FONDO_ESTRUCTURADO) + ' − ' + pctFmt(costs.rendimientoActual) + ') = ' + fmt(costs.costoOportunidad) + '</div>'
+      + '</div>';
+  }
+
+  // Card 3: Sobrecarga fiscal
+  if (costs.sobrecargaFiscal > 0) {
+    html += '<div class="cost-card red"><div class="cost-card-label red">Sobrecarga fiscal estimada</div>'
+      + '<div class="cost-card-number">' + fmt(costs.sobrecargaFiscal) + ' / año</div>'
+      + '<div class="cost-card-sub">Sobre ingresos de ' + fmt(costs._ingresoAnual) + '/año. '
+      + (selectedProfile === 'empresario'
+        ? 'Sin optimizar la mezcla salario/dividendos, pagas una tarifa efectiva mayor. Con estructura, podrías ahorrar esta cifra.'
+        : 'Existen deducciones legales (pensión voluntaria, dependientes, medicina prepagada, intereses vivienda) que reducirían tu base gravable hasta en 25%.')
+      + '</div>'
+      + '<div class="cost-detail">Basado en tabla Art. 241 ET con UVT ' + UVT_2026.toLocaleString('es-CO') + ' (2026)</div>'
+      + '</div>';
+  }
+
+  // Card 4: Impuesto patrimonio
+  if (costs.impuestoPatrimonio > 0) {
+    html += '<div class="cost-card orange"><div class="cost-card-label orange">Impuesto al patrimonio 2026</div>'
+      + '<div class="cost-card-number">' + fmt(costs.impuestoPatrimonio) + '</div>'
+      + '<div class="cost-card-sub">Tu patrimonio de ' + fmt(costs._patrimonio) + ' supera el umbral de ' + fmt(UMBRAL_PATRIMONIO)
+      + ' (72.000 UVT). Tarifas marginales: 1% hasta 122.000 UVT, 1.5% en exceso. Exclusión de vivienda: ' + fmt(EXCLUSION_VIVIENDA) + '.</div>'
+      + '<div class="cost-detail">Base: ' + fmt(costs._patrimonio) + ' − ' + fmt(EXCLUSION_VIVIENDA) + ' vivienda. Tarifa marginal sobre exceso de ' + fmt(UMBRAL_PATRIMONIO) + '</div>'
+      + '</div>';
+  }
+
+  // Card 5: Exposición devaluación (como RIESGO, no pérdida)
+  if (costs.exposicionDevaluacion > 0 && costs._pctCOP > 0.7) {
+    html += '<div class="cost-card blue"><div class="cost-card-label blue">Exposición a devaluación (riesgo)</div>'
+      + '<div class="cost-card-number">' + fmt(costs.exposicionDevaluacion) + ' / año</div>'
+      + '<div class="cost-card-sub">' + Math.round(costs._pctCOP * 100) + '% de tu patrimonio (' + fmt(costs.patrimonioCOP) + ') está en COP. '
+      + 'Con devaluación promedio de ' + pctFmt(DEVALUACION_PROMEDIO_5Y) + '/año, tu poder adquisitivo internacional se reduce por esta cifra. '
+      + 'Este es un riesgo, no una pérdida garantizada.</div>'
+      + '<div class="cost-detail">No incluido en el total anual — es exposición al riesgo cambiario</div>'
+      + '</div>';
+  }
+
+  // Card 6: Meses de autonomía
+  var autoColor = costs.mesesAutonomia < 6 ? 'red' : costs.mesesAutonomia < 9 ? 'orange' : 'green';
+  var autoText = '';
+  if (costs.mesesAutonomia < 3) autoText = 'Menos de 3 meses. Si dejas de generar ingresos, tu familia entra en crisis rápidamente. Mínimo recomendado: 9 meses.';
+  else if (costs.mesesAutonomia < 6) autoText = 'Menos de 6 meses. Tendrías que liquidar activos bajo presión. Mínimo recomendado: 9 meses.';
+  else if (costs.mesesAutonomia < 9) autoText = 'Entre 6 y 9 meses. Tienes colchón pero estás por debajo del mínimo recomendado.';
+  else autoText = 'Más de 9 meses de cobertura. Tu liquidez es saludable para tus gastos.';
+  html += '<div class="cost-card ' + autoColor + '"><div class="cost-card-label ' + autoColor + '">Meses de autonomía</div>'
+    + '<div class="cost-card-number">' + costs.mesesAutonomia + ' meses</div>'
+    + '<div class="cost-card-sub">Liquidez estimada: ' + fmt(costs.liquidez) + '. Con gastos de ' + fmt(costs._gastosMensual) + '/mes. ' + autoText + '</div>'
+    + '<div class="cost-detail">Liquidez = activos de bajo rendimiento + porción líquida de inversiones' + (selectedProfile === 'empresario' ? ' (excluye empresa)' : '') + '</div>'
+    + '</div>';
+
+  // Card 7: Concentración en negocio (empresarios)
+  if (selectedProfile === 'empresario' && costs._pctEmpresa >= 0.50) {
+    html += '<div class="cost-card orange"><div class="cost-card-label orange">Patrimonio concentrado en tu negocio</div>'
+      + '<div class="cost-card-number">' + fmt(costs.patrimonioEnRiesgo) + '</div>'
+      + '<div class="cost-card-sub">' + Math.round(costs._pctEmpresa * 100) + '% de tu patrimonio depende de un solo activo ilíquido. Si el negocio tiene un mal año, todo tu patrimonio cae.</div>'
+      + '</div>';
+  }
+  grid.innerHTML = html;
+
+  // ═══ 2026 ALERT ═══
+  var alertHTML = '<div class="alert-2026-title">Contexto fiscal 2026</div><div class="alert-2026-text">';
+  if (costs.impuestoPatrimonio > 0) {
+    alertHTML += '<strong>Impuesto al patrimonio:</strong> Tu patrimonio de <span class="alert-2026-number">' + fmt(costs._patrimonio) + '</span> supera ' + fmt(UMBRAL_PATRIMONIO) + '. Vencimientos: mayo y septiembre 2026. Impuesto estimado: <span class="alert-2026-number">' + fmt(costs.impuestoPatrimonio) + '</span>.<br><br>';
+  }
+  if (costs.sobrecargaFiscal > 0) {
+    alertHTML += '<strong>Declaración de renta:</strong> Vence entre agosto y octubre 2026. Sobrecarga fiscal estimada: <span class="alert-2026-number">' + fmt(costs.sobrecargaFiscal) + '</span>/año sin optimización.<br><br>';
+  }
+  if (costs._pctCOP > 0.7) {
+    alertHTML += '<strong>Exposición cambiaria:</strong> Con <span class="alert-2026-number">' + Math.round(costs._pctCOP * 100) + '%</span> en COP, tu exposición anual al riesgo de devaluación es de <span class="alert-2026-number">' + fmt(costs.exposicionDevaluacion) + '</span>.';
+  }
+  alertHTML += '</div>';
+  document.getElementById('alert-2026').innerHTML = alertHTML;
+
+  // ═══ BREAKDOWN ═══
+  var capas = [
+    { ids: ["f1_emp","f1_pro","f2_emp","inv"], name: "💰 Estructura fiscal" },
+    { ids: ["c1","c2_emp","strat"], name: "📈 Crecimiento e inversión" }
   ];
   var bd = document.getElementById('breakdown');
   bd.innerHTML = '';
-  secMeta.forEach(function(sec) {
-    var pts = secScores[sec.id] || 0;
-    var mx  = secMax[sec.id]   || 1;
-    var pct = (pts / mx) * 100;
+  capas.forEach(function(capa) {
+    var pts = 0, mx = 0;
+    capa.ids.forEach(function(id) {
+      var q = questionSequence.find(function(qq) { return qq.id === id; });
+      if (q && q.type === 'choice' && answers[q.id] !== undefined) { pts += q.opts[answers[q.id]].pts; mx += 3; }
+    });
+    if (mx === 0) return;
+    var pct = (pts/mx)*100;
     var color = pct < 40 ? '#C0392B' : pct < 65 ? '#D4821A' : pct < 85 ? '#2471A3' : '#1E8449';
-    bd.innerHTML += '<div class="breakdown-card"><div class="breakdown-title">' + sec.icon + ' ' + sec.name + '</div><div class="breakdown-score"><span class="bd-pts">' + pts + '</span><span class="bd-max">/ ' + mx + ' pts</span></div><div class="bd-bar"><div class="bd-bar-fill" style="width:0%;background:' + color + '" data-width="' + pct + '"></div></div></div>';
+    bd.innerHTML += '<div class="breakdown-card"><div class="breakdown-title">' + capa.name + '</div><div class="breakdown-score"><span class="bd-pts">' + pts + '</span><span class="bd-max">/ ' + mx + ' pts</span></div><div class="bd-bar"><div class="bd-bar-fill" style="width:0%;background:' + color + '" data-width="' + pct + '"></div></div></div>';
   });
-  setTimeout(function() {
-    document.querySelectorAll('.bd-bar-fill').forEach(function(el) { el.style.width = el.dataset.width + '%'; });
-  }, 400);
+  setTimeout(function() { document.querySelectorAll('.bd-bar-fill').forEach(function(el) { el.style.width = el.dataset.width + '%'; }); }, 400);
 
+  // ═══ VULNERABILITIES ═══
   var vulns = document.getElementById('vulns-list');
   vulns.innerHTML = '';
   var count = 0;
   questionSequence.forEach(function(q) {
+    if (q.type !== 'choice' || !q.vuln) return;
     var a = answers[q.id];
     if (a !== undefined && q.opts[a].pts <= q.vuln.threshold && count < 5) {
-      var costTag = q.vuln.cost ? '<span class="vuln-cost">' + q.vuln.cost + '</span>' : '';
-      vulns.innerHTML += '<div class="vuln-item" style="border-color:' + q.vuln.color + '"><div class="vuln-icon">' + q.vuln.icon + '</div><div class="vuln-text"><strong>' + q.vuln.title + '</strong>' + q.vuln.text + costTag + '</div></div>';
+      var costText = '';
+      if (q.id === 'f1_emp' || q.id === 'f1_pro') costText = 'Sobrecarga fiscal estimada: ' + fmt(costs.sobrecargaFiscal) + ' / año';
+      else if (q.id === 'f2_emp') costText = 'Utilidades acumuladas engordan patrimonio → riesgo impuesto patrimonio';
+      else if (q.id === 'inv') costText = 'Costo de oportunidad: ' + fmt(costs.costoOportunidad) + ' / año';
+      else if (q.id === 'c1') {
+        var pasivoNoGenerado = Math.round(costs._patrimonio * 0.04 / 12);
+        costText = 'Ingreso pasivo potencial no generado: ~' + fmt(pasivoNoGenerado) + ' / mes';
+      }
+      else if (q.id === 'c2_emp') costText = 'Mezclar flujos aumenta riesgo fiscal y dificulta planificación';
+      else if (q.id === 'strat') costText = 'Sin estrategia, tu dinero no genera rendimiento óptimo';
+      vulns.innerHTML += '<div class="vuln-item" style="border-color:' + q.vuln.color + '"><div class="vuln-icon">' + q.vuln.icon + '</div><div class="vuln-text"><strong>' + q.vuln.title + '</strong>' + (costText ? '<span class="vuln-cost">' + costText + '</span>' : '') + '</div></div>';
       count++;
     }
   });
-  if (count === 0) {
-    vulns.innerHTML = '<div class="vuln-item" style="border-color:#1E8449"><div class="vuln-icon">✅</div><div class="vuln-text"><strong>Sin alertas críticas detectadas</strong>Tu perfil no presenta vulnerabilidades evidentes. El diagnóstico completo puede revelar oportunidades de optimización no visibles en este test.</div></div>';
-  }
 
+  // ═══ CTA ═══
+  document.getElementById('cta-amount').textContent = fmt(costs.totalAnual) + ' al año';
   if (selectedProfile === 'empresario') {
-    document.getElementById('cta-headline').innerHTML = 'Descubre exactamente dónde está<br>tu exposición patrimonial real';
-    document.getElementById('cta-sub').textContent = 'En 45 minutos revisamos las vulnerabilidades específicas que detectó tu test — las tuyas, no genéricas. Sin propuesta de productos al final si no hay algo urgente que resolver.';
+    document.getElementById('cta-sub').textContent = 'Tu patrimonio de ' + fmt(costs._patrimonio) + ' está dejando ' + fmt(costs.totalAnual) + ' al año entre erosión, costo de oportunidad y sobrecarga fiscal. En la sesión analizamos tus números reales y te mostramos exactamente dónde recuperarlo.';
   } else {
-    document.getElementById('cta-headline').innerHTML = 'Entiende qué significa cada<br>vulnerabilidad para tu caso concreto';
-    document.getElementById('cta-sub').textContent = 'En 45 minutos revisamos juntos lo que detectó el test en tu situación particular — y defines con claridad cuál es el primer paso para blindar lo que has construido.';
+    document.getElementById('cta-sub').textContent = 'Tu patrimonio de ' + fmt(costs._patrimonio) + ' está dejando ' + fmt(costs.totalAnual) + ' al año. En la sesión te mostramos la primera vista integrada de todo tu patrimonio y un plan concreto para optimizar.';
   }
-
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function restartTest() {
-  selectedProfile = null;
-  questionSequence = [];
-  current = 0;
-  answers = {};
+  selectedProfile = null; questionSequence = []; current = 0; answers = {}; sliderValues = {};
   document.getElementById('result-screen').style.display = 'none';
   document.getElementById('capture-screen').style.display = 'none';
-  document.getElementById('cap-nombre').value = '';
-  document.getElementById('cap-email').value = '';
-  document.getElementById('cap-whatsapp').value = '';
-  document.getElementById('cap-nombre').classList.remove('error');
-  document.getElementById('cap-email').classList.remove('error');
+  ['cap-nombre','cap-email','cap-whatsapp'].forEach(function(id) { document.getElementById(id).value = ''; document.getElementById(id).classList.remove('error'); });
   document.getElementById('btn-capture').disabled = false;
-  document.getElementById('capture-status').classList.remove('visible');
   document.getElementById('card-empresario').classList.remove('selected');
   document.getElementById('card-profesional').classList.remove('selected');
   document.getElementById('btn-profile-next').disabled = true;
