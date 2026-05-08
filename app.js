@@ -60,6 +60,20 @@ const COLCHON_MESES = 3;
 const UMBRAL_PAT = 72000 * UVT;             // Umbral imp. patrimonio
 const EXCL_VIV = 12000 * UVT;               // Exclusión vivienda
 
+// ── v7: Constantes nuevas ──
+const IMPUESTO_ESTIMADO_PCT = 0.10;         // Impuestos aprox sobre ingreso activo (para capacidad ahorro)
+
+/** Tabla de optimización fiscal por tramo de ingreso anual.
+ *  Las deducciones del Estatuto Tributario (Art. 206 num 10, AFC, dependientes,
+ *  medicina prepagada) tienen techos absolutos en UVT, así que su proporción
+ *  sobre el ingreso baja a medida que el ingreso sube. */
+function tramoSobrecargaFiscal(ingresoAnual) {
+  if (ingresoAnual <= 150e6) return [0.04, 0.08];   // <$150M: deducciones básicas
+  if (ingresoAnual <= 300e6) return [0.06, 0.12];   // <$300M: Art 206 + AFC + dependientes
+  if (ingresoAnual <= 600e6) return [0.08, 0.16];   // <$600M: estructura compleja
+  return [0.10, 0.20];                              // >$600M: planeación robusta
+}
+
 /* Art 296-3 ET — Impuesto al patrimonio personas naturales */
 function calcImpPat(patBruto, deuda) {
   var pl = Math.max(0, patBruto - deuda);
@@ -727,30 +741,51 @@ function calcMotorV2(){
   var colchon = Math.min(improductivo, gastos_mes*meta_meses_perfil);
   var capital_reasignable = Math.max(0, improductivo-colchon);
 
+  // ═══════════════════════════════════════════════════════════════════════
+  // v7: CÁLCULOS NUEVOS
+  // ═══════════════════════════════════════════════════════════════════════
+
+  // (a) Capacidad de ahorro mensual desaprovechada.
+  // ahorro_mensual = ingreso_total − gastos − impuestos_estimados
+  // El test no calcula impuestos reales, pero estima un 10% promedio sobre el
+  // ingreso activo para obtener una capacidad de ahorro defendible.
+  var ingreso_total_mes = ingreso_activo_mes + ingreso_pasivo_mes;
+  var impuestos_estimados_mes = ingreso_activo_mes * IMPUESTO_ESTIMADO_PCT;
+  var ahorro_mensual = Math.max(0, ingreso_total_mes - gastos_mes - impuestos_estimados_mes);
+  // Oportunidad anual: si ese ahorro estuviera invertido al diferencial fondo vs ahorro
+  var diferencial_ahorro = T_FONDO - T_AHORRO; // ~6.5%
+  var oportunidad_ahorro_anual = Math.round(ahorro_mensual * 12 * diferencial_ahorro);
+
+  // (b) Sobrecarga fiscal calculada por tramo de ingreso (NO se suma al total).
+  // Se muestra en indicador aparte como rango defendible.
+  var ingreso_anual_activo = ingreso_activo_mes * 12;
+  var tramoSF = tramoSobrecargaFiscal(ingreso_anual_activo);
+  var sobrecarga_fiscal_min = Math.round(ingreso_anual_activo * tramoSF[0]);
+  var sobrecarga_fiscal_max = Math.round(ingreso_anual_activo * tramoSF[1]);
+  // Aplica solo si la persona dijo NO tener estrategia fiscal (f1p ≤ 2 o f1e ≤ 2)
+  var pts_f1 = aPts(selectedProfile==='empresario'?'f1e':'f1p');
+  var aplica_sobrecarga = pts_f1 >= 0 && pts_f1 <= 2;
+
   // ═══ NÚMERO 1: PÉRDIDA REAL ANUAL ═══
   var erosion_real = Math.round(improductivo*(INFL-T_AHORRO));
   var impuesto_patrimonio = calcImpPat(patrimonio_bruto, deuda_total);
   var subtotal_perdidas = erosion_real+impuesto_patrimonio;
 
-  // ═══ NÚMERO 2: OPORTUNIDAD ANUAL ═══
+  // ═══ NÚMERO 2: OPORTUNIDAD ANUAL (incluye capacidad ahorro, NO sobrecarga fiscal) ═══
   var puntos_inv = aPts('inv');
   if(puntos_inv<0)puntos_inv=2;
   var tasa_actual = puntos_inv>=3?T_FONDO:puntos_inv===2?0.065:puntos_inv===1?T_CDT:T_AHORRO;
   var diferencial = Math.max(0, T_FONDO-tasa_actual);
   var costo_oportunidad = Math.round(capital_reasignable*diferencial);
 
-  // v5: exposición cambiaria sobre SOLO LÍQUIDOS (ambos perfiles).
-  // Razón: la empresa y los inmuebles no son activos monetarios directos —
-  // su valor se ajusta a la inflación local o al flujo que generan, no se
-  // devalúan automáticamente con el tipo de cambio. Solo activos monetarios
-  // líquidos en COP pierden poder adquisitivo frente al USD.
-  // La pregunta n5 sigue refiriéndose al patrimonio total (informativa para
-  // el usuario), pero la cifra de pérdida solo aplica sobre líquidos.
+  // Exposición cambiaria sobre SOLO LÍQUIDOS
   var liquidos_en_cop = liquidos*pct_cop;
   var liquidos_en_otras = liquidos - liquidos_en_cop;
   var exposicion_cambiaria = pct_cop>=0.70?Math.round(liquidos_en_cop*DEVAL):0;
 
-  var subtotal_oportunidad = costo_oportunidad+exposicion_cambiaria;
+  // Suma del subtotal de oportunidad incluyendo capacidad de ahorro
+  // (la sobrecarga fiscal NO se suma — se muestra aparte)
+  var subtotal_oportunidad = costo_oportunidad + exposicion_cambiaria + oportunidad_ahorro_anual;
 
   // ═══ TOTAL ═══
   var total_anual = subtotal_perdidas+subtotal_oportunidad;
@@ -883,7 +918,12 @@ function calcMotorV2(){
       subtotal_perdidas:subtotal_perdidas,
       costo_oportunidad:costo_oportunidad,
       exposicion_cambiaria:exposicion_cambiaria,
+      oportunidad_ahorro_anual:oportunidad_ahorro_anual,
+      sobrecarga_fiscal_min:sobrecarga_fiscal_min,
+      sobrecarga_fiscal_max:sobrecarga_fiscal_max,
+      sobrecarga_fiscal_aplica:aplica_sobrecarga,
       subtotal_oportunidad:subtotal_oportunidad,
+      ahorro_mensual:Math.round(ahorro_mensual),
       total_anual:total_anual,
       total_mensual:Math.round(total_anual/12),
       patrimonio_bruto:Math.round(patrimonio_bruto),
@@ -938,6 +978,19 @@ function calcMotorV2(){
         patrimonio_neto:Math.round(patrimonio_neto),
         ratio_deuda_pct:Math.round(ratio_deuda*10)/10,
         pct_consumo:Math.round(pct_consumo*10)/10
+      },
+      // v7: Capacidad de ahorro mensual desaprovechada
+      capacidad_ahorro:{
+        ahorro_mensual:Math.round(ahorro_mensual),
+        oportunidad_anual:oportunidad_ahorro_anual,
+        ingreso_total_mes:Math.round(ingreso_total_mes)
+      },
+      // v7: Sobrecarga fiscal por tramo de ingreso (solo informativa, no se suma al total)
+      sobrecarga_fiscal:{
+        rango_min:sobrecarga_fiscal_min,
+        rango_max:sobrecarga_fiscal_max,
+        aplica:aplica_sobrecarga,
+        ingreso_anual:ingreso_anual_activo
       }
     },
     diagnostico_dominante:dx,
@@ -1302,7 +1355,8 @@ function showRes(nombre, R, cta){
     h+='<div class="cost-card-sub">Ingresos adicionales si tu dinero estuviera mejor estructurado.</div>';
     h+='<div class="cost-detail">';
     if(c.costo_oportunidad>0) h+='Mejor rendimiento posible: '+fmtM(c.costo_oportunidad)+'<br>';
-    if(c.exposicion_cambiaria>0) h+='Pérdida por tener todo en pesos: '+fmtM(c.exposicion_cambiaria);
+    if(c.exposicion_cambiaria>0) h+='Pérdida por tener todo en pesos: '+fmtM(c.exposicion_cambiaria)+'<br>';
+    if(c.oportunidad_ahorro_anual>0) h+='Ahorro mensual sin invertir: '+fmtM(c.oportunidad_ahorro_anual);
     h+='</div></div>';
   }
   g.innerHTML=h;
@@ -1372,7 +1426,12 @@ function showRes(nombre, R, cta){
     iH+='<div class="ind-value">'+(ind.capital_productivo.improductivo>0?fmtM(ind.capital_productivo.improductivo)+' sin rendir':'✓ Todo rinde')+'</div>';
     iH+='<div class="ind-desc">';
     if(ind.capital_productivo.improductivo>0){
-      iH+='El <strong>'+ind.capital_productivo.pct_improductivo+'%</strong> de tus líquidos está en cuentas o CDTs que rinden menos que la inflación. De esos, <strong>'+fmtM(ind.capital_productivo.reasignable)+'</strong> los podrías mover hoy mismo a inversiones que sí te generen ingresos (dejando '+ind.fondo_emergencia.meta_meses+' meses de gastos como colchón de emergencia).';
+      iH+='El <strong>'+ind.capital_productivo.pct_improductivo+'%</strong> de tus líquidos está en cuentas o CDTs que rinden menos que la inflación. ';
+      if(ind.capital_productivo.reasignable>0){
+        iH+='De esos, <strong>'+fmtM(ind.capital_productivo.reasignable)+'</strong> los podrías mover hoy mismo a inversiones que sí te generen ingresos (dejando '+ind.fondo_emergencia.meta_meses+' meses de gastos como colchón de emergencia).';
+      } else {
+        iH+='Pero todo ese dinero está cumpliendo función de colchón de emergencia ('+ind.fondo_emergencia.meta_meses+' meses de gastos recomendados). Necesitas <strong>aumentar tu liquidez total</strong> antes de poder reasignar capital a inversiones productivas.';
+      }
     } else {
       iH+='Todo tu dinero líquido está rindiendo por encima de la inflación. Estructura sólida en este indicador.';
     }
@@ -1432,6 +1491,37 @@ function showRes(nombre, R, cta){
   }
   // Nota v3: si solo hay deuda estructural (hipoteca, inversión) sin consumo → no se muestra
   // tarjeta. La deuda hipotecaria al 12% sobre inmueble que se valoriza al 8% es apalancamiento sano.
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // v7: Indicadores nuevos
+  // ═══════════════════════════════════════════════════════════════════════
+
+  // 7. Capacidad de Ahorro Desaprovechada (solo si ahorra >= $1M/mes)
+  if(ind.capacidad_ahorro && ind.capacidad_ahorro.ahorro_mensual >= 1e6){
+    var caC = ind.capacidad_ahorro.ahorro_mensual >= 10e6 ? 'red'
+            : ind.capacidad_ahorro.ahorro_mensual >= 5e6 ? 'orange' : 'blue';
+    var pctAhorro = ind.capacidad_ahorro.ingreso_total_mes > 0
+      ? Math.round((ind.capacidad_ahorro.ahorro_mensual / ind.capacidad_ahorro.ingreso_total_mes) * 100) : 0;
+    iH+='<div class="ind-card '+caC+'">';
+    iH+='<div class="ind-header"><div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>';
+    iH+='<div class="ind-title">Capacidad de Ahorro Desaprovechada</div>';
+    iH+='<span class="ind-badge">'+pctAhorro+'% de tu ingreso</span></div>';
+    iH+='<div class="ind-value">'+fmtM(ind.capacidad_ahorro.ahorro_mensual)+'/mes sin invertir</div>';
+    iH+='<div class="ind-desc">Después de gastos e impuestos te quedan aproximadamente <strong>'+fmtM(ind.capacidad_ahorro.ahorro_mensual)+' al mes</strong>. Si ese flujo estuviera invertido al '+(T_FONDO*100).toFixed(0)+'% (en vez de quedarse en cuenta de ahorros al '+(T_AHORRO*100).toFixed(1)+'%), generaría <strong>'+fmtM(ind.capacidad_ahorro.oportunidad_anual)+'/año adicionales</strong> en rendimientos.</div>';
+    iH+='<div class="ind-detail"><div class="ind-detail-item"><div class="ind-detail-label">Ahorro mensual estimado</div><div class="ind-detail-val">'+fmtM(ind.capacidad_ahorro.ahorro_mensual)+'</div></div>';
+    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Oportunidad anual</div><div class="ind-detail-val">'+fmtM(ind.capacidad_ahorro.oportunidad_anual)+'</div></div></div></div>';
+  }
+
+  // 8. Sobrecarga Fiscal Estimada (solo si dijo no tener estrategia fiscal)
+  if(ind.sobrecarga_fiscal && ind.sobrecarga_fiscal.aplica && ind.sobrecarga_fiscal.rango_max > 0){
+    iH+='<div class="ind-card red">';
+    iH+='<div class="ind-header"><div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>';
+    iH+='<div class="ind-title">Sobrecarga Fiscal Estimada</div>';
+    iH+='<span class="ind-badge">Sobre ingreso de '+fmtM(ind.sobrecarga_fiscal.ingreso_anual)+'/año</span></div>';
+    iH+='<div class="ind-value">'+fmtM(ind.sobrecarga_fiscal.rango_min)+' a '+fmtM(ind.sobrecarga_fiscal.rango_max)+'/año</div>';
+    iH+='<div class="ind-desc">Como respondiste que no tienen una estrategia fiscal estructurada, estás dejando de optimizar entre <strong>'+fmtM(ind.sobrecarga_fiscal.rango_min)+' y '+fmtM(ind.sobrecarga_fiscal.rango_max)+' al año</strong>. El cálculo se basa en deducciones disponibles (Art. 206 ET, AFC, dependientes, medicina prepagada) y la mezcla óptima salario+dividendos según el caso. La cifra exacta depende de tu declaración real.</div>';
+    iH+='</div>';
+  }
 
   iG.innerHTML=iH;
   setTimeout(function(){
