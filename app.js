@@ -205,6 +205,7 @@ var ALL_Q = [
      var t=l+n;
      return {min:0, max:Math.max(t,500), step:Math.max(5,Math.round(t/100)*5), value:0, unit:"M", prefix:"$", suffix:" millones COP"};
    },
+   inputHint:"Si tu deuda total es $200.000.000, escribe <strong>200</strong> · Si no tienes deudas, escribe <strong>0</strong>",
    ctx:function(v,s){
      if(!v)return'✅ <strong>Sin deuda.</strong> Estructura libre de apalancamiento.';
      var l=s&&s.nl?s.nl:300;
@@ -265,8 +266,9 @@ var ALL_Q = [
    opts:[
      {pts:3, text:"Portafolio diversificado: fondos internacionales, ETFs, renta fija + variable"},
      {pts:2, text:"Fondos de inversión locales o pensión voluntaria"},
-     {pts:1, text:"Principalmente CDTs o cuentas remuneradas"},
-     {pts:0, text:"No tengo inversiones — solo inmuebles o cuentas bancarias"}
+     {pts:2, text:"Inmuebles que me generan retorno mensual (arriendo)"},
+     {pts:1, text:"Solo CDTs o cuentas remuneradas"},
+     {pts:0, text:"No tengo inversiones aún"}
    ],
    vuln:{threshold:1, severidad:'alta', titulo:"Tus inversiones están concentradas localmente"}},
 
@@ -582,6 +584,16 @@ function goNext(){
 
   if(current<questionSequence.length-1){
     current++;
+    // v9: si la pregunta siguiente es 'ndc' y la deuda total (nd) es 0,
+    // saltarla automáticamente (no tiene sentido preguntar por deuda de
+    // consumo si no hay deuda total).
+    if(questionSequence[current].id==='ndc' && (sliderValues.nd||0)===0){
+      // Marcar ndc como 0 implícitamente para que los cálculos no fallen
+      sliderValues.ndc = 0;
+      if(current<questionSequence.length-1){
+        current++;
+      }
+    }
     renderQ();
   } else {
     showCap();
@@ -589,7 +601,15 @@ function goNext(){
 }
 
 function goBack(){
-  if(current>0){current--;renderQ();}
+  if(current>0){
+    current--;
+    // v9: si veníamos de saltar 'ndc' (porque nd=0), también saltamos
+    // hacia atrás esa pregunta para no mostrarla.
+    if(questionSequence[current].id==='ndc' && (sliderValues.nd||0)===0){
+      if(current>0) current--;
+    }
+    renderQ();
+  }
 }
 
 function showCap(){
@@ -778,14 +798,16 @@ function calcMotorV2(){
   var diferencial = Math.max(0, T_FONDO-tasa_actual);
   var costo_oportunidad = Math.round(capital_reasignable*diferencial);
 
-  // Exposición cambiaria sobre SOLO LÍQUIDOS
+  // v9: La exposición cambiaria ya NO se calcula ni se suma al total.
+  // Decisión de producto: el componente cambiario confunde al lead y se trabaja
+  // mejor en sesión presencial cuando es relevante.
   var liquidos_en_cop = liquidos*pct_cop;
   var liquidos_en_otras = liquidos - liquidos_en_cop;
-  var exposicion_cambiaria = pct_cop>=0.70?Math.round(liquidos_en_cop*DEVAL):0;
+  var exposicion_cambiaria = 0;
 
   // Suma del subtotal de oportunidad incluyendo capacidad de ahorro
   // (la sobrecarga fiscal NO se suma — se muestra aparte)
-  var subtotal_oportunidad = costo_oportunidad + exposicion_cambiaria + oportunidad_ahorro_anual;
+  var subtotal_oportunidad = costo_oportunidad + oportunidad_ahorro_anual;
 
   // ═══ TOTAL ═══
   var total_anual = subtotal_perdidas+subtotal_oportunidad;
@@ -1307,9 +1329,12 @@ function showRes(nombre, R, cta){
   })||NIVELES.profesional[0];
 
   // ── Encabezado ──
+  // v9: bloque del nivel oculto. Mostramos solo nombre + perfil arriba del costo.
   document.getElementById('score-max').textContent = R.score_max;
-  document.getElementById('result-profile-tag').textContent =
-    (nombre?nombre+' · ':'')+(selectedProfile==='empresario'?'Empresario':'Profesional');
+  var tagText = (nombre?nombre+' · ':'')+(selectedProfile==='empresario'?'Empresario':'Profesional');
+  document.getElementById('result-profile-tag').textContent = tagText;
+  var tagVisible = document.getElementById('result-profile-tag-visible');
+  if(tagVisible) tagVisible.textContent = tagText;
 
   var cnt=0, sEl=document.getElementById('score-number');
   var iv=setInterval(function(){
@@ -1354,9 +1379,10 @@ function showRes(nombre, R, cta){
     h+='<div class="cost-card-number">'+fmtM(c.subtotal_oportunidad)+' / año</div>';
     h+='<div class="cost-card-sub">Ingresos adicionales si tu dinero estuviera mejor estructurado.</div>';
     h+='<div class="cost-detail">';
-    if(c.costo_oportunidad>0) h+='Mejor rendimiento posible: '+fmtM(c.costo_oportunidad)+'<br>';
-    if(c.exposicion_cambiaria>0) h+='Pérdida por tener todo en pesos: '+fmtM(c.exposicion_cambiaria)+'<br>';
-    if(c.oportunidad_ahorro_anual>0) h+='Ahorro mensual sin invertir: '+fmtM(c.oportunidad_ahorro_anual);
+    if(c.costo_oportunidad>0) h+='→ Mejor rendimiento sobre tu capital reasignable: <strong>'+fmtM(c.costo_oportunidad)+'/año</strong><br>';
+    if(c.oportunidad_ahorro_anual>0 && c.ahorro_mensual>0){
+      h+='→ Si tu ahorro mensual de <strong>'+fmtM(c.ahorro_mensual)+'</strong> estuviera invertido, generarías <strong>'+fmtM(c.oportunidad_ahorro_anual)+'/año</strong> adicionales';
+    }
     h+='</div></div>';
   }
   g.innerHTML=h;
@@ -1441,27 +1467,9 @@ function showRes(nombre, R, cta){
     iH+='<div class="ind-detail-item"><div class="ind-detail-label">Listo para mover</div><div class="ind-detail-val">'+fmtM(ind.capital_productivo.reasignable)+'</div></div></div></div>';
   }
 
-  // 5. Diversificación por Moneda
-  // v5: la cifra de pérdida es sobre LÍQUIDOS (única exposición real al tipo de cambio)
-  // aunque la pregunta n5 sea sobre patrimonio total (informativa)
-  if(ind.exposicion_moneda.pct_cop>=50){
-    var emC = ind.exposicion_moneda.pct_cop>=85?'red':ind.exposicion_moneda.pct_cop>=70?'orange':'blue';
-    iH+='<div class="ind-card '+emC+'">';
-    iH+='<div class="ind-header"><div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>';
-    iH+='<div class="ind-title">Diversificación por Moneda</div>';
-    iH+='<span class="ind-badge">'+ind.exposicion_moneda.pct_cop+'% del patrimonio en pesos</span></div>';
-    iH+='<div class="ind-value">'+fmtM(ind.exposicion_moneda.liquidos_cop)+' en líquidos COP</div>';
-    iH+='<div class="ind-desc">';
-    if(ind.exposicion_moneda.pct_cop>=80){
-      iH+='Más del <strong>'+ind.exposicion_moneda.pct_cop+'%</strong> de tu patrimonio está en pesos colombianos. La pérdida real por devaluación se calcula solo sobre tus <strong>activos líquidos en pesos</strong> (cuentas, CDTs, fondos en COP) — no sobre inmuebles ni empresa, que se ajustan a la inflación local. El peso suele perder <strong>4% de su valor al año</strong> frente al dólar: eso son <strong>'+fmtM(ind.exposicion_moneda.perdida_anual_estimada)+'/año</strong> de poder de compra en tus líquidos.';
-    } else {
-      iH+='Concentración moderada en pesos. Hay margen para diversificar más en monedas duras (USD, EUR), especialmente en la parte líquida del patrimonio.';
-    }
-    iH+='</div>';
-    iH+='<div class="ind-bar-wrap"><div class="ind-bar" style="width:0%" data-w="'+ind.exposicion_moneda.pct_cop+'"></div></div>';
-    iH+='<div class="ind-detail"><div class="ind-detail-item"><div class="ind-detail-label">Líquidos en pesos</div><div class="ind-detail-val">'+fmtM(ind.exposicion_moneda.liquidos_cop)+'</div></div>';
-    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Líquidos en otras monedas</div><div class="ind-detail-val">'+fmtM(ind.exposicion_moneda.liquidos_otras)+'</div></div></div></div>';
-  }
+  // 5. Diversificación por Moneda — REMOVIDO en v9 (indicador retirado por solicitud)
+  // El indicador completo (tarjeta) ya no se renderiza. La exposición cambiaria
+  // ya tampoco se suma al total (decisión v9).
 
   // 6. Deuda de Consumo (v3: solo importa la de consumo, la estructural no es problema)
   // Lógica: deuda hipotecaria/inversión es apalancamiento sano. Deuda de consumo
@@ -1585,7 +1593,7 @@ function showRes(nombre, R, cta){
       case 'inv':
         return {
           titulo: 'Tus inversiones están concentradas localmente',
-          mensaje: 'Sin diversificación global pierdes <strong>'+fmtM(c.costo_oportunidad)+'/año</strong> en costo de oportunidad y quedas expuesto al riesgo país y cambiario.',
+          mensaje: 'Sin diversificación global pierdes capital de oportunidad y quedas expuesto al riesgo país y cambiario.',
           cost: fmtM(c.costo_oportunidad)+'/año'
         };
       case 'strat':
