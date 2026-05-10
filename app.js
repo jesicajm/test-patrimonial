@@ -181,6 +181,30 @@ var ALL_Q = [
      return '<strong>Patrimonio total: $'+t.toLocaleString('es-CO')+'M</strong> ('+p+'% no líquido, '+(100-p)+'% disponible).'+(p>85?' ⚠️ Alta concentración en activos difíciles de mover.':'');
    }},
 
+  // v9: Pregunta nueva — patrimonio no líquido que genera retorno.
+  // Se muestra solo si nn > 0. Para empresarios aclara "sin contar la empresa donde
+  // trabajas activamente"; para profesionales no incluye esa frase.
+  // El skip se maneja en goNext() cuando nn === 0.
+  {id:"nnp", sec:"01", secN:"TU PATRIMONIO", prof:"both", type:"number_input",
+   q:function(){
+     var aclaracionEmpresario = selectedProfile==='empresario'
+       ? ' — sin contar tu vivienda principal ni la empresa donde trabajas activamente.'
+       : ' — sin contar tu vivienda principal.';
+     return "¿Cuánto de ese patrimonio NO líquido te genera un retorno actualmente? Inmuebles arrendados, locales con renta, fincas productivas"+aclaracionEmpresario;
+   },
+   slider:function(s){
+     var n=s&&s.nn?s.nn:0;
+     return {min:0, max:Math.max(n,1), step:Math.max(5,Math.round(n/100)*5), value:0, unit:"M", prefix:"$", suffix:" millones COP"};
+   },
+   inputHint:"Si tu apartamento arrendado vale $300.000.000, escribe <strong>300</strong> · Si no tienes inmuebles que rinden, escribe <strong>0</strong>",
+   ctx:function(v,s){
+     var n=s&&s.nn?s.nn:0;
+     if(n===0)return 'Sin patrimonio no líquido.';
+     if(!v)return'Ningún activo no líquido te genera retorno actualmente.';
+     var p=Math.round((v/n)*100);
+     return '<strong>'+p+'%</strong> de tu patrimonio no líquido te genera retorno ('+fmt(v*1e6)+').';
+   }},
+
   {id:"n5", sec:"01", secN:"TU PATRIMONIO", prof:"both", type:"slider",
    q:"¿Qué porcentaje de tu patrimonio TOTAL está en pesos colombianos? Incluye inmuebles, líquidos y empresa. El resto estaría en dólares, euros u otras monedas.",
    slider:{min:0, max:100, step:5, value:90, unit:"%", prefix:"", suffix:"% en pesos colombianos"},
@@ -344,8 +368,8 @@ var sliderValues = {};
 
 function buildSeq(p) {
   var o = p === 'empresario'
-    ? ["n2","n3e","np","nl","n4","nn","n5","nd","ndc","f1e","f2e","inv","f3e","strat","c2e"]
-    : ["n2","n3p","np","nl","n4","nn","n5","nd","ndc","f1p","inv","f3p","strat"];
+    ? ["n2","n3e","np","nl","n4","nn","nnp","n5","nd","ndc","f1e","f2e","inv","f3e","strat","c2e"]
+    : ["n2","n3p","np","nl","n4","nn","nnp","n5","nd","ndc","f1p","inv","f3p","strat"];
   return o.map(function(id){return ALL_Q.find(function(q){return q.id===id});}).filter(Boolean);
 }
 
@@ -385,7 +409,7 @@ function renderQ(){
   document.getElementById('section-num').textContent=q.sec;
   document.getElementById('section-name').textContent=q.secN;
   document.getElementById('q-number').textContent='Pregunta '+String(current+1).padStart(2,'0')+' de '+tot;
-  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-text').textContent=typeof q.q==='function'?q.q():q.q;
   document.getElementById('profile-badge-wrap').innerHTML=q.prof!=='both'
     ? '<div class="profile-badge">'+(selectedProfile==='empresario'?'Para empresarios':'Para profesionales')+'</div>'
     : '';
@@ -584,12 +608,18 @@ function goNext(){
 
   if(current<questionSequence.length-1){
     current++;
-    // v9: si la pregunta siguiente es 'ndc' y la deuda total (nd) es 0,
-    // saltarla automáticamente (no tiene sentido preguntar por deuda de
+    // v9: skip de 'ndc' cuando nd=0 (no tiene sentido preguntar por deuda de
     // consumo si no hay deuda total).
     if(questionSequence[current].id==='ndc' && (sliderValues.nd||0)===0){
-      // Marcar ndc como 0 implícitamente para que los cálculos no fallen
       sliderValues.ndc = 0;
+      if(current<questionSequence.length-1){
+        current++;
+      }
+    }
+    // v9: skip de 'nnp' cuando nn=0 (no tiene sentido preguntar por patrimonio
+    // no líquido productivo si no hay patrimonio no líquido).
+    if(questionSequence[current].id==='nnp' && (sliderValues.nn||0)===0){
+      sliderValues.nnp = 0;
       if(current<questionSequence.length-1){
         current++;
       }
@@ -603,9 +633,12 @@ function goNext(){
 function goBack(){
   if(current>0){
     current--;
-    // v9: si veníamos de saltar 'ndc' (porque nd=0), también saltamos
-    // hacia atrás esa pregunta para no mostrarla.
+    // v9: si saltamos 'ndc' al avanzar (nd=0), también la saltamos al volver.
     if(questionSequence[current].id==='ndc' && (sliderValues.nd||0)===0){
+      if(current>0) current--;
+    }
+    // v9: si saltamos 'nnp' al avanzar (nn=0), también la saltamos al volver.
+    if(questionSequence[current].id==='nnp' && (sliderValues.nn||0)===0){
       if(current>0) current--;
     }
     renderQ();
@@ -743,6 +776,7 @@ function calcMotorV2(){
 
   var liquidos = (sliderValues.nl||0)*1e6;
   var no_liquidos = (sliderValues.nn||0)*1e6;
+  var no_liquidos_productivos = (sliderValues.nnp||0)*1e6;  // v9: nuevo
   var improductivo = (sliderValues.n4||0)*1e6;
   var deuda_total = (sliderValues.nd||0)*1e6;
   var deuda_consumo = (sliderValues.ndc||0)*1e6;
@@ -814,7 +848,11 @@ function calcMotorV2(){
 
   // ═══ INDICADORES ═══
   var numero_magico = gastos_anuales/TASA_RETIRO_IF;
-  var portafolio_productivo = Math.max(0, liquidos-improductivo);
+  // v9: portafolio_productivo ahora incluye no_liquidos_productivos (inmuebles
+  // que rinden, fincas productivas), no solo líquidos invertidos.
+  // Para empresarios la pregunta nnp ya excluye la empresa (texto explícito).
+  var liquidos_productivos = Math.max(0, liquidos-improductivo);
+  var portafolio_productivo = liquidos_productivos + no_liquidos_productivos;
   var avance_if_pct = numero_magico>0?(portafolio_productivo/numero_magico)*100:0;
   var gap_mensual_if = Math.max(0, gastos_mes-ingreso_pasivo_mes);
 
@@ -965,6 +1003,9 @@ function calcMotorV2(){
       independencia_financiera:{
         numero_magico:Math.round(numero_magico),
         portafolio_productivo:Math.round(portafolio_productivo),
+        // v9: desglose para que la pantalla pueda mostrar de dónde sale cada parte
+        liquidos_productivos:Math.round(liquidos_productivos),
+        no_liquidos_productivos:Math.round(no_liquidos_productivos),
         avance_pct:Math.round(avance_if_pct*10)/10,
         gap_mensual:Math.round(gap_mensual_if),
         ingreso_pasivo_mes:Math.round(ingreso_pasivo_mes)
@@ -1256,6 +1297,7 @@ async function submitCapture(){
       liquidos_m:       sliderValues.nl || 0,
       improductivo_m:   sliderValues.n4 || 0,
       no_liquidos_m:    sliderValues.nn || 0,
+      no_liquidos_productivos_m: sliderValues.nnp || 0,  // v9: nuevo
       deuda_total_m:    sliderValues.nd || 0,
       deuda_consumo_m:  sliderValues.ndc || 0,
       pct_cop_liquido:  sliderValues.n5 || 0,
@@ -1399,17 +1441,31 @@ function showRes(nombre, R, cta){
   iH+='<div class="ind-title">Camino a Vivir de tus Inversiones</div>';
   iH+='<span class="ind-badge">'+ind.independencia_financiera.avance_pct+'% recorrido</span></div>';
   iH+='<div class="ind-value">'+fmtM(ind.independencia_financiera.numero_magico)+'</div>';
-  iH+='<div class="ind-desc">Ese es el patrimonio que necesitas tener invertido para cubrir tus '+fmtM(c.gastos_mes)+'/mes de gastos sin trabajar. ';
+  iH+='<div class="ind-desc">Ese es el patrimonio que necesitas tener invertido o produciendo para cubrir tus '+fmtM(c.gastos_mes)+'/mes de gastos sin trabajar. ';
   if(ind.independencia_financiera.gap_mensual>0){
-    iH+='Hoy tu dinero invertido genera <strong>'+fmtM(c.ingreso_pasivo_mes)+'/mes</strong> — te faltan <strong>'+fmtM(ind.independencia_financiera.gap_mensual)+'/mes</strong> para llegar.';
+    iH+='Hoy tu patrimonio productivo genera <strong>'+fmtM(c.ingreso_pasivo_mes)+'/mes</strong> — te faltan <strong>'+fmtM(ind.independencia_financiera.gap_mensual)+'/mes</strong> para llegar.';
   } else {
     var exc=c.ingreso_pasivo_mes-c.gastos_mes;
     iH+='Tus ingresos pasivos cubren los gastos con un excedente de <strong>'+fmtM(exc)+'/mes</strong>.';
   }
   iH+='</div>';
   iH+='<div class="ind-bar-wrap"><div class="ind-bar" style="width:0%" data-w="'+Math.min(ind.independencia_financiera.avance_pct,100)+'"></div></div>';
-  iH+='<div class="ind-detail"><div class="ind-detail-item"><div class="ind-detail-label">Dinero invertido hoy</div><div class="ind-detail-val">'+fmtM(ind.independencia_financiera.portafolio_productivo)+'</div></div>';
-  iH+='<div class="ind-detail-item"><div class="ind-detail-label">Lo que te genera al mes</div><div class="ind-detail-val">'+fmtM(c.ingreso_pasivo_mes)+'</div></div></div></div>';
+  // v9: desglose. Si tiene tanto líquidos como no líquidos productivos, mostrar ambos.
+  // Si solo tiene uno, simplificar.
+  iH+='<div class="ind-detail">';
+  var lp = ind.independencia_financiera.liquidos_productivos || 0;
+  var nlp = ind.independencia_financiera.no_liquidos_productivos || 0;
+  if(lp>0 && nlp>0){
+    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Líquidos invertidos</div><div class="ind-detail-val">'+fmtM(lp)+'</div></div>';
+    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Inmuebles que rinden</div><div class="ind-detail-val">'+fmtM(nlp)+'</div></div>';
+  } else if(nlp>0){
+    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Inmuebles que rinden</div><div class="ind-detail-val">'+fmtM(nlp)+'</div></div>';
+    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Lo que te genera al mes</div><div class="ind-detail-val">'+fmtM(c.ingreso_pasivo_mes)+'</div></div>';
+  } else {
+    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Patrimonio productivo</div><div class="ind-detail-val">'+fmtM(ind.independencia_financiera.portafolio_productivo)+'</div></div>';
+    iH+='<div class="ind-detail-item"><div class="ind-detail-label">Lo que te genera al mes</div><div class="ind-detail-val">'+fmtM(c.ingreso_pasivo_mes)+'</div></div>';
+  }
+  iH+='</div></div>';
 
   // 2. Colchón para imprevistos
   var feR=ind.fondo_emergencia.meta_meses>0?(ind.fondo_emergencia.meses_cubiertos/ind.fondo_emergencia.meta_meses)*100:100;
@@ -1625,7 +1681,19 @@ function showRes(nombre, R, cta){
     }
   }
 
-  R.vulnerabilidades_detectadas.forEach(function(v){
+  // v9: Filtrar vulnerabilidades f1p/f1e cuando el indicador "Sobrecarga Fiscal
+  // Estimada" ya las cubre. La alerta era redundante e imprecisa
+  // (usaba multiplicadores fijos 5%-15% / 15%-30% en vez de la tabla por tramo
+  // de ingreso). El indicador es la fuente de verdad.
+  var vulnsParaMostrar = R.vulnerabilidades_detectadas.filter(function(v){
+    if((v.tipo==='f1p' || v.tipo==='f1e') &&
+       ind.sobrecarga_fiscal && ind.sobrecarga_fiscal.aplica && ind.sobrecarga_fiscal.rango_max>0){
+      return false; // ya cubierta por el indicador, no duplicar
+    }
+    return true;
+  });
+
+  vulnsParaMostrar.forEach(function(v){
     var color = colores[v.severidad]||'#D4821A';
     var icono = iconos[v.severidad]||'▲';
     var msg = mensajeVuln(v, c.ingreso_activo_mes);
