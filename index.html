@@ -1,28 +1,2647 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/png" href="icon-abba.png">
-<title>¿Cuánto estás perdiendo? · Arquitectura Patrimonial</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Diagnóstico de Arquitectura Patrimonial</title>
+<meta name="description" content="Descubre en qué nivel opera tu patrimonio hoy y qué estructuras te faltan para llegar al siguiente." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0D1F35;--navy-mid:#162C47;--navy-light:#1E3A56;--gold:#C4972A;--gold-light:#E8C06A;--gold-pale:#F7EDD3;--cream:#FAF7F2;--text:#E8E2D9;--text-dim:#8A9BAD;--red:#C0392B;--red-light:#E74C3C;--green:#1E8449;--green-light:#27AE60;--blue:#2471A3;--orange:#D4821A;--radius:4px}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;overflow-x:hidden}body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 10% 20%,rgba(196,151,42,.06) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 90% 70%,rgba(36,113,163,.07) 0%,transparent 60%);pointer-events:none;z-index:0}.container{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:0 24px 80px}.header{text-align:center;padding:64px 0 48px;border-bottom:1px solid rgba(196,151,42,.2);margin-bottom:56px}.brand{font-size:11px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}.brand::before,.brand::after{content:'';height:1px;width:40px;background:var(--gold);opacity:.5}h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6.5vw,58px);font-weight:300;line-height:1.1;color:var(--cream);margin-bottom:20px;letter-spacing:-.02em}h1 em{font-style:italic;color:var(--gold-light)}.header-sub{font-size:15px;color:var(--text-dim);line-height:1.6;max-width:500px;margin:0 auto 28px}.meta-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.pill{background:rgba(196,151,42,.1);border:1px solid rgba(196,151,42,.25);color:var(--gold-light);font-size:12px;letter-spacing:.05em;padding:6px 14px;border-radius:20px}.progress-bar-wrap{margin-bottom:40px;display:none}.progress-bar-wrap.visible{display:block}.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.progress-label{font-size:12px;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase}.progress-count{font-size:12px;color:var(--gold);font-weight:500}.progress-track{height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}.section-label{display:flex;align-items:center;gap:14px;margin-bottom:24px;opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}.section-label.visible{opacity:1;transform:translateY(0)}.section-num{width:36px;height:36px;border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);flex-shrink:0}.section-name{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim)}#profile-screen{display:none}.profile-intro{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--cream);line-height:1.4;margin-bottom:10px;text-align:center}.profile-sub{font-size:14px;color:var(--text-dim);text-align:center;margin-bottom:36px}.profile-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}@media(max-width:540px){.profile-cards{grid-template-columns:1fr}}.profile-card{background:rgba(22,44,71,.6);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:28px 24px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;text-align:center}.profile-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(196,151,42,.1) 0%,transparent 60%);opacity:0;transition:opacity .25s}.profile-card:hover{border-color:rgba(196,151,42,.4)}.profile-card:hover::before{opacity:1}.profile-card.selected{border-color:var(--gold);background:rgba(196,151,42,.1)}.profile-card.selected::before{opacity:1}.profile-icon{margin-bottom:14px;display:block}.profile-icon svg{width:36px;height:36px}.profile-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:8px}.profile-desc{font-size:13px;color:var(--text-dim);line-height:1.55}.profile-check{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;font-size:11px;color:var(--navy)}.profile-card.selected .profile-check{display:flex}.profile-note{font-size:12px;color:var(--text-dim);text-align:center;margin-top:16px;opacity:.7}.question-card{background:rgba(22,44,71,.7);border:1px solid rgba(255,255,255,.07);border-radius:var(--radius);padding:36px;margin-bottom:16px;backdrop-filter:blur(8px);opacity:0;transform:translateY(16px);transition:opacity .45s,transform .45s}.question-card.visible{opacity:1;transform:translateY(0)}.profile-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(196,151,42,.12);border:1px solid rgba(196,151,42,.25);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--gold-light);letter-spacing:.06em;margin-bottom:16px}.q-number{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);letter-spacing:.1em;margin-bottom:14px}.q-text{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.45;color:var(--cream);margin-bottom:28px}.options{display:flex;flex-direction:column;gap:10px}.option{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);cursor:pointer;transition:all .2s;background:rgba(13,31,53,.5);position:relative;overflow:hidden}.option::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(196,151,42,.08) 0%,transparent 60%);opacity:0;transition:opacity .2s}.option:hover{border-color:rgba(196,151,42,.35)}.option:hover::before{opacity:1}.option.selected{border-color:var(--gold);background:rgba(196,151,42,.12)}.option.selected::before{opacity:1}.option-radio{width:18px;height:18px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.2);border-radius:50%;margin-top:1px;transition:all .2s;display:flex;align-items:center;justify-content:center}.option.selected .option-radio{border-color:var(--gold);background:var(--gold)}.option.selected .option-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--navy)}.option-text{font-size:14px;line-height:1.5;color:var(--text);transition:color .2s}.option.selected .option-text{color:var(--cream)}.slider-wrap{margin-bottom:8px}.slider-display{text-align:center;margin-bottom:20px}.slider-value-big{font-family:'JetBrains Mono',monospace;font-size:clamp(32px,7vw,48px);font-weight:600;color:var(--gold-light);line-height:1}.slider-value-unit{font-size:14px;color:var(--text-dim);margin-top:4px}input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,.1);outline:none;cursor:pointer}input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--gold);border:3px solid var(--navy);box-shadow:0 0 0 2px var(--gold);cursor:grab;transition:transform .15s}input[type="range"]::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.15)}input[type="range"]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--gold);border:3px solid var(--navy);box-shadow:0 0 0 2px var(--gold);cursor:grab}.slider-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--text-dim)}.slider-context{margin-top:16px;padding:12px 16px;background:rgba(196,151,42,.08);border-left:2px solid var(--gold);border-radius:0 4px 4px 0;font-size:13px;color:var(--text-dim);line-height:1.5}.slider-context strong{color:var(--gold-light);font-weight:500}.nav{display:flex;justify-content:space-between;align-items:center;margin-top:32px}.btn{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.08em;padding:13px 28px;border:none;border-radius:var(--radius);cursor:pointer;transition:all .2s;text-transform:uppercase}.btn-ghost{background:transparent;color:var(--text-dim);border:1px solid rgba(255,255,255,.1)}.btn-ghost:hover{border-color:rgba(255,255,255,.3);color:var(--cream)}.btn-primary{background:var(--gold);color:var(--navy);font-weight:500}.btn-primary:hover{background:var(--gold-light)}.btn-primary:disabled{opacity:.3;cursor:not-allowed}.skip-hint{font-size:12px;color:var(--text-dim)}#start-screen .stats-row{display:flex;gap:12px;justify-content:center;margin:28px 0 36px}.stat{text-align:center;padding:16px 20px;background:rgba(22,44,71,.5);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);flex:1;min-width:0}.stat-number{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--gold-light);display:block}.stat-label{font-size:11px;color:var(--text-dim);margin-top:4px}.start-cta{text-align:center}.start-note{font-size:12px;color:var(--text-dim);margin-top:12px}#capture-screen{display:none}.capture-wrap{text-align:center;max-width:420px;margin:40px auto 0}.capture-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}.capture-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--cream);line-height:1.3;margin-bottom:12px}.capture-title em{color:var(--gold-light);font-style:italic}.capture-sub{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:28px}.capture-form{display:flex;flex-direction:column;gap:14px}.form-field{text-align:left}.form-label{display:block;font-size:12px;font-weight:500;color:var(--text-dim);letter-spacing:.05em;margin-bottom:6px}.form-optional{font-weight:400;opacity:.7}.form-input{width:100%;padding:14px 16px;background:rgba(22,44,71,.6);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s}.form-input:focus{border-color:var(--gold)}.form-input.error{border-color:var(--red)}.btn-capture{width:100%;padding:16px;background:var(--gold);color:var(--navy);border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.05em;cursor:pointer;transition:background .2s;text-transform:uppercase}.btn-capture:hover{background:var(--gold-light)}.btn-capture:disabled{opacity:.4;cursor:not-allowed}.capture-privacy{font-size:11px;color:var(--text-dim);margin-top:8px;opacity:.7}.capture-status{display:none;align-items:center;justify-content:center;gap:8px;padding:12px;font-size:13px;color:var(--gold)}.capture-status.visible{display:flex}.spinner{width:16px;height:16px;border:2px solid rgba(196,151,42,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}#result-screen{display:none}.result-hero{text-align:center;padding:40px 0 32px}.result-profile-tag{font-size:12px;color:var(--text-dim);margin-bottom:16px}.result-label{font-size:12px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim)}.result-diagnosis{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;margin:12px 0 8px}.result-desc{font-size:14px;color:var(--text-dim);line-height:1.65;max-width:560px;margin:0 auto}.result-gauge{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;margin-top:20px}.result-gauge-fill{height:100%;border-radius:3px;transition:width 1s ease}.result-score-secondary{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--text-dim);margin-top:8px;display:inline-block}.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:32px 0}@media(max-width:540px){.cost-grid{grid-template-columns:1fr}}.cost-card{background:rgba(22,44,71,.6);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:20px;position:relative;overflow:hidden}.cost-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}.cost-card.red::before{background:var(--red)}.cost-card.orange::before{background:var(--orange)}.cost-card.blue::before{background:var(--blue)}.cost-card.green::before{background:var(--green)}.cost-card-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}.cost-card-label.red{color:var(--red-light)}.cost-card-label.orange{color:var(--orange)}.cost-card-label.blue{color:var(--blue)}.cost-card-label.green{color:var(--green-light)}.cost-card-number{font-family:'JetBrains Mono',monospace;font-size:clamp(20px,4vw,28px);font-weight:600;color:var(--cream);line-height:1.2;margin-bottom:4px}.cost-card-sub{font-size:12px;color:var(--text-dim);line-height:1.4}.cost-detail{font-size:11px;color:var(--text-dim);margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.05);line-height:1.4;opacity:.8}.total-loss{background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.3);border-radius:8px;padding:24px;text-align:center;margin:24px 0}.total-loss-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--red-light);margin-bottom:6px}.total-loss-number{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,6vw,42px);font-weight:700;color:var(--red-light);line-height:1}.total-loss-sub{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.5}.ind-section-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream);margin:36px 0 16px;letter-spacing:-.01em}.ind-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:32px}.ind-card{background:rgba(22,44,71,.7);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:24px 26px;position:relative;overflow:hidden;backdrop-filter:blur(8px);transition:transform .2s}.ind-card:hover{transform:translateY(-1px)}.ind-card.red{border-left:4px solid var(--red)}.ind-card.orange{border-left:4px solid var(--orange)}.ind-card.blue{border-left:4px solid var(--blue)}.ind-card.green{border-left:4px solid var(--green-light)}.ind-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}.ind-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.ind-card.red .ind-icon{background:rgba(192,57,43,.15);color:var(--red-light)}.ind-card.orange .ind-icon{background:rgba(212,130,26,.15);color:var(--orange)}.ind-card.blue .ind-icon{background:rgba(36,113,163,.15);color:#5DADE2}.ind-card.green .ind-icon{background:rgba(30,132,73,.15);color:var(--green-light)}.ind-icon svg{width:20px;height:20px}.ind-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--text-dim);flex:1}.ind-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-left:auto;white-space:nowrap}.ind-card.red .ind-badge{background:rgba(192,57,43,.15);color:var(--red-light)}.ind-card.orange .ind-badge{background:rgba(212,130,26,.15);color:var(--orange)}.ind-card.blue .ind-badge{background:rgba(36,113,163,.15);color:#5DADE2}.ind-card.green .ind-badge{background:rgba(30,132,73,.15);color:var(--green-light)}.ind-value{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4.5vw,30px);font-weight:700;line-height:1;margin-bottom:8px}.ind-card.red .ind-value{color:var(--red-light)}.ind-card.orange .ind-value{color:var(--orange)}.ind-card.blue .ind-value{color:#5DADE2}.ind-card.green .ind-value{color:var(--green-light)}.ind-desc{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:14px}.ind-bar-wrap{height:5px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden;margin-bottom:14px}.ind-bar{height:100%;border-radius:99px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}.ind-card.red .ind-bar{background:var(--red)}.ind-card.orange .ind-bar{background:var(--orange)}.ind-card.blue .ind-bar{background:var(--blue)}.ind-card.green .ind-bar{background:var(--green-light)}.ind-detail{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,.06)}.ind-detail-item{font-size:12px}.ind-detail-label{color:var(--text-dim);margin-bottom:3px}.ind-detail-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--cream)}.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:28px 0}@media(max-width:540px){.breakdown{grid-template-columns:1fr}}.breakdown-card{background:rgba(22,44,71,.5);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:16px}.breakdown-title{font-size:14px;color:var(--cream);margin-bottom:8px}.breakdown-score{display:flex;align-items:baseline;gap:6px}.bd-pts{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;color:var(--cream)}.bd-max{font-size:13px;color:var(--text-dim)}.bd-bar{height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:8px;overflow:hidden}.bd-bar-fill{height:100%;border-radius:2px;transition:width .8s ease}.vulns-title{font-size:14px;font-weight:500;color:var(--cream);margin:28px 0 14px;letter-spacing:.03em}.vuln-item{display:flex;gap:14px;padding:16px;background:rgba(22,44,71,.5);border-left:3px solid;border-radius:0 8px 8px 0;margin-bottom:10px}.vuln-icon{font-size:18px;flex-shrink:0;margin-top:1px}.vuln-text{font-size:13px;color:var(--text-dim);line-height:1.6}.vuln-text strong{color:var(--cream);font-weight:500;display:block;margin-bottom:4px;font-size:14px}.vuln-cost{display:inline-block;margin-top:8px;padding:4px 10px;background:rgba(192,57,43,.15);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--red-light)}.alert-2026{background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.25);border-radius:8px;padding:20px;margin:24px 0}.alert-2026-title{font-size:13px;font-weight:600;color:var(--red-light);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}.alert-2026-text{font-size:13px;color:var(--text-dim);line-height:1.6}.alert-2026-text strong{color:var(--cream)}.alert-2026-number{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--red-light)}.cta-box{background:rgba(22,44,71,.8);border:1px solid rgba(196,151,42,.25);border-radius:8px;padding:32px 28px;text-align:center;margin-top:32px}.cta-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}.cta-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,4vw,28px);font-weight:400;color:var(--cream);line-height:1.3;margin-bottom:12px}.cta-sub{font-size:14px;color:var(--text-dim);line-height:1.6;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto}.cta-features{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px}.cta-feat{background:rgba(196,151,42,.1);border:1px solid rgba(196,151,42,.2);color:var(--gold-light);font-size:12px;padding:6px 14px;border-radius:20px}.btn-cta{display:inline-block;padding:16px 40px;background:var(--gold);color:var(--navy);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;letter-spacing:.05em;text-decoration:none;transition:all .2s;text-transform:uppercase}.btn-cta:hover{background:var(--gold-light);transform:translateY(-1px)}.cta-note{font-size:12px;color:var(--text-dim);margin-top:12px}.btn-restart{background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;margin-top:24px;font-family:'DM Sans',sans-serif}.btn-restart:hover{color:var(--cream)}.footer{text-align:center;margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.05);font-size:11px;color:var(--text-dim);line-height:1.6;opacity:.6}@media(max-width:540px){.question-card{padding:28px 20px}.header{padding:40px 0 32px}h1{font-size:clamp(32px,7vw,48px)}}
-.number-input-wrap{display:flex;flex-direction:column;gap:16px;padding:8px 0;}.number-input-display{display:flex;align-items:baseline;justify-content:center;gap:8px;padding:24px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(212,175,55,0.2);border-radius:12px;transition:border-color 0.2s,background 0.2s;flex-wrap:wrap;}.number-input-display:focus-within{border-color:var(--gold,#D4AF37);background:rgba(212,175,55,0.05);box-shadow:0 0 0 3px rgba(212,175,55,0.1);}.ni-prefix{font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:600;color:var(--gold,#D4AF37);line-height:1;}#ni-i{font-family:'Cormorant Garamond',Georgia,serif;font-size:48px;font-weight:600;color:#fff;background:transparent;border:none;outline:none;text-align:center;width:auto;min-width:120px;max-width:280px;letter-spacing:0.02em;caret-color:var(--gold,#D4AF37);padding:0;}#ni-i::placeholder{color:rgba(255,255,255,0.25);font-style:italic;}#ni-i::-webkit-outer-spin-button,#ni-i::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}#ni-i{-moz-appearance:textfield;}.ni-suffix{font-family:'DM Sans',system-ui,sans-serif;font-size:14px;color:rgba(255,255,255,0.6);letter-spacing:0.04em;text-transform:lowercase;}.number-input-hint{font-family:'DM Sans',system-ui,sans-serif;font-size:12px;color:rgba(255,255,255,0.45);text-align:center;letter-spacing:0.03em;}@media (max-width:480px){#ni-i{font-size:36px;min-width:80px;max-width:200px;}.ni-prefix{font-size:28px;}.number-input-display{padding:16px 12px;}}.inline-warning{background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.4);border-left:3px solid #C0392B;border-radius:8px;padding:12px 14px;margin-top:8px;color:#fff;font-family:'DM Sans',system-ui,sans-serif;font-size:13px;line-height:1.6;letter-spacing:0.01em;}.inline-warning strong{color:#E74C3C;font-weight:600;}.inline-warning-link{display:inline-block;margin-top:8px;background:transparent;border:1px solid rgba(212,175,55,0.5);color:var(--gold,#D4AF37);font-family:inherit;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;cursor:pointer;letter-spacing:0.03em;transition:all 0.2s;}.inline-warning-link:hover{background:rgba(212,175,55,0.1);border-color:var(--gold,#D4AF37);}.capture-errors{background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.4);border-left:3px solid #C0392B;border-radius:8px;padding:14px 16px;margin:16px 0 8px 0;color:#fff;font-family:'DM Sans',system-ui,sans-serif;font-size:14px;line-height:1.55;}.capture-errors strong{color:#E74C3C;font-weight:600;display:block;margin-bottom:6px;}.capture-errors ul{margin:6px 0 0 20px;padding:0;font-size:13px;}.capture-errors li{margin:3px 0;color:rgba(255,255,255,0.85);}.vuln-msg{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.55;margin:6px 0 4px;}.vuln-msg strong{color:#fff;font-weight:500;}.hint-with-example{font-size:13px !important;color:rgba(232,226,217,0.85) !important;background:rgba(232,192,106,0.08);border:1px solid rgba(232,192,106,0.2);border-radius:8px;padding:10px 14px !important;text-align:left !important;line-height:1.55;letter-spacing:0.01em !important;margin-top:4px;}.hint-with-example strong{color:#E8C06A;font-weight:600;font-family:'JetBrains Mono','Courier New',monospace;background:rgba(232,192,106,0.12);padding:1px 6px;border-radius:4px;font-size:13px;}.hint-with-example .hint-icon{margin-right:6px;font-size:14px;}.hint-with-example .hint-label{font-weight:600;color:#E8C06A;letter-spacing:0.04em;text-transform:uppercase;font-size:11px;margin-right:6px;}</style>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script>var FIREBASE_CONFIG={apiKey:"AIzaSyD4YxIPAoaPbyoA62ERRLwkF-0WT09HfqA",authDomain:"testap-6035f.firebaseapp.com",projectId:"testap-6035f",storageBucket:"testap-6035f.firebasestorage.app",messagingSenderId:"407524776135",appId:"1:407524776135:web:987f8679ef8f945bcb46e2",measurementId:"G-LPFMK5NVXM"};var _db=null;try{firebase.initializeApp(FIREBASE_CONFIG);_db=firebase.firestore()}catch(e){console.warn("Firebase:",e.message)}</script>
+:root {
+  --ink: #0a0a0a;
+  --ink-soft: #1a1a1a;
+  --paper: #f5f1e8;
+  --paper-soft: #ede8db;
+  --paper-warm: #e8e2d1;
+  --gold: #a8894a;
+  --gold-deep: #8a6f37;
+  --gold-soft: #c4a76a;
+  --line: rgba(10, 10, 10, 0.12);
+  --line-strong: rgba(10, 10, 10, 0.25);
+  --muted: rgba(10, 10, 10, 0.55);
+  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(168, 137, 74, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(168, 137, 74, 0.04) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+.app {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 60px 32px 80px;
+  min-height: 100vh;
+}
+
+.brand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 64px;
+}
+
+.brand-mark {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.brand-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.intro { max-width: 720px; }
+
+.intro-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 32px;
+}
+
+.intro-title {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 84px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  margin-bottom: 32px;
+  color: var(--ink);
+}
+
+.intro-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--gold-deep);
+}
+
+.intro-lede {
+  font-family: var(--serif);
+  font-size: 22px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--ink-soft);
+  margin-bottom: 48px;
+  max-width: 620px;
+}
+
+.intro-meta {
+  display: flex;
+  gap: 48px;
+  margin-bottom: 56px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.intro-meta-item {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.intro-meta-item strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+.btn {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  padding: 18px 36px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.btn::after {
+  content: '→';
+  font-family: var(--serif);
+  font-size: 18px;
+  letter-spacing: 0;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn:hover::after { transform: translateX(6px); }
+.btn:hover { background: var(--gold-deep); border-color: var(--gold-deep); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:disabled:hover { background: var(--ink); border-color: var(--ink); }
+
+.btn-back {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color 0.3s;
+}
+
+.btn-back::before { content: '← '; }
+.btn-back:hover { color: var(--ink); }
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 56px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--gold-deep);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.question { animation: fadeUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.question-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 24px;
+}
+
+.question-title {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  max-width: 780px;
+}
+
+.question-help {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--muted);
+  margin-bottom: 48px;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+.options { display: flex; flex-direction: column; gap: 12px; }
+
+.option {
+  background: transparent;
+  border: 1px solid var(--line);
+  padding: 24px 28px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-family: var(--sans);
+  font-size: 16px;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.option-marker {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.option-marker::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background: var(--gold-deep);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s cubic-bezier(0.5, 1.5, 0.5, 1);
+}
+
+.option-text { flex: 1; line-height: 1.5; }
+
+.option:hover {
+  border-color: var(--ink);
+  background: rgba(10, 10, 10, 0.02);
+  transform: translateX(4px);
+}
+
+.option:hover .option-marker { border-color: var(--ink); }
+
+.option.selected {
+  border-color: var(--gold-deep);
+  background: rgba(168, 137, 74, 0.06);
+}
+
+.option.selected .option-marker { border-color: var(--gold-deep); }
+.option.selected .option-marker::after { transform: scale(1); }
+
+.number-block { margin-bottom: 24px; }
+
+.number-label {
+  display: block;
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.number-help {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.number-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  border-bottom: 1px solid var(--line-strong);
+  padding: 8px 0;
+  transition: border-color 0.3s;
+}
+
+.number-input-wrapper:focus-within { border-bottom-color: var(--gold-deep); }
+
+.number-currency {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--muted);
+  margin-right: 10px;
+  min-width: 50px;
+}
+
+.number-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: var(--serif);
+  font-size: 28px;
+  color: var(--ink);
+  outline: none;
+  width: 100%;
+}
+
+.number-input::placeholder {
+  color: var(--muted);
+  font-style: italic;
+  opacity: 0.5;
+}
+
+.currency-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  margin-bottom: 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.currency-toggle button {
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: var(--muted);
+  transition: all 0.3s;
+}
+
+.currency-toggle button.active { background: var(--ink); color: var(--paper); }
+
+.continue-button-wrapper {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.form-group { margin-bottom: 28px; }
+
+.form-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.form-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line-strong);
+  padding: 12px 0;
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--ink);
+  transition: border-color 0.3s;
+}
+
+.form-input:focus { outline: none; border-bottom-color: var(--gold-deep); }
+.form-input::placeholder { color: var(--muted); font-style: italic; }
+
+.phone-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+}
+
+select.form-input {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230a0a0a' fill='none' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+  padding-right: 24px;
+}
+
+.form-footer {
+  margin-top: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.form-disclaimer {
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+.form-error {
+  background: rgba(231, 76, 60, 0.08);
+  border-left: 3px solid #c0392b;
+  padding: 12px 16px;
+  margin-top: 16px;
+  color: #8b2a1f;
+  font-size: 14px;
+  font-family: var(--sans);
+  display: none;
+}
+
+.form-error.active { display: block; }
+
+.gate { max-width: 640px; }
+
+.gate-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+
+.gate-title em { font-style: italic; color: var(--gold-deep); }
+
+.gate-lede {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-bottom: 48px;
+  line-height: 1.5;
+}
+
+.result { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+.result-header {
+  text-align: center;
+  margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--line);
+}
+
+.result-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 24px;
+}
+
+.result-level {
+  font-family: var(--serif);
+  font-size: clamp(56px, 9vw, 110px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+
+.result-level em { font-style: italic; color: var(--gold-deep); }
+
+.result-subtitle {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--muted);
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.axes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-bottom: 72px;
+}
+
+.axis {
+  border-top: 1px solid var(--line-strong);
+  padding-top: 24px;
+}
+
+.axis-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  min-height: 28px;
+}
+
+.axis-value {
+  font-family: var(--serif);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.axis-value sup {
+  font-size: 18px;
+  color: var(--muted);
+  font-weight: 400;
+  vertical-align: super;
+  margin-left: 4px;
+}
+
+.axis-bar {
+  height: 2px;
+  background: var(--line);
+  position: relative;
+  overflow: hidden;
+}
+
+.axis-bar-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--gold-deep);
+  transform-origin: left;
+  animation: barFill 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+}
+
+@keyframes barFill { from { transform: scaleX(0); } }
+
+.coverage {
+  background: var(--paper-warm);
+  padding: 48px;
+  margin-bottom: 64px;
+  border-left: 3px solid var(--gold-deep);
+}
+
+.coverage-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 16px;
+}
+
+.coverage-headline {
+  font-family: var(--serif);
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  max-width: 720px;
+}
+
+.coverage-headline strong {
+  font-weight: 500;
+  color: var(--gold-deep);
+  font-style: italic;
+}
+
+.coverage-detail {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.55;
+}
+
+.result-section { margin-bottom: 64px; }
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin-bottom: 32px;
+  max-width: 720px;
+}
+
+.section-body {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 720px;
+}
+
+.section-body p { margin-bottom: 16px; }
+
+.gap-list { list-style: none; counter-reset: gap; }
+
+.gap-item {
+  counter-increment: gap;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.gap-item:last-child { border-bottom: none; }
+
+.gap-item::before {
+  content: counter(gap, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--gold-deep);
+  letter-spacing: 0.1em;
+}
+
+.gap-name {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.gap-desc {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.leak {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 56px;
+  margin-bottom: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.leak::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(168, 137, 74, 0.15) 0%, transparent 70%);
+}
+
+.leak-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 24px;
+}
+
+.leak-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 32px;
+  max-width: 600px;
+}
+
+.leak-amount {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 80px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 16px;
+  color: var(--gold-soft);
+}
+
+.leak-range {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: rgba(245, 241, 232, 0.6);
+  letter-spacing: 0.05em;
+  margin-bottom: 32px;
+}
+
+.leak-note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(245, 241, 232, 0.5);
+  max-width: 500px;
+  line-height: 1.5;
+  padding-top: 24px;
+  border-top: 1px solid rgba(245, 241, 232, 0.15);
+}
+
+.cta {
+  text-align: center;
+  padding: 72px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.cta-title {
+  font-family: var(--serif);
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-body {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading {
+  position: fixed;
+  inset: 0;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.loading.active { opacity: 1; pointer-events: all; }
+
+.loading-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 32px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-top-color: var(--gold-deep);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 720px) {
+  .app { padding: 32px 20px 60px; }
+  .brand { margin-bottom: 40px; padding-bottom: 20px; }
+  .brand-meta { display: none; }
+  .intro-meta { flex-direction: column; gap: 20px; padding: 20px 0; margin-bottom: 40px; }
+  .axes { grid-template-columns: 1fr; gap: 16px; }
+  .leak, .coverage { padding: 32px 24px; }
+  .gap-item { grid-template-columns: 40px 1fr; gap: 16px; }
+  .phone-row { grid-template-columns: 110px 1fr; }
+  .form-footer { flex-direction: column-reverse; align-items: stretch; }
+  .form-footer .btn { justify-content: center; }
+  .result-section { margin-bottom: 48px; }
+  .continue-button-wrapper { flex-direction: column-reverse; align-items: stretch; }
+  .continue-button-wrapper .btn { justify-content: center; }
+}
+
+.hidden { display: none !important; }
+</style>
 </head>
 <body>
-<div class="container">
-<div class="header"><div class="brand">Arquitectura Patrimonial</div><h1>¿Cuánto dinero estás perdiendo<br><em>cada año sin darte cuenta?</em></h1><p class="header-sub">Responde con tus números reales. Te calculamos exactamente cuánto estás dejando en la mesa cada año.</p><div class="meta-pills"><span class="pill">4 minutos</span><span class="pill">Con tus cifras reales</span><span class="pill">+340 patrimonios analizados</span></div></div>
-<div id="start-screen"><div class="stats-row"><div class="stat"><span class="stat-number">$47M</span><div class="stat-label">promedio que descubren<br>que pierden al año</div></div><div class="stat"><span class="stat-number">3</span><div class="stat-label">fugas invisibles<br>en promedio detectamos</div></div><div class="stat"><span class="stat-number"><svg viewBox="0 0 24 24" fill="none" stroke="#E8C06A" stroke-width="1.5" style="width:28px;height:28px;vertical-align:middle"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><div class="stat-label">Resultado inmediato<br>personalizado en pesos</div></div></div><div class="start-cta"><button class="btn btn-primary" onclick="showProfile()" style="font-size:14px;padding:16px 44px">Descubrir cuánto estoy perdiendo →</button><p class="start-note">Usado por empresarios y profesionales en Colombia</p></div></div>
-<div id="profile-screen"><div class="profile-intro">Primero, cuéntanos cómo generas<br><em>tu ingreso principal</em></div><p class="profile-sub">Las preguntas se adaptarán según tu perfil.</p><div class="profile-cards"><div class="profile-card" id="card-empresario" onclick="selectProfile('empresario')"><div class="profile-check">✓</div><span class="profile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#E8E2D9" stroke-width="1.5"><path d="M3 21h18M3 21V7l9-4 9 4v14M9 21v-4h6v4M9 10h.01M15 10h.01M9 14h.01M15 14h.01"/></svg></span><div class="profile-title">Empresario</div><div class="profile-desc">Tengo empresas propias. Mis ingresos vienen de mi negocio.</div></div><div class="profile-card" id="card-profesional" onclick="selectProfile('profesional')"><div class="profile-check">✓</div><span class="profile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#E8E2D9" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 12v.01"/></svg></span><div class="profile-title">Profesional</div><div class="profile-desc">Médico, abogado, ejecutivo, consultor. Ingresos de mi carrera.</div></div></div><p class="profile-note">Selecciona el que más se aproxime.</p><div class="nav" style="margin-top:32px"><button class="btn btn-ghost" onclick="backToStart()">← Volver</button><span></span><button class="btn btn-primary" id="btn-profile-next" onclick="startWithProfile()" disabled>Continuar →</button></div></div>
-<div id="question-screen" style="display:none"><div class="progress-bar-wrap visible"><div class="progress-meta"><span class="progress-label">Diagnóstico</span><span class="progress-count" id="progress-count">1/12</span></div><div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:8%"></div></div></div><div class="section-label" id="section-label"><div class="section-num" id="section-num">01</div><div class="section-name" id="section-name">TUS NÚMEROS</div></div><div class="question-card" id="question-card"><div id="profile-badge-wrap"></div><div class="q-number" id="q-number"></div><div class="q-text" id="q-text"></div><div id="answer-area"></div></div><div class="nav"><button class="btn btn-ghost" id="btn-back" onclick="goBack()">← Anterior</button><span class="skip-hint" id="skip-hint"></span><button class="btn btn-primary" id="btn-next" onclick="goNext()" disabled>Siguiente →</button></div></div>
-<div id="capture-screen"><div class="capture-wrap"><div class="capture-eyebrow">Tu diagnóstico está listo</div><div class="capture-title">Calculamos cuánto<br><em>te está costando</em></div><p class="capture-sub">Ingresa tus datos para ver el resultado completo.</p><div class="capture-form"><div class="form-field"><label class="form-label">Nombre</label><input class="form-input" id="cap-nombre" type="text" placeholder="Tu nombre" autocomplete="given-name"/></div><div class="form-field"><label class="form-label">Correo electrónico</label><input class="form-input" id="cap-email" type="email" placeholder="tu@correo.com" autocomplete="email"/></div><div class="form-field"><label class="form-label">WhatsApp <span class="form-optional">(opcional)</span></label><input class="form-input" id="cap-whatsapp" type="tel" placeholder="+57 300 000 0000" autocomplete="tel"/></div><button class="btn-capture" id="btn-capture" onclick="submitCapture()">Ver cuánto me está costando →</button><div class="capture-status" id="capture-status"><div class="spinner"></div><span>Calculando…</span></div><p class="capture-privacy">🔒 No compartimos datos con terceros.</p></div></div></div>
-<div id="result-screen"><div class="result-hero" style="display:none"><div class="result-profile-tag" id="result-profile-tag"></div><div class="result-label">Lo que detectamos en tu patrimonio</div><div class="result-diagnosis" id="result-diagnosis"></div><div class="result-desc" id="result-desc"></div><div class="result-gauge" style="margin-top:20px"><div class="result-gauge-fill" id="gauge-fill" style="width:0%"></div></div><span class="result-score-secondary"><span id="score-number">0</span> / <span id="score-max">15</span> puntos</span></div><div class="result-profile-tag" id="result-profile-tag-visible" style="text-align:center;padding:32px 0 16px;"></div><div class="total-loss"><div class="total-loss-label">Lo que te está costando no tener estructura</div><div class="total-loss-number" id="total-loss-number"></div><div class="total-loss-sub" id="total-loss-sub"></div></div><div class="cost-grid" id="cost-grid"></div><div class="ind-section-title">Indicadores de Salud Patrimonial</div><div class="ind-grid" id="ind-grid"></div><div class="alert-2026" id="alert-2026"></div><div class="breakdown" id="breakdown"></div><div class="vulns-title">Señales de alerta detectadas</div><div id="vulns-list"></div><div class="cta-box"><div class="cta-eyebrow">Siguiente paso</div><div class="cta-headline">Esos <span id="cta-amount" style="color:var(--gold-light)"></span> son recuperables.<br>Te mostramos cómo.</div><div class="cta-sub" id="cta-sub"></div><div class="cta-features"><span class="cta-feat">Tus fugas con solución</span><span class="cta-feat">Plan de acción priorizado</span><span class="cta-feat">Proyección a 5 años</span></div><a class="btn-cta" href="https://calendly.com/abba-asesoria/agenda-tu-sesion-de-planificacion-financiera-clon" target="_blank">Ver mi plan de recuperación →</a><p class="cta-note">20 minutos · Sin costo · Sin compromiso</p></div><button class="btn-restart" onclick="restartTest()">← Hacer el test nuevamente</button></div>
-<div class="footer">Este instrumento es orientativo. No constituye asesoría legal, fiscal ni financiera.</div>
+
+<div class="loading" id="loading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loadingText">Procesando diagnóstico</div>
 </div>
-<script src="app.js"></script>
+
+<div class="app" id="app">
+  <header class="brand">
+    <div class="brand-mark">Arquitectura Patrimonial</div>
+    <div class="brand-meta">Diagnóstico · Confidencial</div>
+  </header>
+  <main id="screen"></main>
+</div>
+
+<!-- ─────────────────────────────────────────────
+     FIREBASE SDK v10 (modular, vía CDN ESM)
+     ────────────────────────────────────────────── -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics.js";
+
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyD4YxIPAoaPbyoA62ERRLwkF-0WT09HfqA",
+  authDomain: "testap-6035f.firebaseapp.com",
+  projectId: "testap-6035f",
+  storageBucket: "testap-6035f.firebasestorage.app",
+  messagingSenderId: "407524776135",
+  appId: "1:407524776135:web:987f8679ef8f945bcb46e2",
+  measurementId: "G-LPFMK5NVXM"
+};
+
+const fbApp = initializeApp(FIREBASE_CONFIG);
+const db = getFirestore(fbApp);
+
+// Analytics (opcional, fallback silencioso)
+isSupported().then(ok => { if (ok) try { getAnalytics(fbApp); } catch(e){} }).catch(()=>{});
+
+// Exponer al scope global para que el resto del script (no-module) lo use
+window.__fb = { db, collection, addDoc, serverTimestamp };
+window.__fbReady = true;
+window.dispatchEvent(new Event('fb-ready'));
+</script>
+
+<script>
+// ============================================================
+// CONFIGURACIÓN
+// ============================================================
+const CONFIG = {
+  CALENDLY_URL: 'https://calendly.com/abba-asesoria/agenda-tu-sesion-de-planificacion-financiera-clon',
+  USD_COP_RATE: 4000,
+  ORIGEN: 'diagnostico_arquitectura_patrimonial_web',
+  COLECCION_FIRESTORE: 'leads_arquitectura'
+};
+
+// ============================================================
+// ESTADO
+// ============================================================
+const state = {
+  step: 'intro',
+  answers: {},
+  perfilRoute: null,        // 'empleado' | 'independiente' | 'empresario' | 'inversionista'
+  patrimonioBand: null,     // 'A' | 'B' | 'C' | 'D' | 'E'
+  servicio: null,           // 'optimizacion_financiera' | 'arquitectura_patrimonial'
+  scores: { sofisticacion: 0, eficiencia: 0, proteccion: 0 },
+  financials: {
+    moneda: 'COP',
+    ingresoPasivoMensual: 0,
+    gastosMensuales: 0,
+    coverageRatio: 0,
+    ingresoPasivoMensualCOP: 0,
+    gastosMensualesCOP: 0
+  },
+  lead: { nombre: '', email: '', telefono: '', codigoPais: '+57', residencia: '' },
+  questionIndex: 0,
+  docId: null
+};
+
+// ============================================================
+// PREGUNTAS BASE
+// ============================================================
+const BASE_QUESTIONS = [
+  {
+    id: 'residencia',
+    title: '¿Dónde tienes tu residencia fiscal actualmente?',
+    help: 'No el lugar donde vives, sino donde declaras impuestos como residente fiscal.',
+    type: 'options',
+    options: [
+      { label: 'Colombia', value: 'co' },
+      { label: 'Estados Unidos', value: 'us' },
+      { label: 'España', value: 'es' },
+      { label: 'Otro país', value: 'otro' },
+      { label: 'No estoy seguro', value: 'incierto' }
+    ]
+  },
+  {
+    id: 'perfil',
+    title: '¿Cuál describe mejor tu fuente principal de ingresos?',
+    help: 'Elige la categoría donde generas la mayoría de tu flujo mensual.',
+    type: 'options',
+    options: [
+      { label: 'Empleado con salario (incluye cargos directivos C-level)', value: 'empleado' },
+      { label: 'Profesional independiente (facturas por servicios profesionales)', value: 'independiente' },
+      { label: 'Empresario (eres dueño o socio de uno o más negocios operativos)', value: 'empresario' },
+      { label: 'Inversionista (vives principalmente de rendimientos de capital)', value: 'inversionista' }
+    ]
+  },
+  {
+    id: 'patrimonio',
+    title: '¿En qué rango está tu patrimonio bruto actual?',
+    help: 'Suma de todos tus activos sin restar deudas. Incluye inmuebles, sociedades, inversiones y vehículos.',
+    type: 'options',
+    options: [
+      { label: 'Menos de 1.000 millones COP (~USD 250K)', value: 'A', band: 'A' },
+      { label: 'Entre 1.000M y 3.000M COP (~USD 250K – 750K)', value: 'B', band: 'B' },
+      { label: 'Entre 3.000M y 10.000M COP (~USD 750K – 2.5M)', value: 'C', band: 'C' },
+      { label: 'Entre 10.000M y 30.000M COP (~USD 2.5M – 7.5M)', value: 'D', band: 'D' },
+      { label: 'Más de 30.000M COP (~USD 7.5M+)', value: 'E', band: 'E' }
+    ]
+  },
+  {
+    id: 'flujo_financiero',
+    title: '¿Cuánto cubren hoy tus ingresos pasivos de tu estilo de vida?',
+    help: 'Necesitamos dos números reales para diagnosticar tu independencia financiera con precisión. Aproxima si no recuerdas la cifra exacta.',
+    type: 'numeric',
+    fields: [
+      {
+        key: 'ingresoPasivoMensual',
+        label: 'Ingresos pasivos mensuales',
+        help: 'Suma estimada de arriendos, dividendos, rendimientos financieros, regalías. Promedio mensual.',
+        placeholder: 'ej. 5.000.000'
+      },
+      {
+        key: 'gastosMensuales',
+        label: 'Gastos mensuales personales totales',
+        help: 'Lo que necesitas mensualmente para mantener tu estilo de vida actual: vivienda, alimentación, colegios, viajes, ocio, etc.',
+        placeholder: 'ej. 15.000.000'
+      }
+    ]
+  },
+  {
+    id: 'horizonte',
+    title: '¿Tienes una fecha objetivo para dejar de depender de tu trabajo activo?',
+    type: 'options',
+    options: [
+      { label: 'En los próximos 3 años', value: 'h1' },
+      { label: 'Entre 3 y 10 años', value: 'h2' },
+      { label: 'Más de 10 años o no es prioridad', value: 'h3' },
+      { label: 'Ya no dependo de él', value: 'h4' }
+    ]
+  }
+];
+
+// ============================================================
+// PREGUNTAS ADICIONALES SOLO PARA BANDA A (foco financiero)
+// ============================================================
+const RUTA_A_QUESTIONS = [
+  {
+    id: 'a1_trayectoria',
+    title: '¿Cómo han evolucionado tus ingresos en los últimos 3 años?',
+    help: 'Esto nos dice si estás en una fase de aceleración o de estabilización.',
+    type: 'options',
+    options: [
+      { label: 'Han caído o están estancados', value: 'a1a', scores: { eficiencia: 0 } },
+      { label: 'Han crecido entre 5% y 20% anual', value: 'a1b', scores: { eficiencia: 15 } },
+      { label: 'Han crecido entre 20% y 50% anual', value: 'a1c', scores: { eficiencia: 25 } },
+      { label: 'Se han duplicado o más', value: 'a1d', scores: { eficiencia: 35 } }
+    ]
+  },
+  {
+    id: 'a2_liquidez',
+    title: '¿Cuántos meses de tus gastos podrías cubrir hoy sin ingresar un peso?',
+    help: 'Suma cuentas de ahorro, fondos líquidos, CDTs de corto plazo. No incluyas inversiones a largo plazo ni inmuebles.',
+    type: 'options',
+    options: [
+      { label: 'Menos de 1 mes', value: 'a2a', scores: { proteccion: 0 } },
+      { label: 'Entre 1 y 3 meses', value: 'a2b', scores: { proteccion: 15 } },
+      { label: 'Entre 3 y 6 meses', value: 'a2c', scores: { proteccion: 30 } },
+      { label: 'Más de 6 meses', value: 'a2d', scores: { proteccion: 50 } }
+    ]
+  },
+  {
+    id: 'a3_deducciones',
+    title: '¿Aprovechas todas las deducciones de impuesto de renta a las que tienes derecho?',
+    help: 'Aportes voluntarios a pensión, AFC, dependientes, intereses de vivienda, medicina prepagada, etc.',
+    type: 'options',
+    options: [
+      { label: 'No conozco las deducciones disponibles', value: 'a3a', scores: { eficiencia: 0 } },
+      { label: 'Las conozco pero no las uso', value: 'a3b', scores: { eficiencia: 10 } },
+      { label: 'Uso algunas, no todas', value: 'a3c', scores: { eficiencia: 25 } },
+      { label: 'Hago planeación tributaria anual completa', value: 'a3d', scores: { eficiencia: 45 } }
+    ]
+  },
+  {
+    id: 'a4_ahorro_pct',
+    title: 'De lo que recibes cada mes, ¿cuánto guardas o inviertes?',
+    help: 'No cuentan los gastos del día a día. Es lo que efectivamente queda guardado al final del mes en ahorros, inversiones, fondos, etc.',
+    type: 'options',
+    options: [
+      { label: 'Casi nada (menos del 10%)', value: 'a4a', scores: { sofisticacion: 0 } },
+      { label: 'Entre el 10% y el 20%', value: 'a4b', scores: { sofisticacion: 15 } },
+      { label: 'Entre el 20% y el 35%', value: 'a4c', scores: { sofisticacion: 30 } },
+      { label: 'Más del 35%', value: 'a4d', scores: { sofisticacion: 45 } }
+    ]
+  }
+];
+
+// ============================================================
+// PREGUNTAS POR PERFIL
+// ============================================================
+const PERFIL_QUESTIONS = {
+  empleado: [
+    {
+      id: 'e1_compensacion',
+      title: '¿De qué manera te paga hoy tu empresa?',
+      help: 'Piensa en cómo recibes el dinero (en qué forma), no solo en el monto.',
+      type: 'options',
+      options: [
+        { label: 'Solo salario mensual', value: 'e1a', scores: { sofisticacion: 0, eficiencia: 0 } },
+        { label: 'Salario + bonos en efectivo', value: 'e1b', scores: { sofisticacion: 10, eficiencia: 5 } },
+        { label: 'Salario + acciones o participación en la empresa (stock options / RSU)', value: 'e1c', scores: { sofisticacion: 25, eficiencia: 15 } },
+        { label: 'Salario + dividendos de empresas propias en paralelo', value: 'e1d', scores: { sofisticacion: 40, eficiencia: 30 } }
+      ]
+    },
+    {
+      id: 'e2_sociedad',
+      title: '¿Eres dueño o socio de alguna empresa formalmente constituida?',
+      help: 'Cuenta cualquier SAS, LTDA, S.A. u otra figura societaria donde aparezcas como socio o accionista, incluso si es pequeña, está inactiva o solo la usas ocasionalmente. No cuentan las acciones de empresas grandes que cotizan en bolsa.',
+      type: 'options',
+      options: [
+        { label: 'No, no tengo participación en ninguna sociedad', value: 'e2a', scores: { sofisticacion: 0 } },
+        { label: 'Sí, tengo una empresa pero está inactiva', value: 'e2b', scores: { sofisticacion: 15 } },
+        { label: 'Sí, tengo una empresa activa donde recibo ingresos paralelos a mi salario', value: 'e2c', scores: { sofisticacion: 35, eficiencia: 20 } },
+        { label: 'Sí, tengo varias empresas o una estructura societaria', value: 'e2d', scores: { sofisticacion: 55, eficiencia: 35 } }
+      ]
+    },
+    {
+      id: 'e3_activos',
+      title: 'Tu vivienda, vehículos e inversiones, ¿a nombre de quién están?',
+      help: 'Bienes personales, no los de tu empresa operativa.',
+      type: 'options',
+      options: [
+        { label: 'Todo a nombre propio, conyugal o de algún familiar (hijos, padres)', value: 'e3a', scores: { sofisticacion: 0, proteccion: 10 } },
+        { label: 'Algunos en sociedad, otros personales', value: 'e3b', scores: { sofisticacion: 20, proteccion: 25 } },
+        { label: 'La mayoría en estructura societaria', value: 'e3c', scores: { sofisticacion: 40, proteccion: 45 } },
+        { label: 'Estructura societaria con holding por encima', value: 'e3d', scores: { sofisticacion: 65, proteccion: 70 } }
+      ]
+    },
+    {
+      id: 'e4_sucesion',
+      title: '¿Has hecho planeación sucesoral formal?',
+      help: 'Testamento, fideicomiso, protocolo familiar, donaciones en vida documentadas. No incluye seguros de vida.',
+      type: 'options',
+      options: [
+        { label: 'No, nada formalizado', value: 'e4a', scores: { proteccion: 0 } },
+        { label: 'Solo testamento', value: 'e4b', scores: { proteccion: 20 } },
+        { label: 'Testamento + algunas donaciones en vida', value: 'e4c', scores: { proteccion: 45 } },
+        { label: 'Estructura sucesoral con vehículos societarios y protocolo', value: 'e4d', scores: { proteccion: 75 } }
+      ]
+    }
+  ],
+  independiente: [
+    {
+      id: 'i1_factura',
+      title: '¿Cómo facturas hoy tus servicios profesionales?',
+      help: 'Considera el formato que usas para la mayoría de tus ingresos.',
+      type: 'options',
+      options: [
+        { label: 'Solo con cédula (persona natural)', value: 'i1a', scores: { sofisticacion: 0, eficiencia: 0 } },
+        { label: 'Mix entre cédula y SAS según el cliente', value: 'i1b', scores: { sofisticacion: 15, eficiencia: 15 } },
+        { label: '100% a través de SAS u otra figura societaria', value: 'i1c', scores: { sofisticacion: 35, eficiencia: 35 } },
+        { label: 'A través de estructura con holding por encima', value: 'i1d', scores: { sofisticacion: 60, eficiencia: 55 } }
+      ]
+    },
+    {
+      id: 'i2_reinversion',
+      title: 'De lo que facturas al año, ¿cuánto reinviertes vs. retiras a uso personal?',
+      help: 'Reinvertir incluye dejar capital en la sociedad para crecer el negocio o para nuevas inversiones.',
+      type: 'options',
+      skipIfCedula: true,
+      options: [
+        { label: 'Retiro casi todo, reinvierto muy poco', value: 'i2a', scores: { eficiencia: 0 } },
+        { label: 'Reinvierto entre 10% y 30%', value: 'i2b', scores: { eficiencia: 15 } },
+        { label: 'Reinvierto entre 30% y 50%', value: 'i2c', scores: { eficiencia: 35 } },
+        { label: 'Reinvierto más del 50% (acumulación de capital en estructura)', value: 'i2d', scores: { eficiencia: 55, sofisticacion: 20 } }
+      ]
+    },
+    {
+      id: 'i3_retiro',
+      title: '¿Cómo retiras dinero desde tu empresa hacia ti mismo?',
+      help: 'Cuando necesitas dinero personal, ¿bajo qué figura sale de tu empresa?',
+      type: 'options',
+      skipIfCedula: true,
+      options: [
+        { label: 'Solo salario como empleado de mi propia empresa', value: 'i3b', scores: { eficiencia: 10 } },
+        { label: 'Solo dividendos', value: 'i3c', scores: { eficiencia: 25 } },
+        { label: 'Mix estratégico salario + dividendos según planeación', value: 'i3d', scores: { eficiencia: 50, sofisticacion: 25 } }
+      ]
+    },
+    {
+      id: 'i4_gastos',
+      title: '¿Tu empresa paga gastos tuyos que tienen relación con tu trabajo?',
+      help: 'Por ejemplo: tu carro, parte del arriendo si trabajas desde casa, viajes de trabajo, cursos profesionales, software, computador. Esto es legítimo cuando hay relación real con tu actividad profesional.',
+      type: 'options',
+      skipIfCedula: true,
+      options: [
+        { label: 'No, separo todos los gastos estrictamente', value: 'i4a', scores: { eficiencia: 0 } },
+        { label: 'Algunos sí, pero sin planeación específica', value: 'i4b', scores: { eficiencia: 15 } },
+        { label: 'Sí, con criterio fiscal definido', value: 'i4c', scores: { eficiencia: 35 } },
+        { label: 'Sí, con estructura optimizada y documentada por mi contador', value: 'i4d', scores: { eficiencia: 55, sofisticacion: 20 } }
+      ]
+    },
+    {
+      id: 'i5_activos',
+      title: 'Tu vivienda, vehículos e inversiones, ¿a nombre de quién están?',
+      help: 'Bienes personales, no los relacionados con tu actividad profesional.',
+      type: 'options',
+      options: [
+        { label: 'Todo a nombre propio', value: 'i5a', scores: { proteccion: 5 } },
+        { label: 'A nombre de mi pareja, hijos u otro familiar cercano', value: 'i5a2', scores: { proteccion: 10 } },
+        { label: 'Mezclado entre nombre propio y mi sociedad operativa', value: 'i5b', scores: { proteccion: 20 } },
+        { label: 'En sociedad patrimonial separada de la operativa', value: 'i5c', scores: { proteccion: 50, sofisticacion: 30 } },
+        { label: 'Holding patrimonial separada con planeación sucesoral', value: 'i5d', scores: { proteccion: 75, sofisticacion: 55 } }
+      ]
+    },
+    {
+      id: 'i6_sucesion',
+      title: '¿Has hecho planeación sucesoral formal?',
+      help: 'Testamento, fideicomiso, protocolo familiar, donaciones en vida documentadas.',
+      type: 'options',
+      options: [
+        { label: 'No', value: 'i6a', scores: { proteccion: 0 } },
+        { label: 'Solo testamento', value: 'i6b', scores: { proteccion: 20 } },
+        { label: 'Testamento + donaciones en vida', value: 'i6c', scores: { proteccion: 45 } },
+        { label: 'Estructura sucesoral formal con vehículos societarios', value: 'i6d', scores: { proteccion: 75 } }
+      ]
+    }
+  ],
+  empresario: [
+    {
+      id: 'm1_sociedades',
+      title: '¿Cuántas empresas operativas tienes hoy?',
+      help: 'Empresas que efectivamente facturan y generan ingresos, no las inactivas.',
+      type: 'options',
+      options: [
+        { label: 'Una sola', value: 'm1a', scores: { sofisticacion: 10 } },
+        { label: 'Dos o tres', value: 'm1b', scores: { sofisticacion: 25 } },
+        { label: 'Más de tres', value: 'm1c', scores: { sofisticacion: 40 } },
+        { label: 'Más de tres, agrupadas por línea de negocio', value: 'm1d', scores: { sofisticacion: 55 } }
+      ]
+    },
+    {
+      id: 'm2_holding',
+      title: '¿Tienes una sociedad holding por encima de tus operativas?',
+      help: 'Una empresa cuya única función es ser dueña de las que sí operan. Permite consolidar dividendos y separar riesgos entre líneas de negocio.',
+      type: 'options',
+      options: [
+        { label: 'No, todas las operativas están a mi nombre directo', value: 'm2a', scores: { sofisticacion: 0, eficiencia: 0, proteccion: 5 } },
+        { label: 'No, pero estoy considerándolo', value: 'm2b', scores: { sofisticacion: 10 } },
+        { label: 'Sí, tengo holding nacional', value: 'm2c', scores: { sofisticacion: 45, eficiencia: 40, proteccion: 50 } },
+        { label: 'Sí, holding nacional + vehículo internacional', value: 'm2d', scores: { sofisticacion: 80, eficiencia: 70, proteccion: 80 } }
+      ]
+    },
+    {
+      id: 'm3_pago',
+      title: '¿Cómo te pagas a ti mismo desde tus empresas?',
+      help: 'Cuando necesitas dinero personal, ¿de dónde sale y bajo qué figura?',
+      type: 'options',
+      options: [
+        { label: 'Solo salario como empleado de mi empresa', value: 'm3a', scores: { eficiencia: 5 } },
+        { label: 'Solo dividendos al cierre de año', value: 'm3b', scores: { eficiencia: 20 } },
+        { label: 'Mix salario + dividendos, sin planeación específica', value: 'm3c', scores: { eficiencia: 30 } },
+        { label: 'Mix optimizado fiscalmente con criterio por sociedad', value: 'm3d', scores: { eficiencia: 60, sofisticacion: 25 } }
+      ]
+    },
+    {
+      id: 'm3b_proporcion',
+      title: 'De lo que tu empresa factura mensualmente, ¿qué proporción termina en tu bolsillo personal?',
+      help: 'Aproximadamente. No es lo que la empresa factura — es lo que tú efectivamente recibes a tu cuenta personal.',
+      type: 'options',
+      options: [
+        { label: 'Más del 70% (la empresa es prácticamente mi cuenta personal)', value: 'm3ba', scores: { sofisticacion: 0, eficiencia: 0 } },
+        { label: 'Entre 40% y 70%', value: 'm3bb', scores: { sofisticacion: 10, eficiencia: 10 } },
+        { label: 'Entre 20% y 40% (la empresa reinvierte mucho)', value: 'm3bc', scores: { sofisticacion: 25, eficiencia: 25 } },
+        { label: 'Menos del 20% (acumulo capital en estructura)', value: 'm3bd', scores: { sofisticacion: 40, eficiencia: 35 } }
+      ]
+    },
+    {
+      id: 'm3c_otras_fuentes',
+      title: '¿Tienes ingresos activos por fuera de tus empresas?',
+      help: 'Por ejemplo: salario en otra empresa donde no eres dueño, asesorías independientes, juntas directivas, dictar clases o conferencias.',
+      type: 'options',
+      options: [
+        { label: 'No, todos mis ingresos activos vienen de mis empresas', value: 'm3ca' },
+        { label: 'Sí, ocasionalmente (juntas, asesorías esporádicas)', value: 'm3cb', scores: { sofisticacion: 10 } },
+        { label: 'Sí, tengo salario regular en otra empresa', value: 'm3cc', scores: { sofisticacion: 15 } },
+        { label: 'Sí, múltiples fuentes activas en paralelo', value: 'm3cd', scores: { sofisticacion: 25 } }
+      ]
+    },
+    {
+      id: 'm4_activos_no_op',
+      title: 'Tu vivienda, vehículos personales e inversiones, ¿a nombre de quién están?',
+      help: 'Bienes personales, no tus empresas operativas ni inmuebles de renta.',
+      type: 'options',
+      options: [
+        { label: 'A nombre propio o de mi pareja, hijos u otro familiar', value: 'm4a', scores: { proteccion: 5 } },
+        { label: 'Mezclados entre nombre propio y mis empresas operativas', value: 'm4b', scores: { proteccion: 15 } },
+        { label: 'En sociedad inmobiliaria/patrimonial separada', value: 'm4c', scores: { proteccion: 50, sofisticacion: 30 } },
+        { label: 'En holding patrimonial separada + posible vehículo internacional', value: 'm4d', scores: { proteccion: 80, sofisticacion: 60 } }
+      ]
+    },
+    {
+      id: 'm5_sucesion',
+      title: '¿Tienes protocolo de sucesión y/o gobierno familiar?',
+      help: 'Cómo se transferirá el patrimonio y el control de tus empresas a la siguiente generación.',
+      type: 'options',
+      options: [
+        { label: 'No', value: 'm5a', scores: { proteccion: 0 } },
+        { label: 'Solo testamento', value: 'm5b', scores: { proteccion: 15 } },
+        { label: 'Protocolo familiar informal', value: 'm5c', scores: { proteccion: 35 } },
+        { label: 'Protocolo formal + estructura societaria sucesoral', value: 'm5d', scores: { proteccion: 75 } }
+      ]
+    },
+    {
+      id: 'm6_internacional',
+      title: '¿Tienes exposición o estructura en otra jurisdicción?',
+      help: 'Estados Unidos, Panamá, Uruguay, Emiratos Árabes Unidos, etc.',
+      type: 'options',
+      options: [
+        { label: 'No', value: 'm6a', scores: { sofisticacion: 0 } },
+        { label: 'Lo he considerado pero no he avanzado', value: 'm6b', scores: { sofisticacion: 10 } },
+        { label: 'Tengo cuentas o inversiones personales en el exterior', value: 'm6c', scores: { sofisticacion: 30 } },
+        { label: 'Tengo estructura societaria en el exterior', value: 'm6d', scores: { sofisticacion: 65, proteccion: 40 } }
+      ]
+    }
+  ],
+  inversionista: [
+    {
+      id: 'v1_estructura',
+      title: '¿Cómo está organizado tu capital de inversión?',
+      type: 'options',
+      options: [
+        { label: 'A nombre propio en cuentas locales', value: 'v1a', scores: { sofisticacion: 0, eficiencia: 0 } },
+        { label: 'A nombre propio, mix local + exterior', value: 'v1b', scores: { sofisticacion: 20, eficiencia: 15 } },
+        { label: 'Vía sociedad de inversión local', value: 'v1c', scores: { sofisticacion: 40, eficiencia: 35 } },
+        { label: 'Vía estructura con vehículo internacional (LLC, fundación, fideicomiso)', value: 'v1d', scores: { sofisticacion: 75, eficiencia: 65, proteccion: 60 } }
+      ]
+    },
+    {
+      id: 'v2_fuente',
+      title: '¿Cuál es tu fuente principal de ingreso pasivo?',
+      help: 'Aquella que representa el mayor flujo mensual.',
+      type: 'options',
+      options: [
+        { label: 'Arriendos inmobiliarios', value: 'v2a' },
+        { label: 'Dividendos de empresas operativas', value: 'v2b' },
+        { label: 'Rendimientos financieros (CDT, fondos, bonos, acciones)', value: 'v2c' },
+        { label: 'Mix diversificado entre varias fuentes', value: 'v2d', scores: { sofisticacion: 15 } }
+      ]
+    },
+    {
+      id: 'v3_planeacion',
+      title: '¿Tienes planeación fiscal sobre tus rendimientos?',
+      help: 'Selección de vehículos por tratamiento tributario, timing de realización, compensación de pérdidas, etc.',
+      type: 'options',
+      options: [
+        { label: 'No, recibo y pago lo que me liquidan', value: 'v3a', scores: { eficiencia: 0 } },
+        { label: 'Algo, pero sin asesoría especializada', value: 'v3b', scores: { eficiencia: 15 } },
+        { label: 'Sí, con asesor que revisa anualmente', value: 'v3c', scores: { eficiencia: 40 } },
+        { label: 'Sí, con planeación trimestral y estructura optimizada', value: 'v3d', scores: { eficiencia: 70, sofisticacion: 30 } }
+      ]
+    },
+    {
+      id: 'v4_activos',
+      title: '¿Dónde están alojados tus principales activos de inversión?',
+      type: 'options',
+      options: [
+        { label: 'Todos a nombre propio', value: 'v4a', scores: { proteccion: 5 } },
+        { label: 'Mix nombre propio + sociedad local', value: 'v4b', scores: { proteccion: 25 } },
+        { label: 'Mayormente en sociedad patrimonial', value: 'v4c', scores: { proteccion: 50 } },
+        { label: 'Estructura multi-jurisdiccional optimizada', value: 'v4d', scores: { proteccion: 80, sofisticacion: 50 } }
+      ]
+    },
+    {
+      id: 'v5_sucesion',
+      title: '¿Cómo está planeada la transición patrimonial a tus herederos?',
+      type: 'options',
+      options: [
+        { label: 'Sin planeación formal', value: 'v5a', scores: { proteccion: 0 } },
+        { label: 'Solo testamento', value: 'v5b', scores: { proteccion: 20 } },
+        { label: 'Donaciones en vida + testamento', value: 'v5c', scores: { proteccion: 45 } },
+        { label: 'Vehículo sucesoral (fideicomiso, fundación, holding) ya operando', value: 'v5d', scores: { proteccion: 80 } }
+      ]
+    }
+  ]
+};
+
+// ============================================================
+// BLOQUE UGPP (solo para profesional independiente que factura con cédula)
+// Reemplaza las preguntas marcadas con skipIfCedula
+// ============================================================
+const UGPP_QUESTIONS = [
+  {
+    id: 'ugpp_1_aportes',
+    title: 'Tus aportes a seguridad social como independiente, ¿sobre qué base los pagas?',
+    help: 'Por ley, el independiente cotiza sobre el 40% de sus ingresos brutos mensuales (depurados). La UGPP fiscaliza esto.',
+    type: 'options',
+    options: [
+      { label: 'No sé exactamente sobre qué base', value: 'ugpp1_a', scores: { proteccion: 0, eficiencia: 0 } },
+      { label: 'Sobre el mínimo legal (1 SMLV o menos)', value: 'ugpp1_b', scores: { proteccion: 0 } },
+      { label: 'Sobre una base intermedia (más que el mínimo, pero menos del 40%)', value: 'ugpp1_c', scores: { proteccion: 15 } },
+      { label: 'Sobre el 40% de mis ingresos reales como manda la ley', value: 'ugpp1_d', scores: { proteccion: 40, eficiencia: 20 } }
+    ]
+  },
+  {
+    id: 'ugpp_2_fiscalizacion',
+    title: '¿Has recibido alguna notificación o requerimiento de la UGPP en los últimos 5 años?',
+    help: 'Incluye cualquier comunicación oficial: requerimientos de información, autos de cobro, liquidaciones de aforo.',
+    type: 'options',
+    options: [
+      { label: 'No, nunca', value: 'ugpp2_a' },
+      { label: 'Recibí algo informativo pero no le di seguimiento', value: 'ugpp2_b', scores: { proteccion: -10 } },
+      { label: 'Sí, estoy en proceso o lo estuve recientemente', value: 'ugpp2_c', scores: { proteccion: -20 } },
+      { label: 'Sí, tengo asesoría legal activa en el tema', value: 'ugpp2_d', scores: { proteccion: 20 } }
+    ]
+  },
+  {
+    id: 'ugpp_3_claridad',
+    title: '¿Tienes claridad sobre tu ingreso base de cotización (IBC) y los costos que puedes deducir?',
+    help: 'El IBC se calcula descontando costos asociados a tu actividad. La diferencia entre cotizar bien y cotizar mal puede ser de millones al año.',
+    type: 'options',
+    options: [
+      { label: 'No, mi contador o yo lo calculamos de memoria', value: 'ugpp3_a', scores: { eficiencia: 0 } },
+      { label: 'Tengo idea pero no estoy seguro de hacerlo bien', value: 'ugpp3_b', scores: { eficiencia: 10 } },
+      { label: 'Sí, lo calculo con criterio y documento los costos', value: 'ugpp3_c', scores: { eficiencia: 30, proteccion: 15 } },
+      { label: 'Sí, con asesoría especializada y revisión periódica', value: 'ugpp3_d', scores: { eficiencia: 45, proteccion: 30 } }
+    ]
+  }
+];
+
+// ============================================================
+// BLOQUE DEUDA (solo para banda A)
+// ============================================================
+const DEUDA_QUESTIONS = [
+  {
+    id: 'deuda_consumo',
+    title: '¿Tienes deudas de consumo activas hoy?',
+    help: 'Tarjetas de crédito con cuotas, créditos de libre inversión, créditos de vehículo, compras a plazos.',
+    type: 'options',
+    options: [
+      { label: 'No, ninguna', value: 'dc_a', scores: { proteccion: 30 } },
+      { label: 'Sí, manejables (pago menos del 15% de mi ingreso en cuotas)', value: 'dc_b', scores: { proteccion: 15 } },
+      { label: 'Sí, significativas (entre 15% y 30% de mi ingreso)', value: 'dc_c', scores: { proteccion: 0 } },
+      { label: 'Sí, son una carga importante (más del 30% de mi ingreso)', value: 'dc_d', scores: { proteccion: -20 } }
+    ]
+  },
+  {
+    id: 'deuda_apalancamiento',
+    title: '¿Tienes deudas de apalancamiento (productivas)?',
+    help: 'Crédito hipotecario sobre vivienda, leasing de inmueble que arriendas, crédito para inversión o negocio. Estas son distintas de las de consumo: financian activos que generan retorno.',
+    type: 'options',
+    options: [
+      { label: 'No, ninguna', value: 'da_a' },
+      { label: 'Sí, hipoteca de mi vivienda principal', value: 'da_b', scores: { sofisticacion: 5 } },
+      { label: 'Sí, financiamiento de inmuebles que rentan o se valorizan', value: 'da_c', scores: { sofisticacion: 20 } },
+      { label: 'Sí, uso apalancamiento estratégicamente en varios frentes', value: 'da_d', scores: { sofisticacion: 35 } }
+    ]
+  }
+];
+
+// ============================================================
+// COMPOSICIÓN PATRIMONIAL (solo para banda C+: >3.000M)
+// ============================================================
+const COMPOSICION_PATRIMONIAL = [
+  {
+    id: 'comp_productivo',
+    title: 'De tu patrimonio total, ¿qué proporción está en activos que generan rendimiento mensual o anual?',
+    help: 'Activos productivos: inmuebles arrendados, inversiones financieras que pagan rendimientos o dividendos, empresas operativas. NO cuentan: vivienda donde vives, vehículos, segunda casa de uso personal, terrenos sin desarrollar.',
+    type: 'options',
+    options: [
+      { label: 'Menos del 20% (mayormente activos personales, vivienda, vehículos)', value: 'cp_a', scores: { sofisticacion: 0, eficiencia: 0 } },
+      { label: 'Entre 20% y 50%', value: 'cp_b', scores: { sofisticacion: 15, eficiencia: 10 } },
+      { label: 'Entre 50% y 80%', value: 'cp_c', scores: { sofisticacion: 35, eficiencia: 25 } },
+      { label: 'Más del 80% (la mayoría de mi patrimonio genera retorno)', value: 'cp_d', scores: { sofisticacion: 55, eficiencia: 40 } }
+    ]
+  }
+];
+
+// ============================================================
+// RANGO DE INGRESOS (solo para independientes y empresarios)
+// Una sola pregunta de selección, no input numérico (menos fricción)
+// ============================================================
+const INGRESOS_QUESTIONS = [
+  {
+    id: 'ingreso_anual_rango',
+    title: '¿En qué rango están tus ingresos anuales totales?',
+    help: 'Suma de todo lo que ingresas durante el año: facturación a tu nombre, retiros de tus empresas, dividendos, honorarios. Antes de impuestos.',
+    type: 'options',
+    options: [
+      { label: 'Menos de 150 millones COP al año', value: 'ia_a' },
+      { label: 'Entre 150 y 400 millones COP al año', value: 'ia_b' },
+      { label: 'Entre 400 millones y 1.000 millones COP al año', value: 'ia_c' },
+      { label: 'Entre 1.000 y 3.000 millones COP al año', value: 'ia_d' },
+      { label: 'Más de 3.000 millones COP al año', value: 'ia_e' }
+    ]
+  }
+];
+
+// ============================================================
+// FLUJO DINÁMICO DE PREGUNTAS
+// Construye la secuencia exacta según perfil y respuestas previas
+// ============================================================
+function buildQuestionFlow() {
+  // Construir base: para banda C+ se omite la pregunta de flujo financiero
+  // (cobertura/independencia financiera) ya que la conversación con esos
+  // perfiles va de protección, estructuración y sucesión, no de "cuándo puedo
+  // dejar de trabajar".
+  const bandsSinFlujoFinanciero = ['C', 'D', 'E'];
+  const skipFlujo = bandsSinFlujoFinanciero.includes(state.patrimonioBand);
+  const flow = BASE_QUESTIONS.filter(q => !(skipFlujo && q.id === 'flujo_financiero'));
+
+  // Bloque banda A (foco financiero/tributario)
+  if (state.patrimonioBand === 'A') {
+    flow.push(...RUTA_A_QUESTIONS);
+    flow.push(...DEUDA_QUESTIONS);
+  }
+
+  // Bloque composición patrimonial (banda C+)
+  const bandasComposicion = ['C', 'D', 'E'];
+  if (bandasComposicion.includes(state.patrimonioBand)) {
+    flow.push(...COMPOSICION_PATRIMONIAL);
+  }
+
+  // Bloque rango de ingresos (solo independientes y empresarios)
+  if (state.perfilRoute === 'independiente' || state.perfilRoute === 'empresario') {
+    flow.push(...INGRESOS_QUESTIONS);
+  }
+
+  // Bloque del perfil con filtrado condicional
+  if (state.perfilRoute && PERFIL_QUESTIONS[state.perfilRoute]) {
+    let perfilQs = [...PERFIL_QUESTIONS[state.perfilRoute]];
+
+    // Bifurcación: independiente que factura solo con cédula
+    // Saltar preguntas marcadas con skipIfCedula, insertar bloque UGPP en su lugar
+    if (state.perfilRoute === 'independiente' && state.answers.i1_factura === 'i1a') {
+      // Encontrar índice donde está la primera pregunta skipIfCedula
+      const firstSkipIdx = perfilQs.findIndex(q => q.skipIfCedula);
+      // Filtrar fuera todas las skipIfCedula
+      perfilQs = perfilQs.filter(q => !q.skipIfCedula);
+      // Insertar UGPP en la posición donde estaban las saltadas
+      if (firstSkipIdx >= 0) {
+        perfilQs.splice(firstSkipIdx, 0, ...UGPP_QUESTIONS);
+      } else {
+        perfilQs.push(...UGPP_QUESTIONS);
+      }
+    }
+
+    flow.push(...perfilQs);
+  }
+  return flow;
+}
+
+// ============================================================
+// CÁLCULOS
+// ============================================================
+function patrimonioMedio(band) {
+  const medios = {
+    'A': 500_000_000,
+    'B': 2_000_000_000,
+    'C': 6_500_000_000,
+    'D': 20_000_000_000,
+    'E': 50_000_000_000
+  };
+  return medios[band] || 0;
+}
+
+function calcularCoverageRatio() {
+  const { ingresoPasivoMensualCOP, gastosMensualesCOP } = state.financials;
+  if (!gastosMensualesCOP || gastosMensualesCOP === 0) return 0;
+  return ingresoPasivoMensualCOP / gastosMensualesCOP;
+}
+
+function calcularFuga() {
+  const pat = patrimonioMedio(state.patrimonioBand);
+  const sofMissing = (100 - state.scores.sofisticacion) / 100;
+  const efiMissing = (100 - state.scores.eficiencia) / 100;
+  const proMissing = (100 - state.scores.proteccion) / 100;
+
+  if (state.patrimonioBand === 'A') {
+    const fugaTributaria = pat * 0.015 * efiMissing;
+    return {
+      min: Math.round(fugaTributaria * 0.75),
+      estimado: Math.round(fugaTributaria),
+      max: Math.round(fugaTributaria * 1.25),
+      patrimonio: pat,
+      tipo: 'tributaria',
+      subtotal_perdidas: 0,
+      subtotal_oportunidad: Math.round(fugaTributaria),
+      total_anual: Math.round(fugaTributaria),
+      total_mensual: Math.round(fugaTributaria / 12)
+    };
+  }
+
+  const fugaEficiencia = pat * 0.025 * efiMissing;
+  const fugaSofisticacion = pat * 0.012 * sofMissing;
+  const fugaProteccion = pat * 0.008 * proMissing;
+  const estimadoMedio = fugaEficiencia + fugaSofisticacion + fugaProteccion;
+
+  // Para el schema de las functions: separar perdidas vs oportunidad
+  const subtotal_perdidas = Math.round(fugaEficiencia * 0.4 + fugaProteccion);
+  const subtotal_oportunidad = Math.round(fugaEficiencia * 0.6 + fugaSofisticacion);
+
+  return {
+    min: Math.round(estimadoMedio * 0.75),
+    estimado: Math.round(estimadoMedio),
+    max: Math.round(estimadoMedio * 1.25),
+    patrimonio: pat,
+    tipo: 'arquitectura',
+    subtotal_perdidas,
+    subtotal_oportunidad,
+    total_anual: Math.round(estimadoMedio),
+    total_mensual: Math.round(estimadoMedio / 12)
+  };
+}
+
+function formatCurrency(n, currency = 'COP') {
+  if (currency === 'USD') {
+    if (n >= 1_000_000) return 'USD ' + (n / 1_000_000).toFixed(2).replace(/\.?0+$/, '') + 'M';
+    if (n >= 1000) return 'USD ' + (n / 1000).toFixed(0) + 'K';
+    return 'USD ' + Math.round(n).toLocaleString('en-US');
+  }
+  if (n >= 1_000_000_000) return '$' + (n / 1_000_000_000).toFixed(1).replace('.0', '') + ' MM';
+  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(0) + ' M';
+  return '$' + Math.round(n).toLocaleString('es-CO');
+}
+
+function determinarServicio() {
+  return state.patrimonioBand === 'A' ? 'optimizacion_financiera' : 'arquitectura_patrimonial';
+}
+
+// ============================================================
+// CLASIFICACIÓN
+// ============================================================
+function clasificarNivel() {
+  const promedio = (state.scores.sofisticacion + state.scores.eficiencia + state.scores.proteccion) / 3;
+  if (state.patrimonioBand === 'A') {
+    if (promedio < 30) return { nombre: 'En construcción', desc: 'Estás formando los cimientos de tu vida financiera. Lo más rentable que puedes hacer hoy no es estructurar — es ordenar y optimizar.' };
+    if (promedio < 55) return { nombre: 'En ascenso', desc: 'Tienes los fundamentos básicos pero hay márgenes importantes de optimización tributaria y crecimiento que no estás aprovechando.' };
+    return { nombre: 'En aceleración', desc: 'Estás listo para dar el salto al siguiente nivel patrimonial. Optimizar tu situación actual te prepara para el momento en que la arquitectura sí sea relevante.' };
+  }
+  if (promedio < 35) return { nombre: 'Operador', desc: 'Tu patrimonio existe, pero opera como una persona natural sofisticada — no como un sistema diseñado.' };
+  if (promedio < 65) return { nombre: 'Optimizador', desc: 'Tienes piezas correctas pero sueltas. Aún no es una arquitectura integrada.' };
+  return { nombre: 'Arquitecto', desc: 'Operas con sistema. Lo que sigue es refinamiento sobre una base ya construida.' };
+}
+
+function generarMensajeCobertura() {
+  const ratio = state.financials.coverageRatio;
+  const ipm = state.financials.ingresoPasivoMensualCOP;
+  const gm = state.financials.gastosMensualesCOP;
+  if (!gm) return null;
+
+  const pctCobertura = Math.round(ratio * 100);
+
+  if (ratio === 0) {
+    return {
+      headline: 'Tu estilo de vida depende <strong>100% de tu trabajo activo</strong>.',
+      detail: `Hoy tus ingresos pasivos no cubren ningún porcentaje de tus ${formatCurrency(gm)} mensuales de gastos. El primer objetivo financiero no es estructurar — es construir capital que genere flujo.`
+    };
+  }
+  if (ratio < 0.25) {
+    return {
+      headline: `Tu capital cubre el <strong>${pctCobertura}%</strong> de tu estilo de vida.`,
+      detail: `Recibes ${formatCurrency(ipm)} mensuales pasivos frente a ${formatCurrency(gm)} de gastos. Aún dependes mayoritariamente del trabajo activo, pero ya has empezado a construir flujo independiente.`
+    };
+  }
+  if (ratio < 0.5) {
+    return {
+      headline: `Tu capital cubre el <strong>${pctCobertura}%</strong> de tu estilo de vida.`,
+      detail: `Estás a medio camino de la independencia financiera. Cada nueva inversión que genere flujo está más cerca de inclinar la balanza definitivamente.`
+    };
+  }
+  if (ratio < 1) {
+    return {
+      headline: `Tu capital cubre el <strong>${pctCobertura}%</strong> de tu estilo de vida.`,
+      detail: `Estás cerca del umbral. Con ${formatCurrency(ipm)} de ingresos pasivos contra ${formatCurrency(gm)} de gastos, podrías mantener tu estilo de vida durante períodos largos sin depender de trabajo activo.`
+    };
+  }
+  if (ratio < 1.5) {
+    return {
+      headline: `Tu capital ya cubre <strong>${ratio.toFixed(1)}x</strong> tu estilo de vida.`,
+      detail: `Has cruzado el punto de independencia financiera funcional. Lo que ganas activamente hoy es opcional, no necesario. La pregunta ya no es "cómo me independizo" — es "cómo proteger y hacer crecer este sistema".`
+    };
+  }
+  return {
+    headline: `Tu capital genera <strong>${ratio.toFixed(1)}x</strong> tu estilo de vida.`,
+    detail: `Eres financieramente independiente con holgura significativa. El excedente entre lo que generas pasivamente y lo que consumes está construyendo más capital. La arquitectura que diseñes en este punto define las próximas dos generaciones.`
+  };
+}
+
+// ============================================================
+// INFORME
+// ============================================================
+function generarInforme() {
+  const nivel = clasificarNivel();
+  const fuga = calcularFuga();
+  const fortalezas = generarFortalezas();
+  const brechas = generarBrechas();
+  const diagnostico = generarDiagnostico(nivel);
+  const cobertura = generarMensajeCobertura();
+  return { nivel, fuga, fortalezas, brechas, diagnostico, cobertura };
+}
+
+function generarFortalezas() {
+  const f = [];
+  const banda = state.patrimonioBand;
+  const ratio = state.financials.coverageRatio;
+
+  if (banda === 'A') {
+    if (state.answers.a1_trayectoria === 'a1c' || state.answers.a1_trayectoria === 'a1d') {
+      f.push('Tus ingresos están en fase de crecimiento acelerado: es el mejor momento para optimizar el costo tributario de cada peso adicional.');
+    }
+    if (state.answers.a2_liquidez === 'a2c' || state.answers.a2_liquidez === 'a2d') {
+      f.push('Tienes una base sólida de liquidez que te da margen de maniobra frente a imprevistos.');
+    }
+    if (state.answers.a3_deducciones === 'a3c' || state.answers.a3_deducciones === 'a3d') {
+      f.push('Ya entendiste que la planeación tributaria importa, aunque hay espacio para profundizar.');
+    }
+    if (state.answers.a4_ahorro_pct === 'a4c' || state.answers.a4_ahorro_pct === 'a4d') {
+      f.push('Tu tasa de ahorro está por encima del promedio: estás construyendo capital sistemáticamente.');
+    }
+    if (ratio >= 0.25) f.push(`Tu capital ya cubre el ${Math.round(ratio*100)}% de tu estilo de vida — no empiezas de cero.`);
+  } else {
+    if (state.scores.sofisticacion >= 50) f.push('Ya entiendes el valor de operar a través de estructura, no como persona natural.');
+    if (state.scores.eficiencia >= 50) f.push('Estás capturando ahorros fiscales que la mayoría de tu rango patrimonial deja sobre la mesa.');
+    if (state.scores.proteccion >= 50) f.push('Has comenzado a separar tu patrimonio de los riesgos operativos y/o personales.');
+    if (ratio >= 1) f.push('Tu capital ya genera más de lo que consumes: el trabajo activo es opcional.');
+    else if (ratio >= 0.5) f.push('Tu dependencia del trabajo activo es moderada: tu capital cubre buena parte de tu estilo de vida.');
+  }
+  if (f.length === 0) f.push('Estás en el momento correcto para diseñar bases sólidas, antes de que la complejidad crezca contigo.');
+  return f.slice(0, 3);
+}
+
+function generarBrechas() {
+  const perfil = state.perfilRoute;
+  const band = state.patrimonioBand;
+  const brechas = [];
+
+  if (band === 'A') {
+    if (state.answers.a3_deducciones === 'a3a' || state.answers.a3_deducciones === 'a3b') {
+      brechas.push({
+        tipo: 'f1p',
+        name: 'Planeación tributaria anual',
+        desc: 'Aportes voluntarios a pensión, AFC, dependientes, intereses de vivienda y otros mecanismos legítimos pueden reducir tu base gravable de forma significativa. La diferencia entre usar y no usar estos vehículos suele ser entre 8% y 15% del impuesto anual.',
+        severidad: 'alta'
+      });
+    }
+    if (state.answers.a2_liquidez === 'a2a' || state.answers.a2_liquidez === 'a2b') {
+      brechas.push({
+        tipo: 'dependencia_activo',
+        name: 'Colchón de liquidez',
+        desc: 'Antes de pensar en inversiones a largo plazo, tu base debe tener al menos 3-6 meses de gastos en activos líquidos. Sin esto, cualquier imprevisto puede obligarte a liquidar inversiones en mal momento.',
+        severidad: 'media'
+      });
+    }
+    if (state.answers.a4_ahorro_pct === 'a4a' || state.answers.a4_ahorro_pct === 'a4b') {
+      brechas.push({
+        tipo: 'strat',
+        name: 'Sistema de acumulación de capital',
+        desc: 'A tu nivel, la palanca más fuerte no es el rendimiento de inversiones — es cuánto destinas mensualmente a inversión. Pasar de 10% a 25% de ahorro tiene más impacto en 10 años que duplicar el rendimiento de tu portafolio actual.',
+        severidad: 'media'
+      });
+    }
+    if (perfil === 'empresario' && state.answers.m2_holding === 'm2a' && patrimonioMedio(band) >= 500_000_000) {
+      brechas.push({
+        tipo: 'c2e',
+        name: 'Separación cédula vs. empresa',
+        desc: 'Aunque aún no necesitas holding, sí necesitas claridad entre lo que es ingreso de la empresa, retiro al socio y gasto deducible. Esa separación es el primer paso hacia estructura.',
+        severidad: 'alta'
+      });
+    }
+    // NUEVO: brechas por deuda de consumo significativa
+    if (state.answers.deuda_consumo === 'dc_c' || state.answers.deuda_consumo === 'dc_d') {
+      const severa = state.answers.deuda_consumo === 'dc_d';
+      brechas.push({
+        tipo: 'strat',
+        name: severa ? 'Deuda de consumo en nivel crítico' : 'Deuda de consumo significativa',
+        desc: severa
+          ? 'Más del 30% de tu ingreso se va en pagar deudas de consumo (tarjetas, libre inversión, vehículo). A tasas del 25-32% efectivo anual, esta deuda destruye más valor del que cualquier inversión puede generar. Eliminarla es el rendimiento más alto que puedes obtener hoy.'
+          : 'Tus deudas de consumo (tarjetas, libre inversión, vehículo) representan entre 15% y 30% de tu ingreso. A las tasas a las que se contratan, es muy difícil que cualquier inversión supere el costo de mantenerlas. Liberarlas debería preceder a cualquier estrategia patrimonial.',
+        severidad: severa ? 'alta' : 'media'
+      });
+    }
+    if (brechas.length === 0) {
+      brechas.push({
+        tipo: 'strat',
+        name: 'Plan de crecimiento patrimonial estructurado',
+        desc: 'Tienes los fundamentos básicos resueltos. El próximo paso es trazar un plan de 24-36 meses para cruzar el umbral de los 1.000M, momento en que la arquitectura societaria empieza a tener sentido económico real.',
+        severidad: 'media'
+      });
+    }
+    return brechas.slice(0, 5);
+  }
+
+  // Bandas B+
+  // NUEVO: Brechas UGPP (solo aplican si es independiente con cédula y respondió bloque UGPP)
+  if (perfil === 'independiente' && state.answers.i1_factura === 'i1a') {
+    if (state.answers.ugpp_1_aportes === 'ugpp1_a' || state.answers.ugpp_1_aportes === 'ugpp1_b') {
+      brechas.push({
+        tipo: 'f1p',
+        name: 'Exposición a fiscalización UGPP',
+        desc: 'Como independiente, la ley te obliga a cotizar a seguridad social sobre el 40% de tus ingresos mensuales (depurados). Si estás cotizando sobre el mínimo o sobre una base que no corresponde, la UGPP puede liquidarte de oficio con sanciones e intereses de mora — y lo hace con frecuencia creciente. Para profesionales con tu nivel de ingreso, las liquidaciones suelen oscilar entre $30M y $200M.',
+        severidad: 'alta'
+      });
+    }
+    if (state.answers.ugpp_2_fiscalizacion === 'ugpp2_b' || state.answers.ugpp_2_fiscalizacion === 'ugpp2_c') {
+      brechas.push({
+        tipo: 'f1p',
+        name: 'Proceso UGPP activo sin estrategia',
+        desc: 'Has tenido contacto con la UGPP pero no estás abordándolo con estrategia legal especializada. Estos procesos tienen plazos perentorios y oportunidades de allanamiento, depuración y conciliación que se pierden si no se accionan a tiempo.',
+        severidad: 'alta'
+      });
+    }
+    if (state.answers.ugpp_3_claridad === 'ugpp3_a' || state.answers.ugpp_3_claridad === 'ugpp3_b') {
+      brechas.push({
+        tipo: 'f1p',
+        name: 'Falta de estructura de costos para IBC',
+        desc: 'No estás depurando correctamente tus costos asociados a la actividad para calcular el ingreso base de cotización (IBC). Esto significa una de dos cosas: o estás pagando más aportes de los que te corresponderían, o estás expuesto a una recategorización por la UGPP. Ambas son costosas.',
+        severidad: 'media'
+      });
+    }
+  }
+
+  // NUEVO: Composición patrimonial (banda C+)
+  if (['C', 'D', 'E'].includes(band) && (state.answers.comp_productivo === 'cp_a' || state.answers.comp_productivo === 'cp_b')) {
+    const baja = state.answers.comp_productivo === 'cp_a';
+    brechas.push({
+      tipo: 'concentracion_iliquida',
+      name: baja ? 'Patrimonio mayoritariamente improductivo' : 'Patrimonio parcialmente productivo',
+      desc: baja
+        ? 'Menos del 20% de tu patrimonio genera rendimiento. El resto está en activos de uso personal (vivienda, vehículos, segunda casa) que no producen flujo. Para tu rango patrimonial, esto significa que estás financiando un estilo de vida con capital que podría estar generando ingresos pasivos.'
+        : 'Una parte importante de tu patrimonio no está en activos productivos. El siguiente paso es identificar qué activos personales podrían reasignarse o monetizarse (segunda propiedad, terrenos sin desarrollar) para construir flujo pasivo.',
+      severidad: 'alta'
+    });
+  }
+
+  if (state.scores.sofisticacion < 50) {
+    const independienteConCedula = perfil === 'independiente' && state.answers.i1_factura === 'i1a';
+    if (perfil === 'empleado') {
+      brechas.push({
+        tipo: 'c2e',
+        name: 'Vehículo societario operativo',
+        desc: 'Una SAS profesional que reciba tus ingresos no salariales y permita separar gastos profesionales legítimos del consumo personal.',
+        severidad: 'alta'
+      });
+    }
+    if (perfil === 'independiente' && !independienteConCedula) {
+      brechas.push({
+        tipo: 'c2e',
+        name: 'Vehículo societario operativo',
+        desc: 'Una SAS profesional que reciba tus ingresos no salariales y permita separar gastos profesionales legítimos del consumo personal.',
+        severidad: 'alta'
+      });
+    }
+    if (independienteConCedula) {
+      brechas.push({
+        tipo: 'c2e',
+        name: 'Tu cédula ya no es suficiente como vehículo',
+        desc: 'Facturar todo a tu nombre como persona natural simplifica al principio, pero a tu nivel de ingreso te cuesta tres cosas a la vez: impuesto de renta marginal del 35-39%, aportes UGPP más altos, e imposibilidad de deducir gastos profesionales reales. Constituir una SAS para tus servicios suele recuperar entre 12% y 22% anual del ingreso.',
+        severidad: 'alta'
+      });
+    }
+    if (perfil === 'empresario' && (state.answers.m2_holding === 'm2a' || state.answers.m2_holding === 'm2b')) {
+      brechas.push({
+        tipo: 'f2e',
+        name: 'Sociedad holding por encima de operativas',
+        desc: 'Vehículo cuya única función es ser dueña de tus operativas. Permite consolidar dividendos, planear sucesión y separar riesgos entre líneas de negocio.',
+        severidad: 'alta'
+      });
+    }
+  }
+  if (state.scores.proteccion < 50) {
+    brechas.push({
+      tipo: 'concentracion_iliquida',
+      name: 'Separación patrimonial operativo / personal',
+      desc: 'Tus activos no operativos (vivienda, inversiones, vehículos) no deberían compartir vehículo con activos expuestos a riesgo operacional o de mercado.',
+      severidad: 'media'
+    });
+    brechas.push({
+      tipo: 'strat',
+      name: 'Planeación sucesoral formalizada',
+      desc: 'La diferencia entre transferir patrimonio en vida vía estructura societaria y dejarlo a sucesión puede ser 30-40% del valor del patrimonio en costos, tiempo y desgaste familiar.',
+      severidad: 'alta'
+    });
+  }
+  if (state.scores.eficiencia < 50) {
+    const independienteConCedula = perfil === 'independiente' && state.answers.i1_factura === 'i1a';
+    if ((perfil === 'empresario' || perfil === 'independiente') && !independienteConCedula) {
+      brechas.push({
+        tipo: 'f1e',
+        name: 'Optimización del retiro: salario vs. dividendos',
+        desc: 'La mezcla óptima entre pagarse como empleado y como socio depende del nivel de utilidad de cada sociedad. Hacerlo sin planeación deja entre 8% y 18% sobre la mesa cada año.',
+        severidad: 'alta'
+      });
+    }
+    if (perfil === 'inversionista') {
+      brechas.push({
+        tipo: 'inv',
+        name: 'Selección fiscal de vehículos de inversión',
+        desc: 'El mismo rendimiento puede tributar muy distinto según el vehículo. Sin planeación, los rendimientos financieros suelen ser la categoría con mayor fuga.',
+        severidad: 'alta'
+      });
+    }
+  }
+  if ((band === 'D' || band === 'E') && (!state.answers.m6_internacional || state.answers.m6_internacional === 'm6a' || state.answers.m6_internacional === 'm6b')) {
+    brechas.push({
+      tipo: 'inv',
+      name: 'Vehículo internacional para diversificación jurisdiccional',
+      desc: 'Para tu rango patrimonial, la concentración en una sola jurisdicción es un riesgo no compensado. LLC en EEUU, fundaciones en Panamá o estructuras en Uruguay son los caminos más comunes.',
+      severidad: 'alta'
+    });
+  }
+  if (brechas.length === 0) {
+    brechas.push({
+      tipo: 'strat',
+      name: 'Refinamiento de estructuras existentes',
+      desc: 'Ya tienes lo fundamental. El siguiente nivel es optimizar lo que existe: revisar flujos entre sociedades, eficiencia de cada vehículo y oportunidades de consolidación.',
+      severidad: 'media'
+    });
+  }
+  return brechas.slice(0, 5);
+}
+
+function generarDiagnostico(nivel) {
+  const perfilLabels = {
+    empleado: 'ejecutivo',
+    independiente: 'profesional independiente',
+    empresario: 'empresario',
+    inversionista: 'inversionista'
+  };
+  const perfilTexto = perfilLabels[state.perfilRoute];
+  if (state.patrimonioBand === 'A') {
+    return `Como ${perfilTexto} en construcción patrimonial, tu prioridad no son las estructuras societarias sofisticadas — esas tienen sentido cuando hay suficiente patrimonio para justificar su costo y complejidad. Tu prioridad hoy es maximizar lo que ya generas: optimizar tu impuesto de renta dentro del marco legal, construir liquidez sólida, aumentar tu tasa de ahorro y trazar el camino hacia el siguiente nivel patrimonial donde la arquitectura sí sea relevante.`;
+  }
+  if (nivel.nombre === 'Operador') {
+    return `Como ${perfilTexto} en tu rango patrimonial, operar sin arquitectura cuesta — pero los costos no se ven en una sola partida. Se distribuyen entre impuestos pagados de más, oportunidades estructurales no aprovechadas, y riesgo de protección que no has dimensionado. La buena noticia: la mayor parte de la fuga es recuperable diseñando piezas que son estándar para tu nivel.`;
+  }
+  if (nivel.nombre === 'Optimizador') {
+    return `Como ${perfilTexto}, ya entendiste que el patrimonio no es solo lo que ganas, sino cómo lo organizas. Tienes piezas funcionales — pero sueltas. El siguiente salto no es agregar más estructuras, es integrarlas: que cada sociedad tenga un propósito específico y que las relaciones entre ellas estén diseñadas, no improvisadas.`;
+  }
+  return `Como ${perfilTexto}, ya operas con sistema. El diagnóstico no es sobre construcción inicial, sino sobre refinamiento: revisar dónde tu arquitectura puede consolidarse, dónde aún hay redundancia, y qué piezas internacionales podrían sumar diversificación jurisdiccional sin agregar complejidad innecesaria.`;
+}
+
+// ============================================================
+// MAPEO AL SCHEMA DE FIRESTORE (compatible con Cloud Functions)
+// ============================================================
+function mapearPerfilParaFunctions() {
+  // Las functions actuales solo distinguen "empresario" vs "profesional"
+  return state.perfilRoute === 'empresario' ? 'empresario' : 'profesional';
+}
+
+function construirVulnerabilidadesParaFirestore(brechas) {
+  return brechas.map(b => ({
+    tipo: b.tipo || 'strat',
+    titulo: b.name,
+    severidad: b.severidad || 'media',
+    descripcion: b.desc || ''
+  }));
+}
+
+function construirNumerosRealesParaFirestore() {
+  const ipMillones = Math.round(state.financials.ingresoPasivoMensualCOP / 1_000_000 * 10) / 10;
+  const gmMillones = Math.round(state.financials.gastosMensualesCOP / 1_000_000 * 10) / 10;
+  const patMillones = Math.round(patrimonioMedio(state.patrimonioBand) / 1_000_000);
+
+  // Calcular ingreso activo:
+  // 1) Si tenemos rango de ingreso anual, usamos el promedio del rango (en millones/mes)
+  // 2) Si no, estimación conservadora desde gastos (gastos * 1.2)
+  let ingresoActivoMes;
+  const rangoIngreso = state.answers.ingreso_anual_rango;
+  const ingresoMedioAnualPorRango = {
+    'ia_a': 100,    // <150M → punto medio ~100M
+    'ia_b': 275,    // 150-400M → ~275M
+    'ia_c': 700,    // 400-1.000M → ~700M
+    'ia_d': 2000,   // 1.000-3.000M → ~2.000M
+    'ia_e': 5000    // >3.000M → estimación conservadora 5.000M
+  };
+  if (rangoIngreso && ingresoMedioAnualPorRango[rangoIngreso]) {
+    // Convertir promedio anual en millones a promedio mensual
+    ingresoActivoMes = Math.round(ingresoMedioAnualPorRango[rangoIngreso] / 12 * 10) / 10;
+    // Restar la porción pasiva si el usuario reportó ingresos pasivos
+    ingresoActivoMes = Math.max(0, ingresoActivoMes - ipMillones);
+  } else {
+    ingresoActivoMes = Math.max(0, gmMillones * 1.2);
+  }
+
+  return {
+    ingreso_pasivo_m: ipMillones,
+    gastos_mes_m: gmMillones,
+    patrimonio_m: patMillones,
+    ingreso_activo_m: ingresoActivoMes,
+    moneda_input: state.financials.moneda || 'COP',
+    coverage_ratio: state.financials.coverageRatio || 0,
+    // Datos adicionales del nuevo bloque (para análisis y futura mejora de emails)
+    rango_ingreso_anual: state.answers.ingreso_anual_rango || null,
+    pct_patrimonio_productivo: state.answers.comp_productivo || null,
+    deuda_consumo_nivel: state.answers.deuda_consumo || null,
+    deuda_apalancamiento_nivel: state.answers.deuda_apalancamiento || null
+  };
+}
+
+function construirIndicadoresParaFirestore() {
+  const ipCOP = state.financials.ingresoPasivoMensualCOP || 0;
+  const gmCOP = state.financials.gastosMensualesCOP || 0;
+  const ratio = state.financials.coverageRatio;
+  const pat = patrimonioMedio(state.patrimonioBand);
+  const gastoAnual = gmCOP * 12;
+  // Número mágico = patrimonio necesario para que rinda los gastos al 5% anual
+  const numeroMagico = gastoAnual > 0 ? Math.round((gastoAnual / 0.05)) : 0;
+  const avancePct = numeroMagico > 0 ? Math.min(Math.round((pat / numeroMagico) * 100), 100) : 0;
+  const gapMensual = Math.max(0, gmCOP - ipCOP);
+
+  // Calcular ingreso anual estimado: priorizar el rango respondido, si no usar gastos * 12 * 1.2
+  const rangoIngreso = state.answers.ingreso_anual_rango;
+  const ingresoAnualEstimadoCOP = rangoIngreso ? ({
+    'ia_a': 100_000_000,
+    'ia_b': 275_000_000,
+    'ia_c': 700_000_000,
+    'ia_d': 2_000_000_000,
+    'ia_e': 5_000_000_000
+  })[rangoIngreso] : gmCOP * 12 * 1.2;
+
+  return {
+    independencia_financiera: {
+      numero_magico: numeroMagico,
+      avance_pct: avancePct,
+      gap_mensual: gapMensual,
+      liquidos_productivos: 0,
+      no_liquidos_productivos: 0
+    },
+    capacidad_ahorro: {
+      ahorro_mensual: Math.max(0, gmCOP * 0.2),
+      ingreso_total_mes: gmCOP + Math.max(0, gmCOP * 0.2),
+      oportunidad_anual: Math.round(Math.max(0, gmCOP * 0.2) * 12 * 0.065)
+    },
+    sobrecarga_fiscal: {
+      aplica: state.scores.eficiencia < 50,
+      ingreso_anual: ingresoAnualEstimadoCOP,
+      rango_min: Math.round(ingresoAnualEstimadoCOP * 0.05),
+      rango_max: Math.round(ingresoAnualEstimadoCOP * 0.12)
+    }
+  };
+}
+
+function construirDocumentoFirestore(informe) {
+  const { nivel, fuga, fortalezas, brechas, diagnostico, cobertura } = informe;
+  const scoreTotal = state.scores.sofisticacion + state.scores.eficiencia + state.scores.proteccion;
+
+  return {
+    // Identificación del lead
+    nombre: state.lead.nombre,
+    email: state.lead.email,
+    whatsapp: `${state.lead.codigoPais} ${state.lead.telefono}`.trim(),
+    codigo_pais: state.lead.codigoPais,
+    telefono: state.lead.telefono,
+    residencia_fiscal: state.lead.residencia,
+
+    // Perfil y clasificación
+    perfil: mapearPerfilParaFunctions(),       // 'empresario' | 'profesional' (lo que esperan las functions)
+    perfil_detalle: state.perfilRoute,         // valor original para análisis
+    nivel: nivel.nombre,
+    nivel_descripcion: nivel.desc,
+    servicio: state.servicio,                  // 'optimizacion_financiera' | 'arquitectura_patrimonial'
+    patrimonio_band: state.patrimonioBand,
+
+    // Scoring
+    score_total: scoreTotal,
+    score_max: 300,
+    scores_detalle: {
+      sofisticacion: state.scores.sofisticacion,
+      eficiencia: state.scores.eficiencia,
+      proteccion: state.scores.proteccion
+    },
+
+    // Compatibilidad con functions (schema v2)
+    vulnerabilidades_detectadas: construirVulnerabilidadesParaFirestore(brechas),
+    numeros_reales: construirNumerosRealesParaFirestore(),
+    indicadores: construirIndicadoresParaFirestore(),
+
+    calculos: {
+      subtotal_perdidas: fuga.subtotal_perdidas,
+      subtotal_oportunidad: fuga.subtotal_oportunidad,
+      total_anual: fuga.total_anual,
+      total_mensual: fuga.total_mensual,
+      erosion_real: 0,
+      costo_oportunidad: fuga.subtotal_oportunidad,
+      impuesto_patrimonio: 0,
+      oportunidad_ahorro_anual: 0,
+      ahorro_mensual: 0,
+      sobrecarga_fiscal_aplica: state.scores.eficiencia < 50,
+      sobrecarga_fiscal_min: Math.round(fuga.estimado * 0.6),
+      sobrecarga_fiscal_max: Math.round(fuga.estimado * 1.2),
+      meses_autonomia: state.financials.coverageRatio > 0 ? Math.round(state.financials.coverageRatio * 12) : 0
+    },
+
+    diagnostico_dominante: {
+      texto: diagnostico,
+      titulo: nivel.nombre
+    },
+
+    cta_mostrado: {
+      tipo: state.servicio,
+      titulo: state.servicio === 'optimizacion_financiera'
+        ? 'Tu próximo paso es optimizar lo que ya generas.'
+        : 'Tu perfil califica para una sesión estratégica.',
+      url: CONFIG.CALENDLY_URL
+    },
+
+    fortalezas: fortalezas,
+    cobertura_mensaje: cobertura,
+    answers_raw: state.answers,
+
+    // Tracking (lo que esperan las functions)
+    estado: 'nuevo',
+    agendo_calendly: false,
+    seguimiento_enviado: false,
+    recordatorio_enviado: false,
+    origen: CONFIG.ORIGEN,
+    user_agent: navigator.userAgent,
+    timestamp: window.__fb.serverTimestamp()
+  };
+}
+
+// ============================================================
+// FIRESTORE: guardar lead
+// ============================================================
+async function guardarLeadEnFirestore() {
+  const informe = generarInforme();
+  const documento = construirDocumentoFirestore(informe);
+
+  const { db, collection, addDoc } = window.__fb;
+  const colRef = collection(db, CONFIG.COLECCION_FIRESTORE);
+  const docRef = await addDoc(colRef, documento);
+
+  state.docId = docRef.id;
+  return { informe, docId: docRef.id };
+}
+
+// ============================================================
+// RENDERIZADO
+// ============================================================
+const screen = document.getElementById('screen');
+const loading = document.getElementById('loading');
+const loadingText = document.getElementById('loadingText');
+
+function showLoading(text) { loadingText.textContent = text; loading.classList.add('active'); }
+function hideLoading() { loading.classList.remove('active'); }
+
+function renderIntro() {
+  screen.innerHTML = `
+    <div class="intro">
+      <div class="intro-eyebrow">Diagnóstico confidencial</div>
+      <h1 class="intro-title">El patrimonio<br>no se acumula.<br><em>Se diseña.</em></h1>
+      <p class="intro-lede">Tres minutos para descubrir cómo opera tu patrimonio hoy y qué te falta para llegar al siguiente nivel. Recibirás un diagnóstico personalizado según tu perfil, rango patrimonial y situación financiera real.</p>
+      <div class="intro-meta">
+        <div class="intro-meta-item">Tiempo aprox.<strong>3 min</strong></div>
+        <div class="intro-meta-item">Preguntas<strong>10 – 17</strong></div>
+        <div class="intro-meta-item">Confidencialidad<strong>Absoluta</strong></div>
+      </div>
+      <button class="btn" onclick="startTest()">Comenzar diagnóstico</button>
+    </div>
+  `;
+}
+
+function startTest() {
+  state.questionIndex = 0;
+  renderQuestion();
+}
+
+function getQuestionFlow() { return buildQuestionFlow(); }
+
+function renderProgress(current, total) {
+  const pct = (current / total) * 100;
+  return `
+    <div class="progress">
+      <span>${String(current).padStart(2, '0')} / ${String(total).padStart(2, '0')}</span>
+      <div class="progress-bar"><div class="progress-fill" style="transform: scaleX(${pct/100})"></div></div>
+      <span>${Math.round(pct)}%</span>
+    </div>
+  `;
+}
+
+function renderQuestion() {
+  const flow = getQuestionFlow();
+  if (state.questionIndex >= flow.length) {
+    normalizeScores();
+    renderGate();
+    return;
+  }
+  const q = flow[state.questionIndex];
+  const total = flow.length;
+  const current = state.questionIndex + 1;
+  if (q.type === 'numeric') renderNumericQuestion(q, current, total);
+  else renderOptionsQuestion(q, current, total);
+}
+
+function renderOptionsQuestion(q, current, total) {
+  screen.innerHTML = `
+    ${renderProgress(current, total)}
+    <div class="question">
+      <div class="question-number">Pregunta ${String(current).padStart(2, '0')}</div>
+      <h2 class="question-title">${q.title}</h2>
+      ${q.help ? `<p class="question-help">${q.help}</p>` : ''}
+      <div class="options">
+        ${q.options.map((opt, idx) => `
+          <button class="option" data-idx="${idx}" onclick="selectOption('${q.id}', ${idx})">
+            <span class="option-marker"></span>
+            <span class="option-text">${opt.label}</span>
+          </button>
+        `).join('')}
+      </div>
+      ${state.questionIndex > 0 ? '<div style="margin-top:48px"><button class="btn-back" onclick="goBack()">Pregunta anterior</button></div>' : ''}
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderNumericQuestion(q, current, total) {
+  const isOutsideColombia = state.answers.residencia && state.answers.residencia !== 'co';
+  const currency = state.financials.moneda;
+
+  screen.innerHTML = `
+    ${renderProgress(current, total)}
+    <div class="question">
+      <div class="question-number">Pregunta ${String(current).padStart(2, '0')}</div>
+      <h2 class="question-title">${q.title}</h2>
+      ${q.help ? `<p class="question-help">${q.help}</p>` : ''}
+
+      ${isOutsideColombia ? `
+        <div class="currency-toggle">
+          <button class="${currency === 'COP' ? 'active' : ''}" onclick="setCurrency('COP')">COP</button>
+          <button class="${currency === 'USD' ? 'active' : ''}" onclick="setCurrency('USD')">USD</button>
+        </div>
+      ` : ''}
+
+      ${q.fields.map(field => `
+        <div class="number-block">
+          <label class="number-label" for="${field.key}">${field.label}</label>
+          <p class="number-help">${field.help}</p>
+          <div class="number-input-wrapper">
+            <span class="number-currency">${currency === 'USD' ? 'USD' : '$ COP'}</span>
+            <input
+              type="text"
+              inputmode="numeric"
+              class="number-input"
+              id="${field.key}"
+              placeholder="${field.placeholder}"
+              value="${state.financials[field.key] ? formatNumberInput(state.financials[field.key]) : ''}"
+              oninput="handleNumberInput(event, '${field.key}')"
+            />
+          </div>
+        </div>
+      `).join('')}
+
+      <div class="continue-button-wrapper">
+        ${state.questionIndex > 0 ? '<button class="btn-back" onclick="goBack()">Pregunta anterior</button>' : '<span></span>'}
+        <button class="btn" id="continueBtn" onclick="submitNumeric('${q.id}')" disabled>Continuar</button>
+      </div>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  validateNumericInputs();
+}
+
+function setCurrency(currency) { state.financials.moneda = currency; renderQuestion(); }
+function formatNumberInput(n) { if (!n) return ''; return n.toLocaleString('es-CO'); }
+function parseNumberInput(str) {
+  if (!str) return 0;
+  return parseInt(str.replace(/[^\d]/g, '')) || 0;
+}
+
+function handleNumberInput(event, key) {
+  const input = event.target;
+  const rawValue = parseNumberInput(input.value);
+  state.financials[key] = rawValue;
+  const cursorPos = input.selectionStart;
+  const oldLength = input.value.length;
+  input.value = formatNumberInput(rawValue);
+  const newLength = input.value.length;
+  const newCursor = cursorPos + (newLength - oldLength);
+  input.setSelectionRange(Math.max(0, newCursor), Math.max(0, newCursor));
+  validateNumericInputs();
+}
+
+function validateNumericInputs() {
+  const ip = state.financials.ingresoPasivoMensual;
+  const gm = state.financials.gastosMensuales;
+  const btn = document.getElementById('continueBtn');
+  if (btn) btn.disabled = !((ip >= 0) && (gm > 0));
+}
+
+function submitNumeric(qId) {
+  if (state.financials.moneda === 'USD') {
+    state.financials.ingresoPasivoMensualCOP = state.financials.ingresoPasivoMensual * CONFIG.USD_COP_RATE;
+    state.financials.gastosMensualesCOP = state.financials.gastosMensuales * CONFIG.USD_COP_RATE;
+  } else {
+    state.financials.ingresoPasivoMensualCOP = state.financials.ingresoPasivoMensual;
+    state.financials.gastosMensualesCOP = state.financials.gastosMensuales;
+  }
+  state.financials.coverageRatio = calcularCoverageRatio();
+  const ratio = state.financials.coverageRatio;
+  let scoreEficiencia = 0;
+  if (ratio >= 1) scoreEficiencia = 45;
+  else if (ratio >= 0.6) scoreEficiencia = 30;
+  else if (ratio >= 0.3) scoreEficiencia = 15;
+  else if (ratio >= 0.1) scoreEficiencia = 5;
+  state.scores.eficiencia += scoreEficiencia;
+
+  state.answers[qId] = {
+    ingresoPasivo: state.financials.ingresoPasivoMensual,
+    gastos: state.financials.gastosMensuales,
+    moneda: state.financials.moneda,
+    ratio: state.financials.coverageRatio
+  };
+  state.questionIndex++;
+  renderQuestion();
+}
+
+function selectOption(qId, idx) {
+  const flow = getQuestionFlow();
+  const q = flow[state.questionIndex];
+  const opt = q.options[idx];
+
+  state.answers[qId] = opt.value;
+  if (qId === 'perfil') state.perfilRoute = opt.value;
+  if (qId === 'patrimonio') {
+    state.patrimonioBand = opt.band;
+    state.servicio = determinarServicio();
+  }
+  if (opt.scores) {
+    Object.keys(opt.scores).forEach(key => {
+      state.scores[key] = (state.scores[key] || 0) + opt.scores[key];
+    });
+  }
+  if (opt.score) state.scores.eficiencia += opt.score;
+
+  // Si el flow puede haber cambiado por esta respuesta, limpiar respuestas obsoletas
+  // (ej: cambiar i1_factura cambia qué preguntas siguen)
+  cleanObsoleteAnswers();
+
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+
+  setTimeout(() => { state.questionIndex++; renderQuestion(); }, 350);
+}
+
+/**
+ * Elimina del state.answers las respuestas que pertenecen a preguntas que ya no
+ * están en el flow actual (por bifurcación condicional).
+ * Llamar después de cualquier respuesta que pueda cambiar el flow.
+ */
+function cleanObsoleteAnswers() {
+  const flow = buildQuestionFlow();
+  const validIds = new Set(flow.map(q => q.id));
+  Object.keys(state.answers).forEach(key => {
+    if (!validIds.has(key)) {
+      delete state.answers[key];
+    }
+  });
+  // Si el flow no incluye flujo_financiero (banda C+), limpiar financials
+  // para que el email no use datos obsoletos de una banda anterior.
+  // IMPORTANTE: mantener el campo 'moneda' para que numeros_reales.moneda_input
+  // nunca sea undefined (Firestore rechaza undefined).
+  if (!validIds.has('flujo_financiero')) {
+    state.financials = {
+      moneda: state.financials.moneda || 'COP',
+      ingresoPasivoMensual: 0,
+      gastosMensuales: 0,
+      coverageRatio: 0,
+      ingresoPasivoMensualCOP: 0,
+      gastosMensualesCOP: 0
+    };
+  }
+}
+
+function goBack() {
+  if (state.questionIndex > 0) {
+    state.questionIndex--;
+    cleanObsoleteAnswers();
+    recalculateAllScores();
+    renderQuestion();
+  }
+}
+
+function recalculateAllScores() {
+  state.scores = { sofisticacion: 0, eficiencia: 0, proteccion: 0 };
+  const flow = buildQuestionFlow();
+  for (let i = 0; i < state.questionIndex; i++) {
+    const q = flow[i];
+    const ans = state.answers[q.id];
+    if (!ans) continue;
+    if (q.type === 'numeric') {
+      const ratio = state.financials.coverageRatio;
+      let s = 0;
+      if (ratio >= 1) s = 45;
+      else if (ratio >= 0.6) s = 30;
+      else if (ratio >= 0.3) s = 15;
+      else if (ratio >= 0.1) s = 5;
+      state.scores.eficiencia += s;
+    } else {
+      const opt = q.options.find(o => o.value === ans);
+      if (opt && opt.scores) {
+        Object.keys(opt.scores).forEach(key => {
+          state.scores[key] = (state.scores[key] || 0) + opt.scores[key];
+        });
+      }
+      if (opt && opt.score) state.scores.eficiencia += opt.score;
+    }
+  }
+}
+
+function normalizeScores() {
+  state.scores.sofisticacion = Math.min(100, Math.max(0, state.scores.sofisticacion));
+  state.scores.eficiencia = Math.min(100, Math.max(0, state.scores.eficiencia));
+  state.scores.proteccion = Math.min(100, Math.max(0, state.scores.proteccion));
+}
+
+// ============================================================
+// GATE
+// ============================================================
+const countryCodes = [
+  { code: '+57', name: 'Colombia', flag: '🇨🇴' },
+  { code: '+1', name: 'EE.UU. / Canadá', flag: '🇺🇸' },
+  { code: '+34', name: 'España', flag: '🇪🇸' },
+  { code: '+52', name: 'México', flag: '🇲🇽' },
+  { code: '+54', name: 'Argentina', flag: '🇦🇷' },
+  { code: '+56', name: 'Chile', flag: '🇨🇱' },
+  { code: '+51', name: 'Perú', flag: '🇵🇪' },
+  { code: '+58', name: 'Venezuela', flag: '🇻🇪' },
+  { code: '+593', name: 'Ecuador', flag: '🇪🇨' },
+  { code: '+591', name: 'Bolivia', flag: '🇧🇴' },
+  { code: '+507', name: 'Panamá', flag: '🇵🇦' },
+  { code: '+598', name: 'Uruguay', flag: '🇺🇾' },
+  { code: '+55', name: 'Brasil', flag: '🇧🇷' },
+  { code: '+44', name: 'Reino Unido', flag: '🇬🇧' },
+  { code: '+49', name: 'Alemania', flag: '🇩🇪' },
+  { code: '+33', name: 'Francia', flag: '🇫🇷' },
+  { code: '+39', name: 'Italia', flag: '🇮🇹' },
+  { code: '+351', name: 'Portugal', flag: '🇵🇹' },
+  { code: '+41', name: 'Suiza', flag: '🇨🇭' },
+  { code: '+971', name: 'EAU', flag: '🇦🇪' },
+  { code: '+61', name: 'Australia', flag: '🇦🇺' },
+  { code: '+0', name: 'Otro', flag: '🌍' }
+];
+
+function renderGate() {
+  // Country code default según residencia
+  const defaultCode = state.answers.residencia === 'us' ? '+1'
+    : state.answers.residencia === 'es' ? '+34'
+    : '+57';
+
+  screen.innerHTML = `
+    <div class="gate">
+      <div class="intro-eyebrow">Diagnóstico completo</div>
+      <h2 class="gate-title">Tu análisis está listo.<br><em>Solo necesitamos saber a quién enviárselo.</em></h2>
+      <p class="gate-lede">Recibirás el informe completo en pantalla ahora y una copia en tu correo. Si tu perfil califica para una sesión estratégica, también recibirás el acceso para agendarla.</p>
+
+      <form id="leadForm" onsubmit="submitLead(event)">
+        <div class="form-group">
+          <label class="form-label" for="nombre">Nombre completo</label>
+          <input class="form-input" type="text" id="nombre" required placeholder="Tu nombre" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">Correo electrónico</label>
+          <input class="form-input" type="email" id="email" required placeholder="tu@correo.com" autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="telefono">WhatsApp (con código de país)</label>
+          <div class="phone-row">
+            <select class="form-input" id="codigoPais" required>
+              ${countryCodes.map(c => `<option value="${c.code}" ${c.code === defaultCode ? 'selected' : ''}>${c.flag} ${c.code}</option>`).join('')}
+            </select>
+            <input class="form-input" type="tel" id="telefono" required placeholder="300 000 0000" autocomplete="tel">
+          </div>
+        </div>
+        <div class="form-error" id="formError"></div>
+        <div class="form-footer">
+          <p class="form-disclaimer">Tu información es tratada con confidencialidad absoluta. No es compartida con terceros y se usa únicamente para entregarte tu diagnóstico.</p>
+          <button class="btn" type="submit" id="submitBtn">Ver mi diagnóstico</button>
+        </div>
+      </form>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showFormError(msg) {
+  const el = document.getElementById('formError');
+  if (el) { el.textContent = msg; el.classList.add('active'); }
+}
+
+async function submitLead(e) {
+  e.preventDefault();
+  const submitBtn = document.getElementById('submitBtn');
+  const errorEl = document.getElementById('formError');
+  if (errorEl) errorEl.classList.remove('active');
+
+  const nombre = document.getElementById('nombre').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const telefono = document.getElementById('telefono').value.trim();
+  const codigoPais = document.getElementById('codigoPais').value;
+
+  state.lead = { nombre, email, telefono, codigoPais, residencia: state.answers.residencia };
+
+  // Asegurar que Firebase esté listo
+  if (!window.__fbReady) {
+    showFormError('Cargando sistema, intenta de nuevo en unos segundos…');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  showLoading('Procesando diagnóstico');
+
+  try {
+    const { informe } = await guardarLeadEnFirestore();
+    // Pequeño delay para sensación premium y dar tiempo a la function de email
+    setTimeout(() => {
+      hideLoading();
+      renderResult(informe);
+    }, 1400);
+  } catch (err) {
+    console.error('Error guardando lead:', err);
+    hideLoading();
+    submitBtn.disabled = false;
+    showFormError('Hubo un problema al guardar tu información. Verifica tu conexión e intenta de nuevo. Si persiste, escríbenos directamente.');
+  }
+}
+
+// ============================================================
+// RESULTADO
+// ============================================================
+function renderResult(informe) {
+  const { nivel, fuga, fortalezas, brechas, diagnostico, cobertura } = informe;
+  const banda = state.patrimonioBand;
+  const isRutaA = banda === 'A';
+
+  const ctaTitle = isRutaA
+    ? 'Tu próximo paso es optimizar lo que ya generas.'
+    : 'Tu perfil califica para una sesión estratégica.';
+
+  const ctaBody = isRutaA
+    ? 'En la sesión profundizamos en las 2-3 fugas tributarias que más te están costando hoy y conversamos sobre el orden en que tendría sentido abordarlas. No es una sesión de soluciones — es donde decidimos juntos si tiene sentido trabajar más a fondo.'
+    : 'En la sesión profundizamos en las 2-3 brechas que más te están costando hoy y conversamos sobre el orden en que tendría sentido abordarlas. No es una sesión de soluciones — es donde decidimos juntos si tiene sentido trabajar más a fondo.';
+
+  const ctaButton = isRutaA ? 'Agendar sesión de optimización' : 'Agendar sesión estratégica';
+
+  const leakLabel = isRutaA
+    ? 'Estimación de ahorro tributario anual posible'
+    : 'Estimación de fuga patrimonial anual';
+
+  const leakTitle = isRutaA
+    ? 'Con planeación tributaria correcta, podrías reducir tu carga fiscal en aproximadamente esto cada año:'
+    : 'Con tu arquitectura actual, estás dejando aproximadamente esto sobre la mesa cada año:';
+
+  screen.innerHTML = `
+    <div class="result">
+      <div class="result-header">
+        <div class="result-eyebrow">${state.lead.nombre.split(' ')[0]}, tu nivel actual es</div>
+        <h1 class="result-level"><em>${nivel.nombre}</em></h1>
+        <p class="result-subtitle">${nivel.desc}</p>
+      </div>
+
+      ${cobertura ? `
+        <div class="coverage">
+          <div class="coverage-label">Independencia financiera · Hoy</div>
+          <h2 class="coverage-headline">${cobertura.headline}</h2>
+          <p class="coverage-detail">${cobertura.detail}</p>
+        </div>
+      ` : ''}
+
+      <div class="axes">
+        <div class="axis">
+          <div class="axis-label">${isRutaA ? 'Disciplina financiera' : 'Sofisticación estructural'}</div>
+          <div class="axis-value">${state.scores.sofisticacion}<sup>/100</sup></div>
+          <div class="axis-bar"><div class="axis-bar-fill" style="transform: scaleX(${state.scores.sofisticacion/100})"></div></div>
+        </div>
+        <div class="axis">
+          <div class="axis-label">Eficiencia fiscal</div>
+          <div class="axis-value">${state.scores.eficiencia}<sup>/100</sup></div>
+          <div class="axis-bar"><div class="axis-bar-fill" style="transform: scaleX(${state.scores.eficiencia/100})"></div></div>
+        </div>
+        <div class="axis">
+          <div class="axis-label">${isRutaA ? 'Liquidez y protección' : 'Protección y sucesión'}</div>
+          <div class="axis-value">${state.scores.proteccion}<sup>/100</sup></div>
+          <div class="axis-bar"><div class="axis-bar-fill" style="transform: scaleX(${state.scores.proteccion/100})"></div></div>
+        </div>
+      </div>
+
+      <section class="result-section">
+        <div class="section-label">Diagnóstico</div>
+        <h2 class="section-title">${isRutaA ? 'Dónde estás hoy financieramente.' : 'Cómo opera tu patrimonio hoy.'}</h2>
+        <div class="section-body"><p>${diagnostico}</p></div>
+      </section>
+
+      <section class="result-section">
+        <div class="section-label">Lo que estás haciendo bien</div>
+        <h2 class="section-title">Tus fortalezas actuales.</h2>
+        <div class="section-body">
+          ${fortalezas.map(f => `<p>— ${f}</p>`).join('')}
+        </div>
+      </section>
+
+      <section class="result-section">
+        <div class="section-label">${isRutaA ? 'Lo que debes optimizar primero' : 'Las estructuras que te faltan'}</div>
+        <h2 class="section-title">${isRutaA ? 'Tus prioridades financieras.' : 'Tu brecha hacia el siguiente nivel.'}</h2>
+        <ol class="gap-list">
+          ${brechas.map(b => `
+            <li class="gap-item">
+              <div>
+                <div class="gap-name">${b.name}</div>
+                <div class="gap-desc">${b.desc}</div>
+              </div>
+            </li>
+          `).join('')}
+        </ol>
+      </section>
+
+      <section class="leak">
+        <div class="leak-label">${leakLabel}</div>
+        <h3 class="leak-title">${leakTitle}</h3>
+        <div class="leak-amount">${formatCurrency(fuga.estimado)}</div>
+        <div class="leak-range">Rango estimado: ${formatCurrency(fuga.min)} – ${formatCurrency(fuga.max)} anuales</div>
+        <p class="leak-note">${isRutaA
+          ? 'Estimación basada en deducciones legítimas de impuesto de renta para personas naturales en Colombia (aportes voluntarios a pensión, AFC, dependientes, intereses de vivienda, entre otras). No constituye asesoría fiscal; es un estimado para dimensionar la oportunidad.'
+          : 'Estimación basada en tarifas fiscales colombianas vigentes (renta personal ~35-39%, renta corporativa 35%, dividendos 20%) aplicadas a la brecha entre tu estructura actual y una arquitectura optimizada para tu rango patrimonial. No constituye asesoría fiscal; es un estimado para dimensionar la oportunidad.'
+        }</p>
+      </section>
+
+      <section class="cta">
+        <h2 class="cta-title">${ctaTitle}</h2>
+        <p class="cta-body">${ctaBody}</p>
+        <a href="${CONFIG.CALENDLY_URL}" target="_blank" rel="noopener" class="btn" onclick="trackBooking()">${ctaButton}</a>
+      </section>
+
+      <div style="text-align:center; margin-top:48px;">
+        <p style="font-family:var(--serif); font-style:italic; font-size:18px; color:var(--muted);">
+          Hemos enviado una copia de este diagnóstico a <strong style="color:var(--ink); font-style:normal;">${state.lead.email}</strong>
+        </p>
+      </div>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function trackBooking() {
+  console.log('Lead intent to book:', state.docId, state.lead, 'Servicio:', state.servicio);
+}
+
+// ============================================================
+// INICIO
+// ============================================================
+// Esperar a que Firebase esté listo antes de mostrar la intro
+if (window.__fbReady) {
+  renderIntro();
+} else {
+  window.addEventListener('fb-ready', () => renderIntro(), { once: true });
+  // Render placeholder mientras carga
+  screen.innerHTML = '<div style="text-align:center;padding:80px 0;"><div class="loading-spinner" style="margin:0 auto;"></div></div>';
+  // Failsafe: si Firebase tarda demasiado, igual mostrar intro
+  setTimeout(() => { if (!window.__fbReady) renderIntro(); }, 3000);
+}
+</script>
 </body>
 </html>
