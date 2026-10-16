@@ -921,7 +921,7 @@ window.dispatchEvent(new Event('fb-ready'));
 // CONFIGURACIÓN
 // ============================================================
 const CONFIG = {
-  CALENDLY_URL: 'https://calendly.com/abba-asesoria/agenda-tu-sesion-de-planificacion-financiera-clon',
+  CALENDLY_URL: 'https://abba-patrimonial.netlify.app/',
   USD_COP_RATE: 4000,
   ORIGEN: 'diagnostico_arquitectura_patrimonial_web',
   COLECCION_FIRESTORE: 'leads_arquitectura'
@@ -2525,7 +2525,7 @@ function renderResult(informe) {
     ? 'En la sesión profundizamos en las 2-3 fugas tributarias que más te están costando hoy y conversamos sobre el orden en que tendría sentido abordarlas. No es una sesión de soluciones — es donde decidimos juntos si tiene sentido trabajar más a fondo.'
     : 'En la sesión profundizamos en las 2-3 brechas que más te están costando hoy y conversamos sobre el orden en que tendría sentido abordarlas. No es una sesión de soluciones — es donde decidimos juntos si tiene sentido trabajar más a fondo.';
 
-  const ctaButton = isRutaA ? 'Agendar sesión de optimización' : 'Agendar sesión estratégica';
+  const ctaButton = isRutaA ? 'Ver mi plan de optimización →' : 'Ver mi plan de arquitectura patrimonial →';
 
   const leakLabel = isRutaA
     ? 'Estimación de ahorro tributario anual posible'
